@@ -1,5 +1,5 @@
 # Configs
-local/
+local/*
 
 # Editors
 .vscode/
