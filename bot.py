@@ -5,7 +5,7 @@ import os
 
 # https://discord.com/api/oauth2/authorize?client_id=912847784477065278&permissions=117760&scope=bot//
 
-TOKEN = open("token.txt", "r").readline()
+TOKEN = open("local/token.txt", "r").readline()
 ALLOWED_ROLES = ['Administrator', 'Tech Administrator', 'dot']
 client = commands.Bot(".")
 

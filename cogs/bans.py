@@ -21,11 +21,11 @@ class Bans(commands.Cog):
     async def webpage_changed(self,response):
     
         # create content.txt if not created
-        if not os.path.exists("last_bans.txt"):
-            open("last_bans.txt", 'w+').close()     
+        if not os.path.exists("local/last_bans.txt"):
+            open("local/last_bans.txt", 'w+').close()     
 
         # read last_bans 
-        file = open("last_bans.txt", 'r')
+        file = open("local/last_bans.txt", 'r')
         last_bans = file.read() 
         file.close()
 
@@ -34,14 +34,14 @@ class Bans(commands.Cog):
             return False
         else:
             # update response if changed
-            file = open("last_bans.txt", 'w')
+            file = open("local/last_bans.txt", 'w')
             file.write(response) 
             file.close()
             return True
 
     async def send_embed(self):
         # read last_bans 
-        file = open("last_bans.txt", 'r')
+        file = open("local/last_bans.txt", 'r')
         last_bans = file.read() 
         file.close()
 

@@ -31,11 +31,11 @@ class Rates(commands.Cog):
     async def webpage_changed(self,response):
     
         # create content.txt if not created
-        if not os.path.exists("last_rates.txt"):
-            open("last_rates.txt", 'w+').close()     
+        if not os.path.exists("local/last_rates.txt"):
+            open("local/last_rates.txt", 'w+').close()     
 
         # read last_rates 
-        file = open("last_rates.txt", 'r')
+        file = open("local/last_rates.txt", 'r')
         last_rates = file.read() 
         file.close()
 
@@ -44,14 +44,14 @@ class Rates(commands.Cog):
             return False
         else:
             # update response if changed
-            file = open("last_rates.txt", 'w')
+            file = open("local/last_rates.txt", 'w')
             file.write(response) 
             file.close()
             return True
 
     async def send_embed(self):
         # read last_rates 
-        file = open("last_rates.txt", 'r')
+        file = open("local/last_rates.txt", 'r')
         last_rates = file.read() 
         file.close()
 
