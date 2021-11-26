@@ -1,0 +1,7 @@
+# BOT CONFIGURATION OPTIONS
+rates_url: "http://arkdedicated.com/dynamicconfig.ini"
+bans_url: "http://arkdedicated.com/bansummary.txt"
+polling_delay: 5
+rates_channel_id: 912857492281778176
+bans_channel_id: 912857492281778176
+allowed_roles: ['Administrator', 'Tech Administrator', 'dot']
