@@ -33,7 +33,7 @@ class Bans(commands.Cog):
             return False
         else:
             # update response if changed
-            with open(self.output_path, "w") as f:
+            with open(self.output_path, "w+") as f:
                 f.write(response)
             return True
 
