@@ -26,7 +26,7 @@ REQUIRED_VALUES = [
 
 def setup_config(args, default_config=DEFAULT_CONFIG):
     # Attempt to load config values from file if provided
-    config_path = args.config_path or os.getenv("BOT_CONFIG_PATH")
+    config_path = args.config_path or os.getenv("BOT_CONFIG_PATH") or "~/.ark-discord-bot/config.yaml"
     if config_path:
         try:
             with open(os.path.expanduser(config_path)) as f:

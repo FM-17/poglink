@@ -5,7 +5,6 @@ services:
     build: .
     volumes:
       - ${DATA_DIR:-~/.ark-discord-bot}:/data
-      - ${CONFIG_FILE:-~/ark-discord-bot-config}:/config/config.yaml
     networks:
       - bot-net
     command: "-h"
