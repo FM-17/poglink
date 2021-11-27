@@ -39,3 +39,5 @@ pip install -r requirements.txt
 - [ ] Editable embeds
 - [ ] Auto-publishing in announcement channels
 - [ ] In-game server notifications posted to Discord channels
+
+*Initially developed for use in the official ARK: Survival Evolved Discord server*
