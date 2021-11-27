@@ -12,15 +12,14 @@ from ark_discord_bot.bot import ConfigurableBot
 
 logger = logging.getLogger("ark-discord-bot")
 
+
 def cli():
     # Configure logging for CLI usage.
     logger.setLevel(level=logging.DEBUG)
     ch = logging.StreamHandler()
     ch.setLevel(logging.INFO)
 
-    formatter = logging.Formatter(
-        '%(asctime)s:%(levelname)s:%(name)s: %(message)s'
-    )
+    formatter = logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s")
     ch.setFormatter(formatter)
     logger.addHandler(ch)
 
@@ -37,7 +36,7 @@ def cli():
             2. Configuration file
             3. Environment Variables
         """,
-        formatter_class=argparse.RawDescriptionHelpFormatter
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument(
         "-c",
@@ -80,9 +79,7 @@ def cli():
         "--bans-channel-id",
         help="Discord 'bans' channel ID. Also can be set via BOT_BANS_CHANNEL_ID environment variable.",
     )
-    parser.add_argument(
-        "--debug", action="store_true", help="Set log level to DEBUG."
-    )
+    parser.add_argument("--debug", action="store_true", help="Set log level to DEBUG.")
 
     # Load arguments from CLI
     args = parser.parse_args()
@@ -99,7 +96,9 @@ def cli():
             with open(os.path.expanduser(config_path)) as f:
                 config = yaml.safe_load(f)
         except FileNotFoundError as e:
-            logger.error(f"Could not find config file at specified location: {config_path}")
+            logger.error(
+                f"Could not find config file at specified location: {config_path}"
+            )
             exit(1)
     else:
         config = {}
@@ -108,12 +107,13 @@ def cli():
     config["allowed_roles"] = (
         args.allowed_roles
         or config.get("allowed_roles")
-        or parse_list(os.getenv("BOT_ALLOWED_ROLES")) if os.getenv("BOT_ALLOWED_ROLES") else None
-        or ["Administrator", "Tech Administrator", "dot"]
+        or parse_list(os.getenv("BOT_ALLOWED_ROLES"))
+        if os.getenv("BOT_ALLOWED_ROLES")
+        else None or ["Administrator", "Tech Administrator", "dot"]
     )
-    config["token"] =  config.get("token") or args.token or os.getenv("BOT_TOKEN")
+    config["token"] = config.get("token") or args.token or os.getenv("BOT_TOKEN")
     config["polling_delay"] = (
-        args.polling_delay 
+        args.polling_delay
         or config.get("polling_delay")
         or os.getenv("BOT_POLLING_DELAY")
     )
@@ -181,6 +181,7 @@ def run(config):
     except discord.errors.LoginFailure as e:
         logger.error("Problem with token.")
         exit(1)
+
 
 if __name__ == "__main__":
 
