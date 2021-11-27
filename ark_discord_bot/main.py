@@ -13,13 +13,13 @@ logger = logging.getLogger("ark-discord-bot")
 
 def cli():
     # Configure logging for CLI usage.
-    logger.setLevel(level=logging.DEBUG)
+    logging.getLogger().setLevel(level=logging.DEBUG)
     ch = logging.StreamHandler()
     ch.setLevel(logging.INFO)
 
     formatter = logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s")
     ch.setFormatter(formatter)
-    logger.addHandler(ch)
+    logging.getLogger().addHandler(ch)
 
     # Define CLI arguments.
     parser = setup_argparse()
@@ -47,7 +47,7 @@ def cli():
 
 
 def run(**kwargs):
-    client = ConfigurableBot(".", kwargs)
+    client = ConfigurableBot(".", kwargs)  # passing as dict, not unpacked kwargs
 
     # load a cog
     @client.command()
