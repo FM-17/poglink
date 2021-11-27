@@ -13,28 +13,43 @@ This bot monitors the ARK Web API and posts changes to Discord.
 3. Create Bot URL via URL Generator in the Discord Developer Portal. Make sure the bot has `Send Messages`, `Read Messages/View Channels`, `Read Message History` and `Embed Links` permissions.
 4. Invite the bot to the server
 
-## Setup
-The following can be done on your local machine, a VPS, etc. These guide assumes it will be running on a linux machine.
+## Setup 
 
-1. Download the bot
-- Option A: Download and extract the [latest bot release](https://github.com/FM-17/ark_discord_bot/releases/latest) 
-- Option B: Clone the repo via `git clone https://github.com/FM-17/ark_discord_bot.git` 
-2. In the `local/` directory, rename `config_template.yaml` to `config.yaml`
+1. Download the [latest bot release](https://github.com/FM-17/ark_discord_bot/releases/latest) and extract it, or clone the repo via `git clone https://github.com/FM-17/ark_discord_bot.git` 
+2. Copy `sample_config.yaml` and rename it to `config.yaml`
 3. Open `config.yaml` and fill in the required values.
-4. Create & source virtual environment
-```
-cd <install location>/ark_discord/bot/
-python3 -m venv .venv
-source .venv/bin/activate
-```
-5. Update `pip`
-```
-pip install -U pip
-```
-6. Install bot
-```
-pip install -r requirements.txt
-```
+4. This bot can either run natively or within a docker container:
+
+    **Running natively**
+
+    1. Create & source virtual environment
+    ```
+    cd <install location>/ark-discord-bot/
+    python3 -m venv .venv
+    source .venv/bin/activate
+    ```
+    2. Update `pip`
+    ```
+    pip install -U pip
+    ```
+    3. Install the bot
+    ```
+    pip install .
+    ```
+    4. Run the bot
+    ```
+    ark-discord-bot
+    ```
+
+    More detailed usage instructions can be accessed via the `help` argument.
+    ```
+    ark-discord-bot --help 
+    ```
+    **Running in Docker**
+    
+    #TODO: Add docker setup instructions 
+    #TODO: Separate native and docker instructions from README.md
+
 ## Future Updates
 - [ ] Editable embeds
 - [ ] Auto-publishing in announcement channels
