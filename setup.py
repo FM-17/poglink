@@ -11,7 +11,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [ 
-            "ark-discord-bot=ark_discord_bot.bot:main"
+            "ark-discord-bot=ark_discord_bot.bot:cli"
         ]
     }
 )
