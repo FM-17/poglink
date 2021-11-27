@@ -17,6 +17,7 @@ COPY --from=build /tmp/wheels /tmp/wheels
 COPY setup.py .
 COPY requirements.txt .
 COPY ark_discord_bot ./ark_discord_bot
+COPY entrypoint.sh .
 
 RUN pip install --upgrade pip \
     && pip install \
@@ -41,6 +42,7 @@ RUN groupadd --gid $USER_GID $USERNAME \
 
 USER ${USERNAME}
 
-ENV BOT_OUTPUT_DIR=/data/persistent
+# Set output directory for persistent data
+ENV BOT_OUTPUT_DIR=/data
 
-ENTRYPOINT [ "ark-discord-bot" ]
+ENTRYPOINT [ "sh", "entrypoint.sh" ]
