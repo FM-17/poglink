@@ -18,38 +18,10 @@ This bot monitors the ARK Web API and posts changes to Discord.
 1. Download the [latest bot release](https://github.com/FM-17/ark_discord_bot/releases/latest) and extract it, or clone the repo via `git clone https://github.com/FM-17/ark_discord_bot.git` 
 2. Copy `sample_config.yaml` and rename it to `config.yaml`
 3. Open `config.yaml` and fill in the required values.
-4. This bot can either run natively or within a docker container:
-
-    **Running natively**
-
-    1. Create & source virtual environment
-    ```
-    cd <install location>/ark-discord-bot/
-    python3 -m venv .venv
-    source .venv/bin/activate
-    ```
-    2. Update `pip`
-    ```
-    pip install -U pip
-    ```
-    3. Install the bot
-    ```
-    pip install .
-    ```
-    4. Run the bot
-    ```
-    ark-discord-bot
-    ```
-
-    More detailed usage instructions can be accessed via the `help` argument.
-    ```
-    ark-discord-bot --help 
-    ```
-    **Running in Docker**
+4. This bot can either run natively or from within a docker container:
+    - [Running natively](docs/setup/native.md)
+    - [Running within Docker](docs/setup/docker.md)
     
-    #TODO: Add docker setup instructions 
-    #TODO: Separate native and docker instructions from README.md
-
 ## Future Updates
 - [ ] Editable embeds
 - [ ] Auto-publishing in announcement channels
