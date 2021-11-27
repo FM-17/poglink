@@ -17,6 +17,7 @@ class BotConfig:
         allowed_roles=None,
         rates_url=None,
         bans_url=None,
+        output_dir=None,
         **kwargs,
     ) -> None:
         self.token = token
@@ -26,6 +27,10 @@ class BotConfig:
         self.allowed_roles = allowed_roles
         self.rates_url = rates_url
         self.bans_url = bans_url
+        self.output_dir = output_dir
+
+        for k, v in kwargs.items():
+            setattr(self, k, v)
 
     @classmethod
     def from_dict(cls, d):
