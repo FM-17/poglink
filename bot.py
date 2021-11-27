@@ -2,10 +2,14 @@ import discord
 from discord.ext import commands
 from discord.utils import get
 import os
+import yaml
 
 # https://discord.com/api/oauth2/authorize?client_id=912847784477065278&permissions=117760&scope=bot//
 
-TOKEN = open("local/token.txt", "r").readline()
+with open('config.yaml') as stream:
+    config = yaml.safe_load(stream)
+
+TOKEN = config['token']
 ALLOWED_ROLES = ['Administrator', 'Tech Administrator', 'dot']
 client = commands.Bot(".")
 

@@ -1,6 +1,6 @@
 # Configs
 local/*
-!local/
+!*/config_template.yaml
 
 # Editors
 .vscode/

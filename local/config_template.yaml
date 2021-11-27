@@ -1,0 +1,8 @@
+# BOT CONFIGURATION OPTIONS
+token: <your token>
+rates_url: "http://arkdedicated.com/dynamicconfig.ini"
+bans_url: "http://arkdedicated.com/bansummary.txt"
+polling_delay: 5
+rates_channel_id: <channel to post rates in>
+bans_channel_id: <channel to post bans in>
+allowed_roles: <roles permitted to use bot commands>
