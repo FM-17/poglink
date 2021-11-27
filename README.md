@@ -1,4 +1,7 @@
-
+## Requirements
+- `python 3.6.9`+ 
+- [pip package manager](https://pip.pypa.io/en/latest/installation/) v21+ 
+- [virtualenv](https://virtualenv.pypa.io/en/latest/)
 
 ## Prerequisites
 1. Create a bot on the [Discord Developer Portal](https://discordapp.com/developers/)
@@ -7,8 +10,13 @@
 4. Invite the bot to the server
 
 ## Setup
-The following can be done on your local machine, a VPS, etc. These instructions assume it will be running on a linux machine.
-1. [Download the latest bot release here](https://github.com/FM-17/ark_discord_bot/releases/latest) (click on "Source code (zip)") or `git clone `
-2. Extract the downloaded zip file to a new folder
-3. Copy `config_template.yaml` to `local/` and rename the copy to `config.yaml`
-4. Open `config.yaml` and fill in the required values.
+The following can be done on your local machine, a VPS, etc. These guide assumes it will be running on a linux machine.
+
+1. Download the bot
+    Option A: Download and extract the [latest bot release](https://github.com/FM-17/ark_discord_bot/releases/latest) 
+    Option B: Clone the repo via `git clone git@github.com:FM-17/ark_discord_bot.git` 
+2. Rename `config_template.yaml` to `config.yaml` and copy it into the `/local` directory
+3. Open `config.yaml` and fill in the required values.
+4. Navigate to the `ark_discord_bot/` directory
+5. Run `setup.sh`
+
