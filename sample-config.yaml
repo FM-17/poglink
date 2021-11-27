@@ -1,0 +1,10 @@
+token: abcdef
+
+rates_url: fake_url
+rates_channel_id: my-channel-id
+
+bans_url: faker_url
+bans_channel_id: 420
+
+polling_delay: 6969
+allowed_roles: a,b,c,d
