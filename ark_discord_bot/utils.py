@@ -70,6 +70,9 @@ def setup_argparse():
         "--bans-channel-id",
         help="Discord 'bans' channel ID. Also can be set via BOT_BANS_CHANNEL_ID environment variable.",
     )
+    parser.add_argument(
+        "-o", "--output-dir", help="Directory in which to store persistent data."
+    )
     parser.add_argument("--debug", action="store_true", help="Set log level to DEBUG.")
 
     return parser

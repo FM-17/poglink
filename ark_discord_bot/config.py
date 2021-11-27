@@ -9,11 +9,12 @@ logger = logging.getLogger(__name__)
 DEFAULT_CONFIG = {
     "allowed_roles": ["Administrator", "Tech Administrator", "dot"],
     "polling_delay": 5,
-    "rates_url": None,
-    "bans_url": None,
+    "rates_url": "http://arkdedicated.com/dynamicconfig.ini",
+    "bans_url": "http://arkdedicated.com/bansummary.txt",
     "rates_channel_id": None,
     "bans_channel_id": None,
     "token": None,
+    "output_dir": "~/.ark-discord-bot",
 }
 
 REQUIRED_VALUES = [
@@ -26,7 +27,6 @@ REQUIRED_VALUES = [
 def setup_config(args, default_config=DEFAULT_CONFIG):
     # Attempt to load config values from file if provided
     config_path = args.config_path or os.getenv("BOT_CONFIG_PATH")
-    logger.debug(f"CONFIG_PATH: {config_path}")
     if config_path:
         try:
             with open(os.path.expanduser(config_path)) as f:

@@ -6,6 +6,8 @@ import logging
 import yaml
 import os
 
+logger = logging.getLogger(__name__)
+
 # create cog class
 class Rates(commands.Cog):
     def __init__(self, client):
@@ -15,6 +17,8 @@ class Rates(commands.Cog):
         self.channel_id = client.config.rates_channel_id
         self.polling_delay = client.config.polling_delay
         self.allowed_roles = client.config.allowed_roles
+        self.output_dir = os.path.expanduser(client.config.output_dir)
+        self.output_path = os.path.join(self.output_dir, "last_rates.txt")
         self.keyMapping = {
             "TamingSpeedMultiplier": "Taming",
             "HarvestAmountMultiplier": "Harvesting",
@@ -27,32 +31,29 @@ class Rates(commands.Cog):
             "HexagonRewardMultiplier": "Hexagon Reward",
         }
 
+        # Create parent directory for persistent data if it doesn't exist yet
+        if not os.path.exists(self.output_dir):
+            os.makedirs(self.output_dir)
+
     async def webpage_changed(self, response):
 
-        # create content.txt if not created
-        if not os.path.exists("local/last_rates.txt"):
-            open("local/last_rates.txt", "w+").close()
-
         # read last_rates
-        file = open("local/last_rates.txt", "r")
-        last_rates = file.read()
-        file.close()
+        with open(self.output_path) as f:
+            last_rates = f.read()
 
         # compare responses, use splitlines to handle carriage returns and newlines
         if ("".join(response.splitlines())) == ("".join(last_rates.splitlines())):
             return False
         else:
             # update response if changed
-            file = open("local/last_rates.txt", "w")
-            file.write(response)
-            file.close()
+            with open(self.output_path, "w") as f:
+                f.write(response)
             return True
 
     async def send_embed(self):
         # read last_rates
-        file = open("local/last_rates.txt", "r")
-        last_rates = file.read()
-        file.close()
+        with open(self.output_path) as f:
+            last_rates = f.read()
 
         # format response for embed
         response_dict = dict([p.split("=") for p in last_rates.split("\n")])
@@ -76,11 +77,7 @@ class Rates(commands.Cog):
     # Events
     @commands.Cog.listener()
     async def on_ready(self):
-        print("Cog Ready: Rates")
-        log = logging.getLogger(__name__)
-        logging.basicConfig(
-            level=os.environ.get("LOGLEVEL", "INFO"), format="%(asctime)s %(message)s"
-        )
+        logger.info("Cog Ready: Rates")
 
         while True:
             try:
@@ -91,12 +88,12 @@ class Rates(commands.Cog):
                     ) as response:
                         response = await response.text()
                         if await self.webpage_changed(response):
-                            log.info("Webpage updated.")
+                            logger.info("Webpage updated.")
                             await self.send_embed()
                         else:
-                            log.info("Webpage not updated.")
+                            logger.info("Webpage not updated.")
             except Exception as e:
-                log.error(f"Error checking webpage: {e}")
+                logger.error(f"Error checking webpage: {e}")
 
             await asyncio.sleep(self.polling_delay)
 

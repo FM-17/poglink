@@ -6,6 +6,7 @@ import logging
 import yaml
 import os
 
+logger = logging.getLogger(__name__)
 # create cog class
 class Bans(commands.Cog):
     def __init__(self, client):
@@ -15,33 +16,31 @@ class Bans(commands.Cog):
         self.channel_id = client.config.bans_channel_id
         self.polling_delay = client.config.polling_delay
         self.allowed_roles = client.config.allowed_roles
+        self.output_dir = os.path.expanduser(client.config.output_dir)
+        self.output_path = os.path.join(self.output_dir, "last_bans.txt")
+
+        # Create parent directory for persistent data if it doesn't exist yet
+        if not os.path.exists(self.output_dir):
+            os.makedirs(self.output_dir)
 
     async def webpage_changed(self, response):
-        # TODO: Move to a hidden user directory (~/.ark-discord-bot/last_bans.txt)
-        # create content.txt if not created
-        if not os.path.exists("local/last_bans.txt"):
-            open("local/last_bans.txt", "w+").close()
-
         # read last_bans
-        file = open("local/last_bans.txt", "r")
-        last_bans = file.read()
-        file.close()
+        with open(self.output_path) as f:
+            last_bans = f.read()
 
         # compare responses, use splitlines to handle carriage returns and newlines
         if ("".join(response.splitlines())) == ("".join(last_bans.splitlines())):
             return False
         else:
             # update response if changed
-            file = open("local/last_bans.txt", "w")
-            file.write(response)
-            file.close()
+            with open(self.output_path, "w") as f:
+                f.write(response)
             return True
 
     async def send_embed(self):
         # read last_bans
-        file = open("local/last_bans.txt", "r")
-        last_bans = file.read()
-        file.close()
+        with open(self.output_path) as f:
+            last_bans = f.read()
 
         # generate embed
         embed = discord.Embed(title="ARK Ban Summary", color=0x069420)
@@ -54,13 +53,7 @@ class Bans(commands.Cog):
     # Events
     @commands.Cog.listener()
     async def on_ready(self):
-        print("Cog Ready: Bans")
-        # TODO: Move this outside of the class
-        log = logging.getLogger(__name__)
-        # TODO: Set logging config in outer code; subsequent calls to basicConfig don't actually do anything
-        logging.basicConfig(
-            level=os.environ.get("LOGLEVEL", "INFO"), format="%(asctime)s %(message)s"
-        )
+        logger.info("Cog Ready: Bans")
 
         while True:
             try:
@@ -71,12 +64,12 @@ class Bans(commands.Cog):
                     ) as response:
                         response = await response.text()
                         if await self.webpage_changed(response):
-                            log.info("Webpage updated.")
+                            logger.info("Webpage updated.")
                             await self.send_embed()
                         else:
-                            log.info("Webpage not updated.")
+                            logger.info("Webpage not updated.")
             except Exception as e:
-                log.error(f"Error checking webpage: {e}")
+                logger.error(f"Error checking webpage: {e}")
 
             await asyncio.sleep(self.polling_delay)
 
