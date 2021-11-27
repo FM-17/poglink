@@ -104,11 +104,12 @@ def cli():
     else:
         config = {}
 
-    # For each configuration value, attempt to obtain value in the following order of priority:
+    # For each configuration value, attempt to obtain value in the specified order of priority:
     config["allowed_roles"] = (
         args.allowed_roles
         or config.get("allowed_roles")
-        or os.getenv("BOT_ALLOWED_ROLES")
+        or parse_list(os.getenv("BOT_ALLOWED_ROLES")) if os.getenv("BOT_ALLOWED_ROLES") else None
+        or ["Administrator", "Tech Administrator", "dot"]
     )
     config["token"] =  config.get("token") or args.token or os.getenv("BOT_TOKEN")
     config["polling_delay"] = (
@@ -147,26 +148,23 @@ def cli():
 
 
 def run(config):
-
-    TOKEN = config["token"]
-    ALLOWED_ROLES = ["Administrator", "Tech Administrator", "dot"]
     client = ConfigurableBot(".", config)
 
     # load a cog
     @client.command()
-    @commands.has_any_role(*ALLOWED_ROLES)
+    @commands.has_any_role(*client.config.allowed_roles)
     async def load(ctx, extension):
         client.load_extension(f"ark_discord_bot.cogs.{extension}")
 
     # unload a cogcd
     @client.command()
-    @commands.has_any_role(*ALLOWED_ROLES)
+    @commands.has_any_role(*client.config.allowed_roles)
     async def unload(ctx, extension):
         client.unload_extension(f"ark_discord_bot.cogs.{extension}")
 
     # reload a cog
     @client.command()
-    @commands.has_any_role(*ALLOWED_ROLES)
+    @commands.has_any_role(*client.config.allowed_roles)
     async def reload(ctx, extension):
         client.unload_extension(f"ark_discord_bot.cogs.{extension}")
         client.load_extension(f"ark_discord_bot.cogs.{extension}")
@@ -178,7 +176,8 @@ def run(config):
 
     # run the bot
     try:
-        client.run(TOKEN)
+        logger.debug(f"Running with config: {client.config.__dict__}")
+        client.run(client.config.token)
     except discord.errors.LoginFailure as e:
         logger.error("Problem with token.")
         exit(1)
