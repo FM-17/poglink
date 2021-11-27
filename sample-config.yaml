@@ -1,10 +1,12 @@
-token: abcdef
+# BOT CONFIGURATION OPTIONS
 
-rates_url: fake_url
-rates_channel_id: my-channel-id
+# REQUIRED
+token: <your token>
+rates_channel_id: <channel to post rates in>
+bans_channel_id: <channel to post bans in>
 
-bans_url: faker_url
-bans_channel_id: 420
-
-polling_delay: 6969
-allowed_roles: a,b,c,d
+# OPTIONAL
+polling_delay: 5
+allowed_roles: <roles permitted to use bot commands>
+rates_url: "http://arkdedicated.com/dynamicconfig.ini"
+bans_url: "http://arkdedicated.com/bansummary.txt"
