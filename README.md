@@ -1,6 +1,5 @@
 This bot monitors the ARK Web API and posts changes to Discord.
 
-Example:
 ![image](https://user-images.githubusercontent.com/82160306/143663008-ae44ae7a-4499-4abe-9568-89109f390128.png)
 
 ## Requirements
