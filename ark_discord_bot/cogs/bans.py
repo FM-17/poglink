@@ -11,6 +11,8 @@ class Bans(commands.Cog):
     
     def __init__(self, client):
         self.client = client
+        # TODO: Figure out how to pass config into an extension instead of relying on a fixed file location.
+        #       Or even consider something other than writing this functionality as an extension to be loaded at runtime.
         with open('config.yaml') as stream:
             config = yaml.safe_load(stream)
         self.webpage_url = config['bans_url']
@@ -19,7 +21,7 @@ class Bans(commands.Cog):
         self.allowed_roles = config['allowed_roles']
 
     async def webpage_changed(self,response):
-    
+        # TODO: Move to a hidden user directory (~/.ark-discord-bot/last_bans.txt)
         # create content.txt if not created
         if not os.path.exists("local/last_bans.txt"):
             open("local/last_bans.txt", 'w+').close()     
@@ -57,7 +59,9 @@ class Bans(commands.Cog):
     @commands.Cog.listener() 
     async def on_ready(self):
         print("Cog Ready: Bans")   
+        # TODO: Move this outside of the class
         log = logging.getLogger(__name__)
+        # TODO: Set logging config in outer code; subsequent calls to basicConfig don't actually do anything
         logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"), format='%(asctime)s %(message)s')
         
         while True:

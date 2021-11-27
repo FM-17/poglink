@@ -175,7 +175,5 @@ def run(config):
 
 
 if __name__ == "__main__":
-    
-    logger.info("THIS IS A TEST")
 
     cli()
