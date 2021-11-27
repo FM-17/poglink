@@ -17,18 +17,17 @@ The following can be done on your local machine, a VPS, etc. These guide assumes
 - Option B: Clone the repo via `git clone https://github.com/FM-17/ark_discord_bot.git` 
 2. In the `local/` directory, rename `config_template.yaml` to `config.yaml`
 3. Open `config.yaml` and fill in the required values.
-4. Navigate to the `ark_discord_bot/` directory
-
-5. Create & source virtual environment
+4. Create & source virtual environment
 ```
+cd <install location>/ark_discord/bot/
 python3 -m venv .venv
 source .venv/bin/activate
 ```
-6. Update `pip`
+5. Update `pip`
 ```
 pip install -U pip
 ```
-7. Install bot
+6. Install bot
 ```
 pip install -r requirements.txt
 ```
