@@ -20,11 +20,17 @@ The following can be done on your local machine, a VPS, etc. These guide assumes
 4. Navigate to the `ark_discord_bot/` directory
 
 5. Create & source virtual environment
-```python3 -m venv .venv
-source .venv/bin/activate```
-6. 
-```pip install -U pip```
+```
+python3 -m venv .venv
+source .venv/bin/activate
+```
+6. Update `pip`
+```
+pip install -U pip
+```
 7. Install bot
-```pip install -r requirements.txt```
+```
+pip install -r requirements.txt
+```
 
 
