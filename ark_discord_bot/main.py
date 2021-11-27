@@ -144,11 +144,11 @@ def cli():
         logger.error("No Token specified.")
         exit(1)
 
-    run(config)
+    run(**config)
 
 
-def run(config):
-    client = ConfigurableBot(".", config)
+def run(**kwargs):
+    client = ConfigurableBot(".", kwargs)
 
     # load a cog
     @client.command()
