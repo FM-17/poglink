@@ -11,12 +11,11 @@ class Rates(commands.Cog):
     
     def __init__(self, client):
         self.client = client
-        with open('config.yaml') as stream:
-            config = yaml.safe_load(stream)
-        self.webpage_url = config['rates_url']
-        self.channel_id = config['rates_channel_id']
-        self.polling_delay = config['polling_delay']
-        self.allowed_roles = config['allowed_roles']
+        
+        self.webpage_url = client.config.rates_url
+        self.channel_id = client.config.rates_channel_id
+        self.polling_delay = client.config.polling_delay
+        self.allowed_roles = client.config.allowed_roles
         self.keyMapping = {
             "TamingSpeedMultiplier":"Taming",
             "HarvestAmountMultiplier":"Harvesting",
