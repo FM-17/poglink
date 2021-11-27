@@ -32,18 +32,18 @@ def cli():
         ch.setLevel(logging.DEBUG)
 
     # Set up configuration dict
-    config = setup_config(args)
+    config_dict = setup_config(args)
 
     # Check for required values
     missing_vals = []
     for val in REQUIRED_VALUES:
-        if not config.get(val):
+        if not config_dict.get(val):
             missing_vals.append(val)
     if len(missing_vals) > 0:
         logger.error(f"Missing required configuration variables: {missing_vals}")
         exit(1)
 
-    run(**config)
+    run(**config_dict)
 
 
 def run(**kwargs):
