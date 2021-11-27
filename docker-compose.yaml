@@ -1,0 +1,14 @@
+version: "3.7"
+services:
+  bot:
+    container_name: ark-discord-bot
+    build: .
+    volumes:
+      - ${DATA_DIR:-~/.ark-discord-bot}:/data
+      - ${CONFIG_FILE:-~/ark-discord-bot-config}:/config/config.yaml
+    networks:
+      - bot-net
+    command: "-h"
+
+networks:
+  bot-net:
