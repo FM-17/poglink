@@ -34,6 +34,8 @@ def cli():
     # Set up configuration dict
     config_dict = setup_config(args)
 
+    logger.debug(f"Running with config: {config_dict}")
+
     # Check for required values
     missing_vals = []
     for val in REQUIRED_VALUES:
@@ -75,7 +77,6 @@ def run(**kwargs):
 
     # run the bot
     try:
-        logger.debug(f"Running with config: {client.config.__dict__}")
         client.run(client.config.token)
     except discord.errors.LoginFailure as e:
         logger.error("Problem with token.")
