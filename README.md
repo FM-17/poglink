@@ -1,6 +1,6 @@
 ## Requirements
-- `python 3.6.9`+ 
-- [pip package manager](https://pip.pypa.io/en/latest/installation/) v21+ 
+- python 3.6+ 
+- [pip](https://pip.pypa.io/en/latest/installation/)
 - [virtualenv](https://virtualenv.pypa.io/en/latest/)
 
 ## Prerequisites
