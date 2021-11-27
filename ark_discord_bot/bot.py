@@ -1,3 +1,4 @@
+import discord
 from discord.ext import commands
 import yaml
 import ark_discord_bot
@@ -17,10 +18,10 @@ def cli():
     # Configure logging for CLI usage.
     logger.setLevel(level=logging.DEBUG)
     ch = logging.StreamHandler()
-    ch.setLevel(logging.DEBUG)
+    ch.setLevel(logging.INFO)
 
     formatter = logging.Formatter(
-        "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        '%(asctime)s:%(levelname)s:%(name)s: %(message)s'
     )
     ch.setFormatter(formatter)
     logger.addHandler(ch)
@@ -81,9 +82,16 @@ def cli():
         "--bans-channel-id",
         help="Discord 'bans' channel ID. Also can be set via BOT_BANS_CHANNEL_ID environment variable.",
     )
+    parser.add_argument(
+        "--debug", action="store_true", help="Set log level to DEBUG."
+    )
 
     # Load arguments from CLI
     args = parser.parse_args()
+
+    # Override default log level
+    if args.debug:
+        ch.setLevel(logging.DEBUG)
 
     # Attempt to load config values from file if provided
     config_path = args.config_path or os.getenv("BOT_CONFIG_PATH")
@@ -171,8 +179,11 @@ def run(config):
         client.load_extension(f"ark_discord_bot.cogs.{ext}")
 
     # run the bot
-    client.run(TOKEN)
-
+    try:
+        client.run(TOKEN)
+    except discord.errors.LoginFailure as e:
+        logger.error("Problem with token.")
+        exit(1)
 
 if __name__ == "__main__":
 
