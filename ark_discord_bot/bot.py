@@ -6,6 +6,7 @@ import json
 
 logger = logging.getLogger(__name__)
 
+
 class BotConfig:
     def __init__(
         self,

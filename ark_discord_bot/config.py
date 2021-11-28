@@ -23,6 +23,7 @@ REQUIRED_VALUES = [
     "bans_channel_id",
 ]
 
+
 def setup_config(args, default_config=DEFAULT_CONFIG):
     # Attempt to load config values from file if provided
     config_path = args.config_path or os.getenv("BOT_CONFIG_PATH") or "~/.ark-discord-bot/config.yaml"
