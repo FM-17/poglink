@@ -101,4 +101,3 @@ class Rates(commands.Cog):
 # add cog to client
 def setup(client):
     client.add_cog(Rates(client))
-
