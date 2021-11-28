@@ -1,3 +1,4 @@
+# TODO: Transition to setup.cfg https://setuptools.pypa.io/en/latest/userguide/quickstart.html#transitioning-from-setup-py-to-setup-cfg
 from setuptools import find_packages, setup
 
 setup(
@@ -16,3 +17,4 @@ setup(
         ]
     }
 )
+
