@@ -31,3 +31,5 @@ venv.bak/
 token.txt
 config.yaml
 *.egg-info/
+build/
+dist/

@@ -7,68 +7,44 @@ import yaml
 import os
 
 logger = logging.getLogger(__name__)
-
 # create cog class
-class Rates(commands.Cog):
+class Bans(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-        self.webpage_url = client.config.rates_url
-        self.channel_id = client.config.rates_channel_id
+        self.webpage_url = client.config.bans_url
+        self.channel_id = client.config.bans_channel_id
         self.polling_delay = client.config.polling_delay
         self.allowed_roles = client.config.allowed_roles
         self.output_dir = os.path.expanduser(client.config.output_dir)
-        self.output_path = os.path.join(self.output_dir, "last_rates.txt")
-        self.keyMapping = {
-            "TamingSpeedMultiplier": "Taming",
-            "HarvestAmountMultiplier": "Harvesting",
-            "XPMultiplier": "XP",
-            "MatingIntervalMultiplier": "Mating Interval",
-            "BabyMatureSpeedMultiplier": "Maturation",
-            "EggHatchSpeedMultiplier": "Hatching",
-            "BabyCuddleIntervalMultiplier": "Cuddle Interval",
-            "BabyImprintAmountMultiplier": "Imprinting",
-            "HexagonRewardMultiplier": "Hexagon Reward",
-        }
+        self.output_path = os.path.join(self.output_dir, "last_bans.txt")
 
         # Create parent directory for persistent data if it doesn't exist yet
         if not os.path.exists(self.output_dir):
             os.makedirs(self.output_dir)
 
     async def webpage_changed(self, response):
-
-        # read last_rates
+        # read last_bans
         with open(self.output_path) as f:
-            last_rates = f.read()
+            last_bans = f.read()
 
         # compare responses, use splitlines to handle carriage returns and newlines
-        if ("".join(response.splitlines())) == ("".join(last_rates.splitlines())):
+        if ("".join(response.splitlines())) == ("".join(last_bans.splitlines())):
             return False
         else:
             # update response if changed
-            with open(self.output_path, "w+") as f:
+            with open(self.output_path, "w") as f:
                 f.write(response)
             return True
 
     async def send_embed(self):
-        # read last_rates
+        # read last_bans
         with open(self.output_path) as f:
-            last_rates = f.read()
-
-        # format response for embed
-        response_dict = dict([p.split("=") for p in last_rates.split("\n")])
-        response_dict_pretty = {
-            self.keyMapping.get(k, k): (str(v.rstrip(".0")) + "×")
-            for k, v in response_dict.items()
-        }
+            last_bans = f.read()
 
         # generate embed
-        embed = discord.Embed(
-            title="ARK's official server rates have just been updated!", color=0x069420
-        )
-        embed.description = "\n".join(
-            ["**" + v + "**" + " " + k for k, v in response_dict_pretty.items()]
-        )
+        embed = discord.Embed(title="ARK Ban Summary", color=0x069420)
+        embed.description = last_bans
 
         # send embed
         channel = self.client.get_channel(self.channel_id)
@@ -77,7 +53,7 @@ class Rates(commands.Cog):
     # Events
     @commands.Cog.listener()
     async def on_ready(self):
-        logger.info("Cog Ready: Rates")
+        logger.info("Cog Ready: Bans")
 
         while True:
             try:
@@ -100,4 +76,14 @@ class Rates(commands.Cog):
 
 # add cog to client
 def setup(client):
-    client.add_cog(Rates(client))
+    client.add_cog(Bans(client))
+
+    # "TamingSpeedMultiplier": ":t_rex: Taming",
+    # "HarvestAmountMultiplier": ":pick: Harvesting",
+    # "XPMultiplier": ":sparkles: XP",
+    # "MatingIntervalMultiplier": ":two_hearts: Mating Interval",
+    # "BabyMatureSpeedMultiplier": ":hatching_chick: Maturation",
+    # "EggHatchSpeedMultiplier": ":egg: Hatching",
+    # "BabyCuddleIntervalMultiplier": ":hugging: Cuddle Interval",
+    # "BabyImprintAmountMultiplier": ":paw_prints: Imprinting",
+    # "HexagonRewardMultiplier": ":gem: Hexagon Reward",

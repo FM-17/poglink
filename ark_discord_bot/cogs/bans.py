@@ -33,7 +33,7 @@ class Bans(commands.Cog):
             return False
         else:
             # update response if changed
-            with open(self.output_path, "w") as f:
+            with open(self.output_path, "w+") as f:
                 f.write(response)
             return True
 
@@ -77,13 +77,3 @@ class Bans(commands.Cog):
 # add cog to client
 def setup(client):
     client.add_cog(Bans(client))
-
-    # "TamingSpeedMultiplier": ":t_rex: Taming",
-    # "HarvestAmountMultiplier": ":pick: Harvesting",
-    # "XPMultiplier": ":sparkles: XP",
-    # "MatingIntervalMultiplier": ":two_hearts: Mating Interval",
-    # "BabyMatureSpeedMultiplier": ":hatching_chick: Maturation",
-    # "EggHatchSpeedMultiplier": ":egg: Hatching",
-    # "BabyCuddleIntervalMultiplier": ":hugging: Cuddle Interval",
-    # "BabyImprintAmountMultiplier": ":paw_prints: Imprinting",
-    # "HexagonRewardMultiplier": ":gem: Hexagon Reward",
