@@ -2,11 +2,11 @@
 
 # REQUIRED
 token: <your token>
-polling_delay: 5
 rates_channel_id: <channel to post rates in>
 bans_channel_id: <channel to post bans in>
 
 # OPTIONAL
+polling_delay: 60
 allowed_roles: <roles permitted to use bot commands>
 rates_url: "http://arkdedicated.com/dynamicconfig.ini"
 bans_url: "http://arkdedicated.com/bansummary.txt"
