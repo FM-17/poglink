@@ -1,6 +1,5 @@
 FROM python:3.6-alpine as build
 
-
 COPY requirements.txt .
 RUN pip install --upgrade pip \
     && pip install wheel \
