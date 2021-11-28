@@ -3,7 +3,7 @@
 # Change directory to current script dir to ensure init-config.sh script is found.
 cd "$(dirname "$(realpath "$0")")";
 
-# Run config dir initialization (in current shell to make BOT_CONFIG_DIR variable active)
+# Run config dir initialization (in current shell to make BOT_DATA_DIR variable active)
 source ./init-config.sh
 
 # Run container as defined in compose file
