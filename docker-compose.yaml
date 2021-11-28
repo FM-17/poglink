@@ -4,7 +4,7 @@ services:
     container_name: ark-discord-bot
     build: .
     volumes:
-      - ${BOT_CONFIG_DIR:-~/.ark-discord-bot}:/data
+      - ${BOT_DATA_DIR:-~/.ark-discord-bot}:/data
     networks:
       - bot-net
     command: "-h"
