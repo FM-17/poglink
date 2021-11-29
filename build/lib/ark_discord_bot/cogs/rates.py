@@ -38,15 +38,19 @@ class Rates(commands.Cog):
     async def webpage_changed(self, response):
 
         # read last_rates
-        with open(self.output_path) as f:
-            last_rates = f.read()
+        if os.path.exists(self.output_path):
+            with open(self.output_path) as f:
+                last_rates = f.read()
+        else:
+            last_rates = ""
+
 
         # compare responses, use splitlines to handle carriage returns and newlines
         if ("".join(response.splitlines())) == ("".join(last_rates.splitlines())):
             return False
         else:
             # update response if changed
-            with open(self.output_path, "w") as f:
+            with open(self.output_path, "w+") as f:
                 f.write(response)
             return True
 
@@ -101,13 +105,3 @@ class Rates(commands.Cog):
 # add cog to client
 def setup(client):
     client.add_cog(Rates(client))
-
-    # "TamingSpeedMultiplier": ":t_rex: Taming",
-    # "HarvestAmountMultiplier": ":pick: Harvesting",
-    # "XPMultiplier": ":sparkles: XP",
-    # "MatingIntervalMultiplier": ":two_hearts: Mating Interval",
-    # "BabyMatureSpeedMultiplier": ":hatching_chick: Maturation",
-    # "EggHatchSpeedMultiplier": ":egg: Hatching",
-    # "BabyCuddleIntervalMultiplier": ":hugging: Cuddle Interval",
-    # "BabyImprintAmountMultiplier": ":paw_prints: Imprinting",
-    # "HexagonRewardMultiplier": ":gem: Hexagon Reward",

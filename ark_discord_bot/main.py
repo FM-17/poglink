@@ -5,6 +5,7 @@ import logging
 from ark_discord_bot.utils import setup_argparse
 from ark_discord_bot.bot import ConfigurableBot
 from ark_discord_bot.config import setup_config, REQUIRED_VALUES
+import os
 
 # https://discord.com/api/oauth2/authorize?client_id=912847784477065278&permissions=117760&scope=bot//
 
@@ -28,11 +29,13 @@ def cli():
     args = parser.parse_args()
 
     # Override default log level
-    if args.debug:
+    if args.debug or os.getenv("BOT_DEBUG", "").lower() == "true":
         ch.setLevel(logging.DEBUG)
 
     # Set up configuration dict
     config_dict = setup_config(args)
+
+    logger.debug(f"Running with config: {config_dict}")
 
     # Check for required values
     missing_vals = []
@@ -75,7 +78,6 @@ def run(**kwargs):
 
     # run the bot
     try:
-        logger.debug(f"Running with config: {client.config.__dict__}")
         client.run(client.config.token)
     except discord.errors.LoginFailure as e:
         logger.error("Problem with token.")

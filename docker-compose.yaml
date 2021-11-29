@@ -1,0 +1,15 @@
+version: "3"
+services:
+  bot:
+    container_name: ark-discord-bot
+    build: .
+    volumes:
+      - ./data:/data
+    networks:
+      - bot-net
+    command: ""
+    environment:
+      BOT_DEBUG: "tRuE"
+
+networks:
+  bot-net:

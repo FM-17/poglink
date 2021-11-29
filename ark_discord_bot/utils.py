@@ -45,7 +45,6 @@ def setup_argparse():
         "-p",
         "--polling-delay",
         type=float,
-        default=5,
         help="Polling period in seconds. Also can be set via BOT_POLLING_PERIOD environment variable.",
     )
     parser.add_argument(

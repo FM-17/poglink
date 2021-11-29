@@ -5,7 +5,7 @@ This bot monitors the ARK Web API and posts changes to Discord.
 ## Requirements
 - python 3.6+ 
 - [pip](https://pip.pypa.io/en/latest/installation/)
-- [virtualenv](https://virtualenv.pypa.io/en/latest/)
+- [pyenv](https://github.com/pyenv/pyenv)
 
 ## Prerequisites
 1. Create a bot on the [Discord Developer Portal](https://discordapp.com/developers/)
