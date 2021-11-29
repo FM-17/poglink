@@ -38,8 +38,11 @@ class Rates(commands.Cog):
     async def webpage_changed(self, response):
 
         # read last_rates
-        with open(self.output_path) as f:
-            last_rates = f.read()
+        if os.path.exists(self.output_path):
+            with open(self.output_path) as f:
+                last_rates = f.read()
+        else:
+            last_rates = ""
 
         # compare responses, use splitlines to handle carriage returns and newlines
         if ("".join(response.splitlines())) == ("".join(last_rates.splitlines())):
