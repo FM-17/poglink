@@ -17,6 +17,7 @@ COPY setup.py .
 COPY requirements.txt .
 COPY ark_discord_bot ./ark_discord_bot
 COPY entrypoint.sh .
+COPY sample-config.yaml /sample-config.yaml
 
 RUN pip install --upgrade pip \
     && pip install \
@@ -43,5 +44,6 @@ USER ${USERNAME}
 
 # Set output directory for persistent data
 ENV BOT_OUTPUT_DIR=/data
+RUN mkdir -p $BOT_OUTPUT_DIR
 
 ENTRYPOINT [ "sh", "entrypoint.sh" ]
