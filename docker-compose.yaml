@@ -4,10 +4,12 @@ services:
     container_name: ark-discord-bot
     build: .
     volumes:
-      - ${BOT_DATA_DIR:-~/.ark-discord-bot}:/data
+      - ./data:/data
     networks:
       - bot-net
     command: ""
+    environment:
+      BOT_DEBUG: "tRuE"
 
 networks:
   bot-net:
