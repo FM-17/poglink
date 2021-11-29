@@ -25,8 +25,11 @@ class Bans(commands.Cog):
 
     async def webpage_changed(self, response):
         # read last_bans
-        with open(self.output_path) as f:
-            last_bans = f.read()
+        if os.path.exists(self.output_path):
+            with open(self.output_path) as f:
+                last_bans = f.read()
+        else:
+            last_bans = ""
 
         # compare responses, use splitlines to handle carriage returns and newlines
         if ("".join(response.splitlines())) == ("".join(last_bans.splitlines())):

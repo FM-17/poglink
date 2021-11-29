@@ -14,7 +14,7 @@ DEFAULT_CONFIG = {
     "rates_channel_id": None,
     "bans_channel_id": None,
     "token": None,
-    "output_dir": "/data"
+    "output_dir": "~/.ark-discord-bot",
 }
 
 REQUIRED_VALUES = [
@@ -26,12 +26,7 @@ REQUIRED_VALUES = [
 
 def setup_config(args, default_config=DEFAULT_CONFIG):
     # Attempt to load config values from file if provided
-    config_path = (
-        args.config_path
-        or os.getenv("BOT_CONFIG_PATH")
-        or "/data/config.yaml"
-        or "./ark-discord-bot/config.yaml"
-    )
+    config_path = args.config_path or os.getenv("BOT_CONFIG_PATH")
     if config_path:
         try:
             with open(os.path.expanduser(config_path)) as f:
