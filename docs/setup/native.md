@@ -1,30 +1,37 @@
 # Running Natively
 
-1. Create & source virtual environment
-    ```
-    cd <install location>/ark-discord-bot/
-    python3 -m venv .venv
-    source .venv/bin/activate
-    ```
-2. Update pip
+1. Get the code via either of the following two options
 
-    ```
-    pip install -U pip
-    ```
+    a) Download & extract the [latest bot release](https://github.com/FM-17/ark_discord_bot/releases/latest)
 
-3. Install the bot
+    b) Clone the repo via `git clone https://github.com/FM-17/ark_discord_bot.git` 
 
-    ```
+2. Copy `sample_config.yaml` and rename it to `config.yaml`
+3. Open `config.yaml` and fill in the required values.
+
+
+1. Install the bot. I recommend doing this within a virtual environment.
+
+    ```bash
+    # navigate to download location
+    cd {download location}/ark-discord-bot/
+
+    # [optional] create a virtual environment and set as default for current directory
+    pyenv install 3.6.9
+    pyenv virtualenv 3.6.9 {virtualenv name}
+    pyenv local {virtualenv name} 
+
+    # install bot
     pip install .
     ```
 
-4. Run the bot
+2. Run the bot
     
     ```
     ark-discord-bot
     ```
 
-5. For more configuration options, run the bot with the `--help` argument 
+3. For more configuration options, run the bot with the `--help` argument 
 
     ```
     ark-discord-bot --help 
