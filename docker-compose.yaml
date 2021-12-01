@@ -9,7 +9,7 @@ services:
       - bot-net
     command: ""
     environment:
-      BOT_DEBUG: "tRuE"
+      BOT_DEBUG: "false"
 
 networks:
   bot-net:
