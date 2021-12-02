@@ -1,4 +1,3 @@
-from _pytest.fixtures import yield_fixture
 import pytest
 import os
 import yaml
