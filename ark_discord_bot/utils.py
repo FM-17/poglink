@@ -30,10 +30,7 @@ def setup_argparse():
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument(
-        "-c",
-        "--config-path",
-        type=str,
-        help="Path to configuration file (YAML). Also can be set via BOT_CONFIG_PATH environment variable.",
+        "-d", "--data-dir", help="Directory in which to store persistent data and config file. Defaults to ~/.ark-discord-bot"
     )
     parser.add_argument(
         "-t",
@@ -68,9 +65,6 @@ def setup_argparse():
     parser.add_argument(
         "--bans-channel-id",
         help="Discord 'bans' channel ID. Also can be set via BOT_BANS_CHANNEL_ID environment variable.",
-    )
-    parser.add_argument(
-        "-o", "--output-dir", help="Directory in which to store persistent data."
     )
     parser.add_argument("--debug", action="store_true", help="Set log level to DEBUG.")
 
