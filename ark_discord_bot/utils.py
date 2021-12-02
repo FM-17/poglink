@@ -30,7 +30,9 @@ def setup_argparse():
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument(
-        "-d", "--data-dir", help="Directory in which to store persistent data and config file. Defaults to ~/.ark-discord-bot"
+        "-d",
+        "--data-dir",
+        help="Directory in which to store persistent data and config file. Defaults to ~/.ark-discord-bot",
     )
     parser.add_argument(
         "-t",

@@ -26,14 +26,18 @@ REQUIRED_VALUES = [
 
 def setup_config(args, default_config=DEFAULT_CONFIG):
     # Attempt to load config values from file if provided
-    data_dir = os.path.expanduser(args.data_dir or os.getenv("BOT_DATA_DIR") or DEFAULT_CONFIG.get("data_dir"))
+    data_dir = os.path.expanduser(
+        args.data_dir or os.getenv("BOT_DATA_DIR") or DEFAULT_CONFIG.get("data_dir")
+    )
     config_path = os.path.join(data_dir, "config.yaml")
-    
+
     if os.path.exists(config_path):
         with open(os.path.expanduser(config_path)) as f:
             config_from_file = yaml.safe_load(f)
     else:
-        logger.warning(f"No configuration file found at {config_path}. Configuration must be set via CLI args or environment variables.")
+        logger.warning(
+            f"No configuration file found at {config_path}. Configuration must be set via CLI args or environment variables."
+        )
         config_from_file = {}
 
     # For each configuration value, attempt to obtain value in the specified order of priority:
