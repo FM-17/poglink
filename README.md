@@ -17,7 +17,69 @@ This bot monitors the ARK Web API and posts changes to Discord.
 This bot can either run natively or from within a docker container. 
 - [Instructions for running natively](docs/setup/native.md)
 - [Instructions for running within Docker](docs/setup/docker.md)
+
+## Running the bot
+There are a few different ways to run this bot on your own machine. Either in your own Python environment or in a docker container.
+
+### Running in Python
+To run the bot in Python you can either:
+1. Execute via the CLI entrypoint: `ark-discord-bot`, passing config parameters any of the ways described below; or
+2. Import within your own Python code and execute `ark_discord_bot.main.run`, passing in configuration parameters as keyword arguments.
+
+### Running in Docker / Docker Compose
+To run in a container, you can simply execute `docker run fm17/ark-discord-bot`, passing in any relevant configuration parameters as environment variables. In order to pass in a configuration file
+or to maintain persistent data between containers mount a volume to the `/data` dir inside the container (or whichever data directory is configured via the `--data-dir` CLI argument or the `BOT_DATA_DIR`
+environment variable).
+
+Example `docker-compose.yaml`
+```yaml
+version: "3"
+services:
+  bot:
+    image: fm17/ark-discord-bot:latest
+    container_name: ark-discord-bot
+    volumes:
+      - ~/.ark-discord-bot:/custom-data-dir
+    command: "" # provide CLI args here
+    environment:
+      BOT_DATA_DIR: "/custom-data-dir"
+    networks:
+      - bot-net
+
+networks:
+  bot-net:
+```
+
+## Configuration
+This bot can pull configuration from one of multiple locations. Each parameter will be parsed independently in the following order of precedence:
+1. CLI arguments
+    - See help menu by running `ark-discord-bot -h` for more information.
+2. Configuration File
+    - Assumed to be named `config.yaml` within the data directory.
+    - Data directory is set to `~/.ark-discord-bot` unless otherwise specified.
+3. Environment variables
+    - Each parameter can be set via an environment variable prefixed with `BOT_`.
+    - E.g. to configure the bot's polling delay, set `BOT_POLLING_DELAY`.
+4. Defaults (optional)
+    - Some configuration parameters have default values assigned, which will be used
+    in the absense of any other user-provided configuration values. 
+
+
+### Parameter Summary
+The following configuration parameters are available to be set in any of the above described methods:
+
+| CLI Argument           | Env Var              | Default                                   | Required | Description     |
+| ---------------------- | -------------------- | ----------------------------------------- | -------- | --------------- |
+| `--allowed-roles`      | `BOT_ALLOWED_ROLES`  | None                                      | No       | \<insert desc\> |
+| `--polling-delay`      | `BOT_POLLING_DELAY`  | 60                                        | No       | \<insert desc\> |
+| ``--rates-url``        | ``RATES_URL``        | http://arkdedicated.com/dynamicconfig.ini | No       | \<insert desc\> |
+| ``--bans-url``         | ``BANS_URL``         | http://arkdedicated.com/bansummary.txt    | No       | \<insert desc\> |
+| ``--rates-channel-id`` | ``RATES_CHANNEL_ID`` | None                                      | Yes      | \<insert desc\> |
+| ``--bans-channel-id``  | ``BANS_CHANNEL_ID``  | None                                      | Yes      | \<insert desc\> |
+| ``--token ``           | ``TOKEN``            | None                                      | Yes      | \<insert desc\> | 
+| ``--data-dir``         | ``DATA_DIR``         | ~/.ark-discord-bot                        | No       | \<insert desc\> |
     
+
 ## Future Updates
 - [ ] Editable embeds
 - [ ] Auto-publishing in announcement channels
