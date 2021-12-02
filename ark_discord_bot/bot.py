@@ -38,7 +38,7 @@ class BotConfig:
 
     @classmethod
     def from_file(cls, config_path):
-        """Loads bot configuration from a file. Ideally YAML, but should also work for JSON. 
+        """Loads bot configuration from a file. Ideally YAML, but should also work for JSON.
 
         Args:
             config_path (str): Path to config file (or to directory containing file named 'config.yaml')
@@ -54,7 +54,7 @@ class BotConfig:
         if os.path.isdir(fullpath):
             fullpath = os.path.join(fullpath, "config.yaml")
 
-        if os.path.isfile(fullpath):    
+        if os.path.isfile(fullpath):
             try:
                 with open(fullpath) as f:
                     config_from_file = yaml.safe_load(f)
