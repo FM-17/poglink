@@ -78,6 +78,7 @@ The following configuration parameters are available to be set in any of the abo
 | `--bans-channel-id`    | `BOT_BANS_CHANNEL_ID`  | None                                      | Yes      | \<insert desc\> |
 | `--token `             | `BOT_TOKEN`            | None                                      | Yes      | \<insert desc\> | 
 | `--data-dir`           | `BOT_DATA_DIR`         | ~/.ark-discord-bot                        | No       | \<insert desc\> |
+| `--debug`              | `BOT_DEBUG`            | False                                     | No       | \<insert desc\> |
     
 ## Developing
 
