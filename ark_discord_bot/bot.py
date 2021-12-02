@@ -37,33 +37,35 @@ class BotConfig:
         return cls(**d)
 
     @classmethod
-    def from_yaml(cls, config_path):
+    def from_file(cls, config_path):
+        """Loads bot configuration from a file. Ideally YAML, but should also work for JSON. 
+
+        Args:
+            config_path (str): Path to config file (or to directory containing file named 'config.yaml')
+
+        Raises:
+            Exception: Problem loading file.
+            FileNotFoundError: File does not exist at specified location.
+
+        Returns:
+            BotConfig: Object containing bot configuration.
+        """
         fullpath = os.path.expanduser(config_path)
         if os.path.isdir(fullpath):
             fullpath = os.path.join(fullpath, "config.yaml")
 
-        if os.path.isfile(fullpath)    
-        try:
-            with open() as f:
-                config_from_file = yaml.safe_load(f)
-        except FileNotFoundError as e:
-            logger.error(
-                f"Could not find config file at specified location: {config_path}"
-            )
-            raise e
-
-        return cls.from_dict(config_from_file)
-
-    @classmethod
-    def from_json(cls, config_path):
-        try:
-            with open(os.path.expanduser(config_path)) as f:
-                config_from_file = json.load(f)
-        except FileNotFoundError as e:
-            logger.error(
-                f"Could not find config file at specified location: {config_path}"
-            )
-            raise e
+        if os.path.isfile(fullpath):    
+            try:
+                with open(fullpath) as f:
+                    config_from_file = yaml.safe_load(f)
+            except Exception as e:
+                logger.error(
+                    f"Could not read config file at specified location: {config_path}"
+                )
+                raise Exception(f"Could not read file at {fullpath}")
+        else:
+            logger.error(f"File does not exist at location: {fullpath}")
+            raise FileNotFoundError("File does not exist at location")
 
         return cls.from_dict(config_from_file)
 
