@@ -14,7 +14,7 @@ DEFAULT_CONFIG = {
     "rates_channel_id": None,
     "bans_channel_id": None,
     "token": None,
-    "output_dir": "~/.ark-discord-bot",
+    "data_dir": "~/.ark-discord-bot",
 }
 
 REQUIRED_VALUES = [
@@ -26,17 +26,14 @@ REQUIRED_VALUES = [
 
 def setup_config(args, default_config=DEFAULT_CONFIG):
     # Attempt to load config values from file if provided
-    config_path = args.config_path or os.getenv("BOT_CONFIG_PATH")
-    if config_path:
-        try:
-            with open(os.path.expanduser(config_path)) as f:
-                config_from_file = yaml.safe_load(f)
-        except FileNotFoundError as e:
-            logger.error(
-                f"Could not find config file at specified location: {config_path}"
-            )
-            exit(1)
+    data_dir = os.path.expanduser(args.data_dir or os.getenv("BOT_DATA_DIR") or DEFAULT_CONFIG.get("data_dir"))
+    config_path = os.path.join(data_dir, "config.yaml")
+    
+    if os.path.exists(config_path):
+        with open(os.path.expanduser(config_path)) as f:
+            config_from_file = yaml.safe_load(f)
     else:
+        logger.warning(f"No configuration file found at {config_path}. Configuration must be set via CLI args or environment variables.")
         config_from_file = {}
 
     # For each configuration value, attempt to obtain value in the specified order of priority:
