@@ -17,8 +17,8 @@ class Rates(commands.Cog):
         self.channel_id = client.config.rates_channel_id
         self.polling_delay = client.config.polling_delay
         self.allowed_roles = client.config.allowed_roles
-        self.output_dir = os.path.expanduser(client.config.output_dir)
-        self.output_path = os.path.join(self.output_dir, "last_rates.txt")
+        self.data_dir = os.path.expanduser(client.config.data_dir)
+        self.output_path = os.path.join(self.data_dir, "last_rates.txt")
         self.keyMapping = {
             "TamingSpeedMultiplier": "Taming",
             "HarvestAmountMultiplier": "Harvesting",
@@ -32,8 +32,8 @@ class Rates(commands.Cog):
         }
 
         # Create parent directory for persistent data if it doesn't exist yet
-        if not os.path.exists(self.output_dir):
-            os.makedirs(self.output_dir)
+        if not os.path.exists(self.data_dir):
+            os.makedirs(self.data_dir)
 
     async def webpage_changed(self, response):
 
