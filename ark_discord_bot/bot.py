@@ -17,7 +17,7 @@ class BotConfig:
         allowed_roles=None,
         rates_url=None,
         bans_url=None,
-        output_dir=None,
+        data_dir=None,
         **kwargs,
     ) -> None:
         self.token = token
@@ -27,7 +27,7 @@ class BotConfig:
         self.allowed_roles = allowed_roles
         self.rates_url = rates_url
         self.bans_url = bans_url
-        self.output_dir = output_dir
+        self.data_dir = data_dir
 
         for k, v in kwargs.items():
             setattr(self, k, v)
@@ -38,8 +38,13 @@ class BotConfig:
 
     @classmethod
     def from_yaml(cls, config_path):
+        fullpath = os.path.expanduser(config_path)
+        if os.path.isdir(fullpath):
+            fullpath = os.path.join(fullpath, "config.yaml")
+
+        if os.path.isfile(fullpath)    
         try:
-            with open(os.path.expanduser(config_path)) as f:
+            with open() as f:
                 config_from_file = yaml.safe_load(f)
         except FileNotFoundError as e:
             logger.error(
