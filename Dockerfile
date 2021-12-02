@@ -44,10 +44,9 @@ COPY entrypoint.sh .
 COPY sample-config.yaml /sample-config.yaml
 
 # Set output directory for persistent data
-ENV BOT_OUTPUT_DIR=/data
-ENV BOT_CONFIG_PATH=${BOT_OUTPUT_DIR}/config.yaml
-RUN mkdir -p $BOT_OUTPUT_DIR && chown ${USER_UID}:${USER_GID} $BOT_OUTPUT_DIR
-COPY sample-config.yaml ${BOT_CONFIG_PATH}
+ENV BOT_DATA_DIR=/data
+RUN mkdir -p $BOT_DATA_DIR && chown ${USER_UID}:${USER_GID} $BOT_DATA_DIR
+COPY sample-config.yaml ${BOT_DATA_DIR}}
 
 USER ${USERNAME}
 
