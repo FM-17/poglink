@@ -46,7 +46,7 @@ COPY sample-config.yaml /sample-config.yaml
 # Set output directory for persistent data
 ENV BOT_DATA_DIR=/data
 RUN mkdir -p $BOT_DATA_DIR && chown ${USER_UID}:${USER_GID} $BOT_DATA_DIR
-COPY sample-config.yaml ${BOT_DATA_DIR}}
+COPY sample-config.yaml ${BOT_DATA_DIR}
 
 USER ${USERNAME}
 

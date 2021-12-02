@@ -10,7 +10,7 @@
 3. Open `config.yaml` and fill in the required values.
 
 
-1. Install the bot. I recommend doing this within a virtual environment.
+4. Install the bot. I recommend doing this within a virtual environment.
 
     ```bash
     # navigate to download location
@@ -24,16 +24,3 @@
     # install bot
     pip install .
     ```
-
-2. Run the bot
-    
-    ```
-    ark-discord-bot
-    ```
-
-3. For more configuration options, run the bot with the `--help` argument 
-
-    ```
-    ark-discord-bot --help 
-    ```
-
