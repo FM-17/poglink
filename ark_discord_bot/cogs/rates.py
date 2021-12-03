@@ -78,7 +78,14 @@ class Rates(commands.Cog):
 
         # send embed
         channel = self.client.get_channel(self.channel_id)
-        await channel.send(embed=embed)
+        message = await channel.send(embed=embed)
+
+        # if in announcement channel, publish message
+        if message.channel.type == discord.ChannelType.news:
+            logger.info("Publishing message")
+            await message.publish()
+        else:
+            logger.info("Message not published: Not in announcement channel")
 
     # Events
     @commands.Cog.listener()
@@ -102,8 +109,7 @@ class Rates(commands.Cog):
                 logger.error(f"Error checking webpage: {e}")
 
             await asyncio.sleep(self.polling_delay)
-
-
+        
 # add cog to client
 def setup(client):
     client.add_cog(Rates(client))

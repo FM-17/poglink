@@ -58,7 +58,7 @@ class Bans(commands.Cog):
         # send embed
         channel = self.client.get_channel(self.channel_id)
         await channel.send(embed=embed)
-
+        
     # Events
     @commands.Cog.listener()
     async def on_ready(self):
