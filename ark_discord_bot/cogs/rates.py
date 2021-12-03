@@ -109,7 +109,8 @@ class Rates(commands.Cog):
                 logger.error(f"Error checking webpage: {e}")
 
             await asyncio.sleep(self.polling_delay)
-        
+
+
 # add cog to client
 def setup(client):
     client.add_cog(Rates(client))
