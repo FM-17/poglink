@@ -44,7 +44,6 @@ class Bans(commands.Cog):
                 f.write(response)
             return True
 
-
     async def send_embed(self):
         # read last_bans
 
