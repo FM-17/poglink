@@ -30,21 +30,27 @@ class Bans(commands.Cog):
                 last_bans = f.read()
         else:
             last_bans = ""
+            logger.info("First run, skipping embed update")
+            with open(self.output_path, "w+") as f:
+                f.write(response)
+            return False
 
         # compare responses, use splitlines to handle carriage returns and newlines
         if ("".join(response.splitlines())) == ("".join(last_bans.splitlines())):
             return False
         else:
-            # update response if changed
+            # update text file and embed
             with open(self.output_path, "w+") as f:
                 f.write(response)
             return True
 
+
     async def send_embed(self):
         # read last_bans
+
         with open(self.output_path) as f:
             last_bans = f.read()
-
+            logger.error(last_bans)
         # generate embed
         embed = discord.Embed(title="ARK Ban Summary", color=0x069420)
         embed.description = last_bans

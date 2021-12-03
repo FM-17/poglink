@@ -36,19 +36,22 @@ class Rates(commands.Cog):
             os.makedirs(self.data_dir)
 
     async def webpage_changed(self, response):
-
-        # read last_rates
+        # read file
         if os.path.exists(self.output_path):
             with open(self.output_path) as f:
                 last_rates = f.read()
         else:
             last_rates = ""
+            logger.info("First run, skipping embed update")
+            with open(self.output_path, "w+") as f:
+                f.write(response)
+            return False
 
         # compare responses, use splitlines to handle carriage returns and newlines
         if ("".join(response.splitlines())) == ("".join(last_rates.splitlines())):
             return False
         else:
-            # update response if changed
+            # update text file and embed
             with open(self.output_path, "w+") as f:
                 f.write(response)
             return True
