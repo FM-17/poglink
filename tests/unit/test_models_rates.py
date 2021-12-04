@@ -1,4 +1,5 @@
 import pytest
+import copy
 from ark_discord_bot.models import RatesStatus
 
 
@@ -154,3 +155,8 @@ def test_get_diff(sample_bans_dict):
         "BabyMatureSpeedMultiplier": {"old": "3.0", "new": "4.2", "extra": False},
         "CompletelyRandomNewThing": {"old": None, "new": "2.2", "extra": True},
     }
+
+    rates_copy = copy.deepcopy(rates)
+    diff = rates.get_diff(rates_copy)
+
+    assert diff == {}
