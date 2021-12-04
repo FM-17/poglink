@@ -96,12 +96,9 @@ def test_from_raw(sample_bans_txt, sample_bans_dict):
 
 # @pytest.mark.skip("Not implemented yet")
 def test_to_raw(sample_bans_txt, sample_bans_dict):
-    
+
     bans_status = BansStatus.from_raw(sample_bans_txt)
     bans_status_raw = bans_status.to_raw()
     bans_status_from_raw = BansStatus.from_raw(bans_status_raw)
 
     assert bans_status == bans_status_from_raw
-
-
-

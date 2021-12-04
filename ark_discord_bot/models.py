@@ -131,7 +131,7 @@ class BansStatus:
     def __init__(self, bans: List[BansTimePeriodSummary], last_updated=None) -> None:
         self.bans = bans
         self.last_updated = last_updated
-    
+
     def __eq__(self, __o: object) -> bool:
         return self.__dict__ == __o.__dict__
 
@@ -193,7 +193,8 @@ class BansStatus:
     def underline(length):
         return "=" * length
 
-    ban_summary_template = Template("""{%- for ban_timeperiod in banstatus.bans %}
+    ban_summary_template = Template(
+        """{%- for ban_timeperiod in banstatus.bans %}
 {{- ban_timeperiod.heading }}
 {% for _ in range(ban_timeperiod.heading | length) %}={% endfor %}
 {% for ban_summary in ban_timeperiod.summary %}
@@ -202,7 +203,8 @@ class BansStatus:
 
 {% endfor -%}
 Last Updated: {{ banstatus.last_updated.strftime('%d %b %Y %H:%M:%S') }} ET 
-""")
+"""
+    )
 
 
 @dataclass
