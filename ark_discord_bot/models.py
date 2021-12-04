@@ -1,4 +1,5 @@
-from typing import Tuple
+from typing import Any, Tuple, List
+from dataclasses import dataclass
 
 
 class RatesStatus:
@@ -88,11 +89,30 @@ class RatesStatus:
         old = self.to_dict()
         new = newrates.to_dict()
 
-        return {
-            k: {
-                "old": old.get(k),
-                "new": new.get(k),
-                "extra": k not in RatesStatus.DEFAULT_RATES_KEYS,
-            }
-            for k, _ in set(new.items()) - set(old.items())
-        }
+        return RatesDiff(
+            items=sorted(
+                [
+                    DiffItem(
+                        key=k,
+                        old=old.get(k),
+                        new=new.get(k),
+                        extra=k not in RatesStatus.DEFAULT_RATES_KEYS,
+                    )
+                    for k, _ in set(new.items()) - set(old.items())
+                ],
+                key=lambda x: x.key,
+            )
+        )
+
+
+@dataclass
+class DiffItem:
+    key: str
+    old: Any
+    new: Any
+    extra: bool = False
+
+
+@dataclass
+class RatesDiff:
+    items: List[DiffItem]
