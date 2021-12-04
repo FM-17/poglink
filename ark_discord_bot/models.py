@@ -1,7 +1,9 @@
-from typing import Any, Tuple, List
-from dataclasses import dataclass, field
 import re
+from dataclasses import dataclass, field
+from typing import Any, List, Tuple
+
 from dateutil import parser as dateparser
+from jinja2 import Template
 
 
 class RatesStatus:
@@ -129,6 +131,9 @@ class BansStatus:
     def __init__(self, bans: List[BansTimePeriodSummary], last_updated=None) -> None:
         self.bans = bans
         self.last_updated = last_updated
+    
+    def __eq__(self, __o: object) -> bool:
+        return self.__dict__ == __o.__dict__
 
     @staticmethod
     def parse_raw(raw_txt):
@@ -176,6 +181,28 @@ class BansStatus:
             },
         }
         return output_dict
+
+    def to_raw(self):
+        return self.ban_summary_template.render(banstatus=self)
+
+    @classmethod
+    def from_dict(cls):
+        return cls()
+
+    @staticmethod
+    def underline(length):
+        return "=" * length
+
+    ban_summary_template = Template("""{%- for ban_timeperiod in banstatus.bans %}
+{{- ban_timeperiod.heading }}
+{% for _ in range(ban_timeperiod.heading | length) %}={% endfor %}
+{% for ban_summary in ban_timeperiod.summary %}
+{{- ban_summary.platform }}: {{ ban_summary.nbans}}
+{% endfor %}
+
+{% endfor -%}
+Last Updated: {{ banstatus.last_updated.strftime('%d %b %Y %H:%M:%S') }} ET 
+""")
 
 
 @dataclass
