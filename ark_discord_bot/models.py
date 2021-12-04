@@ -109,14 +109,20 @@ class RatesStatus:
 
 @dataclass
 class BansPlatformPair:
-    name: str
-    bans: int
+    platform: str
+    nbans: int
+
+    def to_dict(self):
+        return {self.platform: self.nbans}
 
 
 @dataclass
 class BansTimePeriodSummary:
-    name: str
+    heading: str
     summary: List[BansPlatformPair]
+
+    def to_dict(self):
+        return {self.heading: [s.to_dict() for s in self.summary]}
 
 
 class BansStatus:
@@ -143,6 +149,34 @@ class BansStatus:
         date_string = re.search(r"Last Updated: (.*)\s.+", raw_txt).group(1)
         last_updated = datetime.datetime.strptime(date_string, "%d %b %Y %H:%M:%S")
         return parsed_dict, last_updated
+
+    @classmethod
+    def from_raw(cls, raw_txt):
+        status_dict, last_updated = cls.parse_raw(raw_txt)
+
+        return cls(
+            bans=[
+                BansTimePeriodSummary(
+                    heading=period,
+                    summary=[
+                        BansPlatformPair(platform=p, nbans=n)
+                        for p, n in summary.items()
+                    ],
+                )
+                for period, summary in status_dict.items()
+            ],
+            last_updated=last_updated,
+        )
+
+    def to_dict(self):
+        # breakpoint()
+        output_dict = {
+            "last_updated": self.last_updated.isoformat(),
+            "ban_summaries": {
+                b.heading: {s.platform: s.nbans for s in b.summary} for b in self.bans
+            },
+        }
+        return output_dict
 
 
 @dataclass
