@@ -1,6 +1,6 @@
 import pytest
 import copy
-from ark_discord_bot.models import DiffItem, RatesDiff, RatesStatus
+from ark_discord_bot.models import RatesDiffItem, RatesDiff, RatesStatus
 
 
 @pytest.fixture(scope="session")
@@ -153,10 +153,10 @@ def test_get_diff(sample_bans_dict):
 
     assert diff == RatesDiff(
         items=[
-            DiffItem(
+            RatesDiffItem(
                 key="BabyMatureSpeedMultiplier", old="3.0", new="4.2", extra=False
             ),
-            DiffItem(key="CompletelyRandomNewThing", old=None, new="2.2", extra=True),
+            RatesDiffItem(key="CompletelyRandomNewThing", old=None, new="2.2", extra=True),
         ]
     )
 

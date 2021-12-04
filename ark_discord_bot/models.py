@@ -92,7 +92,7 @@ class RatesStatus:
         return RatesDiff(
             items=sorted(
                 [
-                    DiffItem(
+                    RatesDiffItem(
                         key=k,
                         old=old.get(k),
                         new=new.get(k),
@@ -106,7 +106,7 @@ class RatesStatus:
 
 
 @dataclass
-class DiffItem:
+class RatesDiffItem:
     key: str
     old: Any
     new: Any
@@ -115,4 +115,4 @@ class DiffItem:
 
 @dataclass
 class RatesDiff:
-    items: List[DiffItem] = field(default_factory=list)
+    items: List[RatesDiffItem] = field(default_factory=list)
