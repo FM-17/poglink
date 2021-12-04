@@ -169,7 +169,6 @@ class BansStatus:
         )
 
     def to_dict(self):
-        # breakpoint()
         output_dict = {
             "last_updated": self.last_updated.isoformat(),
             "ban_summaries": {
