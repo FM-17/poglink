@@ -1,7 +1,7 @@
-import datetime
 from typing import Any, Tuple, List
 from dataclasses import dataclass, field
 import re
+from dateutil import parser as dateparser
 
 
 class RatesStatus:
@@ -147,7 +147,7 @@ class BansStatus:
 
         # TODO: Handle if format ever changes
         date_string = re.search(r"Last Updated: (.*)\s.+", raw_txt).group(1)
-        last_updated = datetime.datetime.strptime(date_string, "%d %b %Y %H:%M:%S")
+        last_updated = dateparser.parse(date_string, tzinfos={"ET": "EST"})
         return parsed_dict, last_updated
 
     @classmethod

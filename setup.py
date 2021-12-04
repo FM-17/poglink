@@ -7,7 +7,7 @@ setup(
     description="A bot for notifying of changes to the ARK Web API via Discord.",
     author="FM-17",
     packages=find_packages(),
-    install_requires=["discord>=1.7", "pyyaml"],
+    install_requires=["discord>=1.7", "pyyaml", "python-dateutil"],
     entry_points={
         "console_scripts": [
             "ark-discord-bot=ark_discord_bot.main:cli",

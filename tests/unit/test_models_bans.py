@@ -98,3 +98,5 @@ def test_from_raw(sample_bans_txt, sample_bans_dict):
 def test_from_dict(sample_bans_txt, sample_bans_dict):
     bans_status = BansStatus.from_dict(sample_bans_dict)
     assert bans_status.to_raw() == sample_bans_txt
+
+
