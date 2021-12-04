@@ -128,9 +128,17 @@ class BansTimePeriodSummary:
 
 
 class BansStatus:
-    def __init__(self, bans: List[BansTimePeriodSummary], last_updated=None) -> None:
+    def __init__(
+        self,
+        bans: List[BansTimePeriodSummary],
+        last_updated: "datetime.datetime" = None,
+    ) -> None:
         self.bans = bans
-        self.last_updated = last_updated
+        self.last_updated = (
+            dateparser.parse(last_updated)
+            if isinstance(last_updated, str)
+            else last_updated
+        )
 
     def __eq__(self, __o: object) -> bool:
         return self.__dict__ == __o.__dict__
@@ -152,25 +160,15 @@ class BansStatus:
 
         # TODO: Handle if format ever changes
         date_string = re.search(r"Last Updated: (.*)\s.+", raw_txt).group(1)
-        last_updated = dateparser.parse(date_string, tzinfos={"ET": "EST"})
+        last_updated = dateparser.parse(date_string)
         return parsed_dict, last_updated
 
     @classmethod
     def from_raw(cls, raw_txt):
         status_dict, last_updated = cls.parse_raw(raw_txt)
 
-        return cls(
-            bans=[
-                BansTimePeriodSummary(
-                    heading=period,
-                    summary=[
-                        BansPlatformPair(platform=p, nbans=n)
-                        for p, n in summary.items()
-                    ],
-                )
-                for period, summary in status_dict.items()
-            ],
-            last_updated=last_updated,
+        return cls.from_dict(
+            {"ban_summaries": status_dict, "last_updated": last_updated}
         )
 
     def to_dict(self):
@@ -186,8 +184,22 @@ class BansStatus:
         return self.ban_summary_template.render(banstatus=self)
 
     @classmethod
-    def from_dict(cls):
-        return cls()
+    def from_dict(cls, d):
+        status_dict = d.get("ban_summaries")
+        last_updated = d.get("last_updated")
+        return cls(
+            bans=[
+                BansTimePeriodSummary(
+                    heading=period,
+                    summary=[
+                        BansPlatformPair(platform=p, nbans=n)
+                        for p, n in summary.items()
+                    ],
+                )
+                for period, summary in status_dict.items()
+            ],
+            last_updated=last_updated,
+        )
 
     @staticmethod
     def underline(length):
