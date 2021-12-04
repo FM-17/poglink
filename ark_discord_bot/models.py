@@ -1,4 +1,5 @@
 import re
+import datetime
 from dataclasses import dataclass, field
 from typing import Any, List, Tuple
 
@@ -131,7 +132,7 @@ class BansStatus:
     def __init__(
         self,
         bans: List[BansTimePeriodSummary],
-        last_updated: "datetime.datetime" = None,
+        last_updated: datetime.datetime = None,
     ) -> None:
         self.bans = bans
         self.last_updated = (
