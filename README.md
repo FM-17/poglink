@@ -96,4 +96,25 @@ The following configuration parameters are available to be set in any of the abo
 - [ ] In-game server notifications posted to Discord channels
 - [x] Auto-publishing in announcement channels - **implemented**
 
+### Developer TODOs
+#### Deployment
+- [ ] Convert to use `setup.cfg` instead of `setup.py`
+- [ ] Set up `semantic-release` for automatically versioning and tagging from commit messages
+- [ ] Set up `setuptools_scm` to automatically version the python package from git tags
+- [ ] Set up `twine publish` command in Makefile, and include in requirements.dev.txt 
+- [ ] add to pypi
+- [ ] add DockerHub docs
+- [ ] add [[Github Actions]] for [docker hub](https://medium.com/rockedscience/docker-ci-cd-pipeline-with-github-actions-6d4cd1731030)
+- [ ] add [[Github Actions]] for pypi
+- [ ] add more [[pytest | automated testing]] if required
+#### Bot Development
+- [ ] add more debug code
+- [ ] Add emojis/images to embeds
+- [ ] Add publish/no publish as a parameter?
+- [ ] Add embed editing
+- [ ] Add docs explaining auto-publishing
+#### Low Priority
+- [ ] Reformat Ban Summary output
+- [ ] Add ability to post other server rates
+
 *Initially developed for use in the official ARK: Survival Evolved Discord server*
