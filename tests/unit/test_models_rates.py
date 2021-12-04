@@ -162,3 +162,5 @@ def test_get_diff(sample_bans_dict):
 
     rates_copy = copy.deepcopy(rates)
     diff = rates.get_diff(rates_copy)
+
+    assert diff == RatesDiff()

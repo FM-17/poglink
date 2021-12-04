@@ -1,5 +1,5 @@
 from typing import Any, Tuple, List
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 class RatesStatus:
@@ -115,4 +115,4 @@ class DiffItem:
 
 @dataclass
 class RatesDiff:
-    items: List[DiffItem]
+    items: List[DiffItem] = field(default_factory=list)
