@@ -30,6 +30,9 @@ class RatesStatus:
 
         self.extras = kwargs
 
+    def __eq__(self, __o: object) -> bool:
+        return self.__dict__ == __o.__dict__
+
     @staticmethod
     def parse_raw(raw: str) -> dict:
         parsed_vals = {

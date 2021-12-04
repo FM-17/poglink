@@ -3,7 +3,7 @@ import datetime
 from ark_discord_bot.models import BansStatus
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture()
 def sample_bans_txt():
     return """\
 Today's Ban Summary
@@ -34,7 +34,7 @@ Last Updated: 02 Dec 2021 17:59:03 ET
 """
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture()
 def sample_bans_dict():
     return {
         "ban_summaries": {
