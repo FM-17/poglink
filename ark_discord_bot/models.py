@@ -16,26 +16,11 @@ class RatesStatus:
 
     def __init__(
         self,
-        TamingSpeedMultiplier: float = None,
-        HarvestAmountMultiplier: float = None,
-        XPMultiplier: float = None,
-        MatingIntervalMultiplier: float = None,
-        BabyMatureSpeedMultiplier: float = None,
-        EggHatchSpeedMultiplier: float = None,
-        BabyCuddleIntervalMultiplier: float = None,
-        BabyImprintAmountMultiplier: float = None,
-        HexagonRewardMultiplier: float = None,
         **kwargs,
     ):
-        self.TamingSpeedMultiplier = TamingSpeedMultiplier
-        self.HarvestAmountMultiplier = HarvestAmountMultiplier
-        self.XPMultiplier = XPMultiplier
-        self.MatingIntervalMultiplier = MatingIntervalMultiplier
-        self.BabyMatureSpeedMultiplier = BabyMatureSpeedMultiplier
-        self.EggHatchSpeedMultiplier = EggHatchSpeedMultiplier
-        self.BabyCuddleIntervalMultiplier = BabyCuddleIntervalMultiplier
-        self.BabyImprintAmountMultiplier = BabyImprintAmountMultiplier
-        self.HexagonRewardMultiplier = HexagonRewardMultiplier
+        for k in self.DEFAULT_RATES_KEYS:
+            setattr(self, k, kwargs.get(k))
+            del kwargs[k]
 
         self.extras = kwargs
 
