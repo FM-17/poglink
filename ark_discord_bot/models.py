@@ -1,0 +1,109 @@
+from typing import Tuple
+
+
+class RatesStatus:
+    DEFAULT_RATES_KEYS = [
+        "TamingSpeedMultiplier",
+        "HarvestAmountMultiplier",
+        "XPMultiplier",
+        "MatingIntervalMultiplier",
+        "BabyMatureSpeedMultiplier",
+        "EggHatchSpeedMultiplier",
+        "BabyCuddleIntervalMultiplier",
+        "BabyImprintAmountMultiplier",
+        "HexagonRewardMultiplier",
+    ]
+
+    def __init__(
+        self,
+        TamingSpeedMultiplier: float = None,
+        HarvestAmountMultiplier: float = None,
+        XPMultiplier: float = None,
+        MatingIntervalMultiplier: float = None,
+        BabyMatureSpeedMultiplier: float = None,
+        EggHatchSpeedMultiplier: float = None,
+        BabyCuddleIntervalMultiplier: float = None,
+        BabyImprintAmountMultiplier: float = None,
+        HexagonRewardMultiplier: float = None,
+        **kwargs,
+    ):
+        self.TamingSpeedMultiplier = TamingSpeedMultiplier
+        self.HarvestAmountMultiplier = HarvestAmountMultiplier
+        self.XPMultiplier = XPMultiplier
+        self.MatingIntervalMultiplier = MatingIntervalMultiplier
+        self.BabyMatureSpeedMultiplier = BabyMatureSpeedMultiplier
+        self.EggHatchSpeedMultiplier = EggHatchSpeedMultiplier
+        self.BabyCuddleIntervalMultiplier = BabyCuddleIntervalMultiplier
+        self.BabyImprintAmountMultiplier = BabyImprintAmountMultiplier
+        self.HexagonRewardMultiplier = HexagonRewardMultiplier
+
+        self.extras = kwargs
+
+    @staticmethod
+    def parse_raw(raw: str) -> dict:
+        parsed_vals = {
+            key.strip(): val.strip()
+            for key, val in [line.split("=") for line in raw.strip().splitlines()]
+        }
+        return parsed_vals
+
+    @staticmethod
+    def get_expected_and_extras(parsed_vals_dict: dict) -> Tuple[dict, dict]:
+        expected = {
+            k: v
+            for k, v in parsed_vals_dict.items()
+            if k in RatesStatus.DEFAULT_RATES_KEYS
+        }
+        extras = {
+            k: v
+            for k, v in parsed_vals_dict.items()
+            if k not in RatesStatus.DEFAULT_RATES_KEYS and k != "extras"
+        }
+
+        if "extras" in parsed_vals_dict:
+            extras.update(parsed_vals_dict.get("extras"))
+
+        return expected, extras
+
+    @classmethod
+    def from_raw(cls, raw_txt: str):
+        val_dict = cls.parse_raw(raw_txt)
+
+        return cls.from_dict(val_dict)
+
+    @classmethod
+    def from_dict(cls, val_dict):
+        expected, extras = cls.get_expected_and_extras(val_dict)
+
+        return cls(**expected, **extras)
+
+    def update(self, vals, raw=False):
+
+        parsed_vals = self.parse_raw(vals) if raw else vals
+
+        expected, extras = self.get_expected_and_extras(parsed_vals)
+
+        for k, v in expected.items():
+            setattr(self, k, v)
+
+        self.extras.update(extras)
+
+    def to_dict(self):
+        expected, extras = self.get_expected_and_extras(self.__dict__)
+
+        output_dict = expected
+        output_dict.update(extras)
+
+        return output_dict
+
+    def to_raw(self):
+        return "\n".join([f"{k}={v}" for k, v in self.to_dict().items()])
+
+    def get_diff(self, newrates: "RatesStatus"):
+        old = self.to_dict()
+        new = newrates.to_dict()
+
+        return {
+            k: {"old": old.get(k), "new": new.get(k)}
+            for k, _ in set(new.items()) - set(old.items())
+        }
