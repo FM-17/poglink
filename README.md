@@ -5,7 +5,6 @@ This bot monitors the ARK Web API and posts changes to Discord.
 ## Requirements
 - Python 3.6.9
 - [pip](https://pip.pypa.io/en/latest/installation/)
-- [optional] A virtual environment manager such as [pyenv](https://github.com/pyenv/pyenv) or [virtualenv](https://virtualenv.pypa.io/en/latest/)
 
 ## Prerequisites
 1. Create a bot on the [Discord Developer Portal](https://discordapp.com/developers/)
@@ -13,23 +12,37 @@ This bot monitors the ARK Web API and posts changes to Discord.
 3. Create Bot URL via URL Generator in the Discord Developer Portal. Make sure the bot has `Send Messages`, `Read Messages/View Channels`, `Read Message History` and `Embed Links` permissions.
 4. Invite the bot to the server
 
-## Setup 
-This bot can either run natively or from within a docker container. 
-- [Instructions for running natively](docs/setup/native.md)
-- [Instructions for running within Docker](docs/setup/docker.md)
-
-## Running the bot
+## Installation and Usage
 There are a few different ways to run this bot on your own machine. Either in your own Python environment or in a docker container.
+
+### Installing in Python
+1. Get the code via either of the following two methods:
+
+    a) Download & extract the [latest bot release](https://github.com/FM-17/ark_discord_bot/releases/latest)
+
+    b) Clone the repo via `git clone https://github.com/FM-17/ark_discord_bot.git` 
+
+2. Copy `sample_config.yaml`, rename it to `config.yaml`, and fill in the required values.
+3. Install the bot
+    
+    I'd suggest doing this within a virtual environment via [pyenv](https://github.com/pyenv/pyenv) or [virtualenv](https://pypi.org/project/virtualenv/), but its not required.
+    ```bash
+    cd {download location}/ark-discord-bot/
+    pip install .
+    ```
 
 ### Running in Python
 To run the bot in Python you can either:
 1. Execute via the CLI entrypoint: `ark-discord-bot`, passing config parameters any of the ways described below; or
 2. Import within your own Python code and execute `ark_discord_bot.main.run`, passing in configuration parameters as keyword arguments.
 
+### Installing in Docker
+`WIP`
+  
 ### Running in Docker / Docker Compose
-To run in a container, you can simply execute `docker run fm17/ark-discord-bot`, passing in any relevant configuration parameters as environment variables. In order to pass in a configuration file
-or to maintain persistent data between containers mount a volume to the `/data` dir inside the container (or whichever data directory is configured via the `--data-dir` CLI argument or the `BOT_DATA_DIR`
-environment variable).
+To run in a container, you can simply execute `docker run fm17/ark-discord-bot`, passing in any relevant configuration parameters as environment variables. In order to pass in a configuration file or to maintain persistent data between containers, mount a volume to the `/data` dir inside the container (or whichever data directory is configured via the `--data-dir` CLI argument or the `BOT_DATA_DIR` environment variable). Sim
+
+In the example below, the host's `~/.ark-discord-bot` directory has been mounted to the container's `/data` directory. Therefore the `config.yaml` file must be moved to the `~/.ark-discord-bot` directory in order to be passed into the container. Both of these mounting directories can be modified as needed, see [Configuration](#configuration) for more details.
 
 Example `docker-compose.yaml`
 ```yaml
@@ -39,10 +52,8 @@ services:
     image: fm17/ark-discord-bot:latest
     container_name: ark-discord-bot
     volumes:
-      - ~/.ark-discord-bot:/custom-data-dir
+      - ~/.ark-discord-bot:/data
     command: "" # provide CLI args here
-    environment:
-      BOT_DATA_DIR: "/custom-data-dir"
     networks:
       - bot-net
 
@@ -62,7 +73,7 @@ This bot can pull configuration from one of multiple locations. Each parameter w
     - E.g. to configure the bot's polling delay, set `BOT_POLLING_DELAY`.
 4. Defaults (optional)
     - Some configuration parameters have default values assigned, which will be used
-    in the absense of any other user-provided configuration values. 
+    in the absence of any other user-provided configuration values. 
 
 
 ### Parameter Summary
@@ -82,7 +93,7 @@ The following configuration parameters are available to be set in any of the abo
 
 ## Future Updates
 - [ ] Editable embeds
-- [ ] Auto-publishing in announcement channels
 - [ ] In-game server notifications posted to Discord channels
+- [x] Auto-publishing in announcement channels - **implemented**
 
 *Initially developed for use in the official ARK: Survival Evolved Discord server*
