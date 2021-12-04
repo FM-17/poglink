@@ -151,6 +151,6 @@ def test_get_diff(sample_bans_dict):
     diff = rates.get_diff(newrates)
 
     assert diff == {
-        "BabyMatureSpeedMultiplier": {"old": "3.0", "new": "4.2"},
-        "CompletelyRandomNewThing": {"old": None, "new": "2.2"},
+        "BabyMatureSpeedMultiplier": {"old": "3.0", "new": "4.2", "extra": False},
+        "CompletelyRandomNewThing": {"old": None, "new": "2.2", "extra": True},
     }

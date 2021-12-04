@@ -89,6 +89,10 @@ class RatesStatus:
         new = newrates.to_dict()
 
         return {
-            k: {"old": old.get(k), "new": new.get(k)}
+            k: {
+                "old": old.get(k),
+                "new": new.get(k),
+                "extra": k not in RatesStatus.DEFAULT_RATES_KEYS,
+            }
             for k, _ in set(new.items()) - set(old.items())
         }
