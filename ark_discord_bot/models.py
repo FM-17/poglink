@@ -1,5 +1,6 @@
 from typing import Any, Tuple, List
 from dataclasses import dataclass, field
+import re
 
 
 class RatesStatus:
@@ -103,6 +104,32 @@ class RatesStatus:
                 key=lambda x: x.key,
             )
         )
+
+
+class BansStatus:
+    def __init__(self, last_updated=None, **kwargs) -> None:
+
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+
+        self.last_updated = last_updated
+
+    @staticmethod
+    def parse_raw(raw_txt):
+        # https://regex101.com/r/KCBt9M/1
+        matches = re.findall("(.*)\n(?:=+\n)((?:.+\n)+)", raw_txt)
+
+        parsed_dict = {
+            heading: {
+                platform.strip(): int(nbans)
+                for platform, nbans in [
+                    line.split(":") for line in summary.splitlines()
+                ]
+            }
+            for heading, summary in matches
+        }
+
+        return parsed_dict
 
 
 @dataclass
