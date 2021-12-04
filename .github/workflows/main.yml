@@ -25,4 +25,4 @@ jobs:
               requirements.dev.txt
       - run: pip install -r requirements.dev.txt .
       - name: Run Black Linting
-        run: black ark_discord_bot tests
+        run: black --check ark_discord_bot tests
