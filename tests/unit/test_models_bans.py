@@ -92,3 +92,9 @@ def test_parse_raw(sample_bans_txt):
 def test_from_raw(sample_bans_txt, sample_bans_dict):
     bans_status = BansStatus.from_raw(sample_bans_txt)
     assert bans_status.to_dict() == sample_bans_dict
+
+
+@pytest.mark.skip("Not implemented yet")
+def test_from_dict(sample_bans_txt, sample_bans_dict):
+    bans_status = BansStatus.from_dict(sample_bans_dict)
+    assert bans_status.to_raw() == sample_bans_txt
