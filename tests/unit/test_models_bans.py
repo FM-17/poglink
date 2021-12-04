@@ -1,4 +1,5 @@
 import pytest
+import datetime
 from ark_discord_bot.models import BansStatus
 
 
@@ -34,7 +35,9 @@ Last Updated: 02 Dec 2021 17:59:03 ET
 
 
 def test_parse_raw(sample_bans_txt):
-    assert BansStatus.parse_raw(sample_bans_txt) == {
+    status_dict, last_updated = BansStatus.parse_raw(sample_bans_txt)
+
+    assert status_dict == {
         "Today's Ban Summary": {
             "BattlEye Bans": 2160,
             "PC Bans": 9,
@@ -54,3 +57,6 @@ def test_parse_raw(sample_bans_txt):
             "PS4 Bans": 15520,
         },
     }
+    assert last_updated == datetime.datetime(
+        year=2021, month=12, day=2, hour=17, minute=59, second=3
+    )

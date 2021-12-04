@@ -1,3 +1,4 @@
+import datetime
 from typing import Any, Tuple, List
 from dataclasses import dataclass, field
 import re
@@ -106,12 +107,21 @@ class RatesStatus:
         )
 
 
+@dataclass
+class BansPlatformPair:
+    name: str
+    bans: int
+
+
+@dataclass
+class BansTimePeriodSummary:
+    name: str
+    summary: List[BansPlatformPair]
+
+
 class BansStatus:
-    def __init__(self, last_updated=None, **kwargs) -> None:
-
-        for k, v in kwargs.items():
-            setattr(self, k, v)
-
+    def __init__(self, bans: List[BansTimePeriodSummary], last_updated=None) -> None:
+        self.bans = bans
         self.last_updated = last_updated
 
     @staticmethod
@@ -129,7 +139,10 @@ class BansStatus:
             for heading, summary in matches
         }
 
-        return parsed_dict
+        # TODO: Handle if format ever changes
+        date_string = re.search(r"Last Updated: (.*)\s.+", raw_txt).group(1)
+        last_updated = datetime.datetime.strptime(date_string, "%d %b %Y %H:%M:%S")
+        return parsed_dict, last_updated
 
 
 @dataclass
