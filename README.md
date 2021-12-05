@@ -91,30 +91,32 @@ The following configuration parameters are available to be set in any of the abo
 | ``--data-dir``         | ``BOT_DATA_DIR``         | ~/.ark-discord-bot                        | No       | Directory that will contain bot data, such as the `config.yaml` file |
 | ``--debug``            | ``BOT_DEBUG``            | False                                     | No       | Enables debug logging |
 
-## Future Updates
-- [ ] Editable embeds
-- [ ] In-game server notifications posted to Discord channels
-- [x] Auto-publishing in announcement channels - **implemented**
-
 ### Developer TODOs
 #### Deployment
+- [ ] Rename bot and refactor
 - [ ] Convert to use `setup.cfg` instead of `setup.py`
 - [ ] Set up `semantic-release` for automatically versioning and tagging from commit messages
 - [ ] Set up `setuptools_scm` to automatically version the python package from git tags
 - [ ] Set up `twine publish` command in Makefile, and include in requirements.dev.txt 
-- [ ] add to pypi
-- [ ] add DockerHub docs
-- [ ] add [[Github Actions]] for [docker hub](https://medium.com/rockedscience/docker-ci-cd-pipeline-with-github-actions-6d4cd1731030)
-- [ ] add [[Github Actions]] for pypi
-- [ ] add more [[pytest | automated testing]] if required
+- [ ] Add to pypi
+- [ ] Add docs to DockerHub
+- [ ] Add [[Github Actions]] for [docker hub](https://medium.com/rockedscience/docker-ci-cd-pipeline-with-github-actions-6d4cd1731030)
+- [ ] Add [[Github Actions]] for pypi
+
 #### Bot Development
-- [ ] add more debug code
-- [ ] Add emojis/images to embeds
-- [ ] Add publish/no publish as a parameter?
-- [ ] Add embed editing
-- [ ] Add docs explaining auto-publishing
-#### Low Priority
-- [ ] Reformat Ban Summary output
-- [ ] Add ability to post other server rates
+- [ ] Rework `rates.py` to make use of RatesStatus and RatesDiff
+- [ ] Add emojis to rates embeds
+- [ ] Add more debugging code
+- [ ] Add docs explaining current auto-publishing functionality
+- [x] Auto-publishing in announcement channels
+
+#### Low Priority / Next Release
+- [ ] Rework bans.py to make use of bans models
+- [ ] Reformat ban summary output
+- [ ] In-game server notifications posted to Discord channels
+- [ ] reworking bans.py to make use of bans models
+- [ ] Add auto-publish/no publish as a parameter for each cog, perhaps `auto-publish-channels = [<chan_ID1>, <chan_ID1>]`
+- [ ] Add ability to post other server rates (not just the default `dynamicconfig.ini` endpoint`) 
+- [ ] Make `bans.py` edit the embed rather than sending a new one
 
 *Initially developed for use in the official ARK: Survival Evolved Discord server*
