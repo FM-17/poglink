@@ -42,7 +42,7 @@ jobs:
           semantic_version: 15.13.28
           extra_plugins: |
             @semantic-release/exec
-          dry_run: ${{ github.ref != "main" }}
+          dry_run: ${{ github.ref != 'main' }}
           branches: |
             [
               "main",
