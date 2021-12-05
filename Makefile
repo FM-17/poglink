@@ -8,3 +8,7 @@ lint:
 .PHONY: test 
 test:
 	pytest
+
+.PHONY: clean
+clean:
+	rm -r dist
