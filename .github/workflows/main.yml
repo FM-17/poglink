@@ -17,7 +17,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.4.0
-      - name: Black Check
-        uses: jpetrucciani/black-check@20.8b1
+      - uses: actions/setup-python@v2.3.1
         with: 
-          path: ark_discord_bot
+            cache: 'pip'
+            cache-dependency-path: |
+              setup.py
+              requirements.dev.txt
+      - run: pip install -r requirements.dev.txt .
+      - name: Run Black Linting
+        run: black --check ark_discord_bot tests
