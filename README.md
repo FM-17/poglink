@@ -3,7 +3,7 @@ This bot monitors the ARK Web API and posts changes to Discord.
 ![image](https://user-images.githubusercontent.com/82160306/143663008-ae44ae7a-4499-4abe-9568-89109f390128.png)
 
 ## Requirements
-- Python 3.6.9
+- Python 3.7+
 - [pip](https://pip.pypa.io/en/latest/installation/)
 
 ## Prerequisites
