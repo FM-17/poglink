@@ -52,6 +52,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TWINE_USERNAME: __token__ 
           TWINE_PASSWORD: ${{ secrets.PYPI_TEST_API_TOKEN }}
+          TWINE_NON_INTERACTIVE: true
         with: 
           semantic_version: 18
           extra_plugins: |
