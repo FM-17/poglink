@@ -23,6 +23,7 @@ setup(
     setup_requires=["setuptools_scm"],
     description="A bot for notifying of changes to the ARK Web API via Discord.",
     long_description=long_description,
+    long_description_content_type="text/markdown",
     author="FM-17",
     author_email="info@fm17.dev",
     url="https://github.com/FM-17/ark-discord-bot",
