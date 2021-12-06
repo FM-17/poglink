@@ -1,3 +1,4 @@
+from json.decoder import JSONDecodeError
 from ark_discord_bot.models import RatesDiffItem, RatesDiff, RatesStatus
 import discord
 from discord.ext import commands
@@ -37,27 +38,15 @@ class Rates(commands.Cog):
         if not os.path.exists(self.data_dir):
             os.makedirs(self.data_dir)
 
-    async def webpage_changed(self, response):
-
-        # read file
-        if os.path.exists(self.output_path):
-            with open(self.output_path) as f:
-                last_rates = f.read()
-        else:
-            last_rates = ""
-            logger.info("First run, skipping embed update")
-            with open(self.output_path, "w+") as f:
-                f.write(response)
-            return False
-
-        # compare responses, use splitlines to handle carriage returns and newlines
-        if ("".join(response.splitlines())) == ("".join(last_rates.splitlines())):
-            return False
-        else:
-            # update text file and embed
-            with open(self.output_path, "w+") as f:
-                f.write(response)
-            return True
+    async def get_current_rates(self):
+        async with aiohttp.ClientSession() as session:
+            async with session.get(
+                self.webpage_url,
+                headers={"Pragma": "no-cache", "Cache-Control": "no-cache"},
+            ) as response:
+                response = await response.text()
+                rates = RatesStatus.from_raw(response)
+                return rates
 
     async def send_embed(self, description):
 
@@ -73,11 +62,8 @@ class Rates(commands.Cog):
 
         # if in announcement channel, publish message
         if message.channel.type == discord.ChannelType.news:
-            logger.info("Publishing message")
+            logger.info("Announcement channel detected: Publishing message")
             await message.publish()
-        else:
-            logger.info("Message not published: Not in announcement channel")
-
 
     # Events
     @commands.Cog.listener()
@@ -85,39 +71,50 @@ class Rates(commands.Cog):
         logger.info("Cog Ready: Rates")
 
         while True:
-            # get rates from ARK Web API
+
+            # get current rates from ARK Web API
+            logger.info("Retrieving current rates")
             try:
-                async with aiohttp.ClientSession() as session:
-                    logger.info("Getting rates from ARK Web API")
-                    async with session.get(
-                        self.webpage_url,
-                        headers={"Pragma": "no-cache", "Cache-Control": "no-cache"},
-                    ) as response:
-                        response = await response.text()
-                        rates = RatesStatus.from_raw(response)
+                rates = await self.get_current_rates()
+
             except Exception as e:
                 logger.error(f"Could not retrieve rates from ARK Web API: {e}")
-            else:
-                # get old rates from file
-                logger.info("Getting previous rates from file")
-                if os.path.exists(self.output_path):
-                    with open(self.output_path) as f:
-                        last_rates_dict = json.load(f)
-                        last_rates = RatesStatus.from_dict(last_rates_dict)
-                else:
-                    logger.info("Rates file not found. Creating..")
-                    with open(self.output_path, "w+") as f:
-                        f.write(json.dump(rates.to_dict(), f,  indent=4))                                
-                    last_rates = copy.deepcopy(rates)
+                await asyncio.sleep(self.polling_delay)
+                continue
+
+            # get old rates from file
+            try: 
+                with open(self.output_path) as f:
+                    last_rates_dict = json.load(f)
+
+            except FileNotFoundError:
+                logger.warn(f"File '{os.path.basename(self.output_path)}' not found - Creating...")
+                last_rates_dict = copy.deepcopy(rates).to_dict()
+
+            except JSONDecodeError: 
+                logger.warn(f"File '{os.path.basename(self.output_path)}' empty or corrupt - Populating with current rates")
+                last_rates_dict = copy.deepcopy(rates).to_dict()
+                        
+            # save current rates to file
+            last_rates = RatesStatus.from_dict(last_rates_dict)
+            try:
+                with open(self.output_path, "w+") as f:
+                    json.dump(rates.to_dict(), f)  
+            except Exception as e:
+                logger.error(e)
+                await asyncio.sleep(self.polling_delay)
+                continue
 
             # compare rates to last rates
             rates_diff = rates.get_diff(last_rates)
-            embed_description = rates_diff.to_embed(rates)
-            await self.send_embed(embed_description)
 
+            if rates_diff.items:
+                # generate and send embed
+                logger.info("Rates changed - sending embed")
+                embed_description = rates_diff.to_embed(rates)
+                await self.send_embed(embed_description)
 
             await asyncio.sleep(self.polling_delay)
-
 
 # add cog to client
 def setup(client):
