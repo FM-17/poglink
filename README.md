@@ -3,7 +3,7 @@ This bot monitors the ARK Web API and posts changes to Discord.
 ![image](https://user-images.githubusercontent.com/82160306/143663008-ae44ae7a-4499-4abe-9568-89109f390128.png)
 
 ## Requirements
-- Python 3.6.9
+- Python 3.7+
 - [pip](https://pip.pypa.io/en/latest/installation/)
 
 ## Prerequisites
@@ -93,12 +93,12 @@ The following configuration parameters are available to be set in any of the abo
 
 ### Developer TODOs
 #### Deployment
-- [ ] Set up `semantic-release` for automatically versioning and tagging from commit messages
-- [ ] Set up `setuptools_scm` to automatically version the python package from git tags
-- [ ] Set up `twine publish` command in Makefile, and include in requirements.dev.txt 
+- [x] Set up `semantic-release` for automatically versioning and tagging from commit messages
+- [x] Set up `setuptools_scm` to automatically version the python package from git tags
+- [x] Set up `twine publish` command in Makefile, and include in requirements.dev.txt 
 - [ ] Rename bot and refactor
-- [ ] Add to pypi
-- [ ] Add [[Github Actions]] for pypi
+- [ ] Add to pypi (Already added to test.pypi)
+- [x] Add [[Github Actions]] for pypi
 - [ ] Add [[Github Actions]] for [docker hub](https://medium.com/rockedscience/docker-ci-cd-pipeline-with-github-actions-6d4cd1731030)
 - [ ] Add docs to DockerHub (even just a backlink to github would do)
 
