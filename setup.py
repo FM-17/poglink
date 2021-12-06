@@ -13,6 +13,8 @@ elif os.getenv("CI") == "true":
 else:
     use_scm_version = True
 
+with open("README.md") as f:
+    long_description=f.read()
 
 setup(
     name="ark-discord-bot",
@@ -20,6 +22,7 @@ setup(
     use_scm_version=use_scm_version,
     setup_requires=["setuptools_scm"],
     description="A bot for notifying of changes to the ARK Web API via Discord.",
+    long_description=long_description,
     author="FM-17",
     author_email="info@fm17.dev",
     url="https://github.com/FM-17/ark-discord-bot",
