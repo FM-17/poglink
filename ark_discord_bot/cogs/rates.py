@@ -1,3 +1,4 @@
+from ark_discord_bot.models import RatesDiffItem, RatesDiff, RatesStatus
 import discord
 from discord.ext import commands
 import asyncio
@@ -5,7 +6,8 @@ import aiohttp
 import logging
 import yaml
 import os
-
+import json
+import copy 
 logger = logging.getLogger(__name__)
 
 # create cog class
@@ -18,7 +20,7 @@ class Rates(commands.Cog):
         self.polling_delay = client.config.polling_delay
         self.allowed_roles = client.config.allowed_roles
         self.data_dir = os.path.expanduser(client.config.data_dir)
-        self.output_path = os.path.join(self.data_dir, "last_rates.txt")
+        self.output_path = os.path.join(self.data_dir, "last_rates.json")
         self.keyMapping = {
             "TamingSpeedMultiplier": "Taming",
             "HarvestAmountMultiplier": "Harvesting",
@@ -36,6 +38,7 @@ class Rates(commands.Cog):
             os.makedirs(self.data_dir)
 
     async def webpage_changed(self, response):
+
         # read file
         if os.path.exists(self.output_path):
             with open(self.output_path) as f:
@@ -87,30 +90,75 @@ class Rates(commands.Cog):
         else:
             logger.info("Message not published: Not in announcement channel")
 
+
     # Events
     @commands.Cog.listener()
     async def on_ready(self):
         logger.info("Cog Ready: Rates")
 
         while True:
+            # get rates from ARK Web API
             try:
                 async with aiohttp.ClientSession() as session:
+                    logger.info("Getting rates from ARK Web API")
                     async with session.get(
                         self.webpage_url,
                         headers={"Pragma": "no-cache", "Cache-Control": "no-cache"},
                     ) as response:
                         response = await response.text()
-                        if await self.webpage_changed(response):
-                            logger.info("Webpage updated.")
-                            await self.send_embed()
-                        else:
-                            logger.info("Webpage not updated.")
+                        rates = RatesStatus.from_raw(response)
             except Exception as e:
-                logger.error(f"Error checking webpage: {e}")
+                logger.error(f"Could not retrieve rates from ARK Web API: {e}")
+            else:
+                # get old rates from file
+                logger.info("Getting previous rates from file")
+                if os.path.exists(self.output_path):
+                    with open(self.output_path) as f:
+                        last_rates_dict = json.load(f)
+                        last_rates = RatesStatus.from_dict(last_rates_dict)
+                else:
+                    logger.info("Rates file not found. Creating..")
+                    with open(self.output_path, "w+") as f:
+                        f.write(json.dump(rates.to_dict(), f,  indent=4))                                
+                    last_rates = copy.deepcopy(rates)
 
+            # compare rates to last rates
+            rates_diff = rates.get_diff(last_rates)
+            rates_embed_desc = rates_diff.to_pretty_msg()
+            print(rates_embed_desc)
+
+
+
+
+                # if await self.webpage_changed(response):
+                #     logger.info("Webpage updated.")
+                #     await self.send_embed()
+                # else:
+                #     logger.info("Webpage not updated.")
             await asyncio.sleep(self.polling_delay)
 
 
 # add cog to client
 def setup(client):
     client.add_cog(Rates(client))
+
+    # async def webpage_changed(self, response):
+    #     # read file
+    #     if os.path.exists(self.output_path):
+    #         with open(self.output_path) as f:
+    #             last_rates = f.read()
+    #     else:
+    #         last_rates = ""
+    #         logger.info("First run, skipping embed update")
+    #         with open(self.output_path, "w+") as f:
+    #             f.write(response)
+    #         return False
+
+    #     # compare responses, use splitlines to handle carriage returns and newlines
+    #     if ("".join(response.splitlines())) == ("".join(last_rates.splitlines())):
+    #         return False
+    #     else:
+    #         # update text file and embed
+    #         with open(self.output_path, "w+") as f:
+    #             f.write(response)
+    #         return True

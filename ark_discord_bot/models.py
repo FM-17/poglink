@@ -93,7 +93,7 @@ class RatesStatus:
     def to_raw(self):
         return "\n".join([f"{k}={v}" for k, v in self.to_dict().items()])
 
-    def get_diff(self, newrates: "RatesStatus"):
+    def get_diff(self, newrates: "RatesStatus"):        
         old = self.to_dict()
         new = newrates.to_dict()
 
@@ -233,4 +233,30 @@ class RatesDiffItem:
 
 @dataclass
 class RatesDiff:
+    
     items: List[RatesDiffItem] = field(default_factory=list)
+
+    def to_pretty_msg(items):
+
+        PRETTY_RATES_KEYMAPPING = {
+            "TamingSpeedMultiplier": "Taming",
+            "HarvestAmountMultiplier": "Harvesting",
+            "XPMultiplier": "XP",
+            "MatingIntervalMultiplier": "Mating Interval",
+            "BabyMatureSpeedMultiplier": "Maturation",
+            "EggHatchSpeedMultiplier": "Hatching",
+            "BabyCuddleIntervalMultiplier": "Cuddle Interval",
+            "BabyImprintAmountMultiplier": "Imprinting",
+            "HexagonRewardMultiplier": "Hexagon Reward",
+        }
+
+         # format rates dict
+        rates_dict_pretty = {
+            PRETTY_RATES_KEYMAPPING.get(item.key, item.key) : str(item.new.rstrip(".0")) + "×"
+            for item in items
+        }
+        # build embed description
+        rates_embed_msg = \
+        "\n".join(["**" + v + "**" + " " + k for k, v in rates_dict_pretty.items()])
+        
+        return rates_embed_msg
