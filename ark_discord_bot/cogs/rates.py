@@ -59,25 +59,13 @@ class Rates(commands.Cog):
                 f.write(response)
             return True
 
-    async def send_embed(self):
-        # read last_rates
-        with open(self.output_path) as f:
-            last_rates = f.read()
-
-        # format response for embed
-        response_dict = dict([p.split("=") for p in last_rates.split("\n")])
-        response_dict_pretty = {
-            self.keyMapping.get(k, k): (str(v.rstrip(".0")) + "×")
-            for k, v in response_dict.items()
-        }
+    async def send_embed(self, description):
 
         # generate embed
         embed = discord.Embed(
             title="ARK's official server rates have just been updated!", color=0x069420
         )
-        embed.description = "\n".join(
-            ["**" + v + "**" + " " + k for k, v in response_dict_pretty.items()]
-        )
+        embed.description = description
 
         # send embed
         channel = self.client.get_channel(self.channel_id)
@@ -124,41 +112,13 @@ class Rates(commands.Cog):
 
             # compare rates to last rates
             rates_diff = rates.get_diff(last_rates)
-            rates_embed_desc = rates_diff.to_pretty_msg()
-            print(rates_embed_desc)
+            embed_description = rates_diff.to_embed(rates)
+            await self.send_embed(embed_description)
 
 
-
-
-                # if await self.webpage_changed(response):
-                #     logger.info("Webpage updated.")
-                #     await self.send_embed()
-                # else:
-                #     logger.info("Webpage not updated.")
             await asyncio.sleep(self.polling_delay)
 
 
 # add cog to client
 def setup(client):
     client.add_cog(Rates(client))
-
-    # async def webpage_changed(self, response):
-    #     # read file
-    #     if os.path.exists(self.output_path):
-    #         with open(self.output_path) as f:
-    #             last_rates = f.read()
-    #     else:
-    #         last_rates = ""
-    #         logger.info("First run, skipping embed update")
-    #         with open(self.output_path, "w+") as f:
-    #             f.write(response)
-    #         return False
-
-    #     # compare responses, use splitlines to handle carriage returns and newlines
-    #     if ("".join(response.splitlines())) == ("".join(last_rates.splitlines())):
-    #         return False
-    #     else:
-    #         # update text file and embed
-    #         with open(self.output_path, "w+") as f:
-    #             f.write(response)
-    #         return True
