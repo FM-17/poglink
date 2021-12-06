@@ -87,33 +87,33 @@ class Rates(commands.Cog):
             try:
                 with open(self.output_path) as f:
                     last_rates_dict = json.load(f)
-
-            except FileNotFoundError:
-                logger.warn(
-                    f"File '{os.path.basename(self.output_path)}' not found - Creating..."
-                )
+            except (FileNotFoundError, JSONDecodeError) as e:
+                logger.warn(f"Problem loading file at {self.output_path}: {e}") 
                 last_rates_dict = copy.deepcopy(rates).to_dict()
+                try:
+                    with open(self.output_path, "w+") as f:
+                        json.dump(rates.to_dict(), f)
+                except Exception as e:
+                    logger.error(e)
+                    await asyncio.sleep(self.polling_delay)
+                    continue
 
-            except JSONDecodeError:
-                logger.warn(
-                    f"File '{os.path.basename(self.output_path)}' empty or corrupt - Populating with current rates"
-                )
-                last_rates_dict = copy.deepcopy(rates).to_dict()
-
-            # save current rates to file
             last_rates = RatesStatus.from_dict(last_rates_dict)
-            try:
-                with open(self.output_path, "w+") as f:
-                    json.dump(rates.to_dict(), f)
-            except Exception as e:
-                logger.error(e)
-                await asyncio.sleep(self.polling_delay)
-                continue
 
             # compare rates to last rates
             rates_diff = rates.get_diff(last_rates)
 
             if rates_diff.items:
+                
+                # save rates to file
+                try:
+                    with open(self.output_path, "w+") as f:
+                        json.dump(rates.to_dict(), f)
+                except Exception as e:
+                    logger.error(e)
+                    await asyncio.sleep(self.polling_delay)
+                    continue
+
                 # generate and send embed
                 logger.info("Rates changed - sending embed")
                 embed_description = rates_diff.to_embed(rates)
