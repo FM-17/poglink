@@ -5,7 +5,7 @@
         "@semantic-release/github",
         [
             "@semantic-release/exec", {
-                "publishCmd": "echo PUBLISHING"
+                "publishCmd": "make python-publish-test; export VERSION=${nextRelease.version}"
             }
         ]
     ]
