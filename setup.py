@@ -21,6 +21,8 @@ setup(
     setup_requires=["setuptools_scm"],
     description="A bot for notifying of changes to the ARK Web API via Discord.",
     author="FM-17",
+    author_email="the_fm17@pm.me",
+    url="https://github.com/FM-17/ark-discord-bot",
     packages=find_packages(),
     install_requires=["discord>=1.7", "pyyaml", "python-dateutil", "jinja2"],
     entry_points={
