@@ -3,12 +3,12 @@ import shutil
 import os
 
 
-SAMPLE_BANSUMMARY_PATH = "tests/data/bansummary.txt"
-SAMPLE_BANSUMMARY_CHANGED_PATH = "tests/data/bansummary-changed.txt"
+SAMPLE_BANSUMMARY_PATH = "tests/data/bansummary-1.txt"
+SAMPLE_BANSUMMARY_CHANGED_PATH = "tests/data/bansummary-2.txt"
 LAST_BANSUMMARY_PATH = "tests/data/last_bans.txt"
 
-SAMPLE_DYNAMICCONFIG_PATH = "tests/data/dynamicconfig.ini"
-SAMPLE_CHANGED_DYNAMICCONFIG_PATH = "tests/data/dynamicconfig-changed.ini"
+SAMPLE_DYNAMICCONFIG_PATH = "tests/data/dynamicconfig-1.ini"
+SAMPLE_CHANGED_DYNAMICCONFIG_PATH = "tests/data/dynamicconfig-2.ini"
 LAST_DYNAMICCONFIG_PATH = "tests/data/last_rates.txt"
 
 # bans
