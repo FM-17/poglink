@@ -94,7 +94,7 @@ class RatesStatus:
     def to_raw(self):
         return "\n".join([f"{k}={v}" for k, v in self.to_dict().items()])
 
-    def get_diff(self, newrates: "RatesStatus"):        
+    def get_diff(self, newrates: "RatesStatus"):
         old = self.to_dict()
         new = newrates.to_dict()
 
@@ -112,7 +112,6 @@ class RatesStatus:
                 key=lambda x: x.key,
             )
         )
-    
 
 
 @dataclass
@@ -236,22 +235,24 @@ class RatesDiffItem:
 @dataclass
 class RatesDiff:
     items: List[RatesDiffItem] = field(default_factory=list)
-    
-    # highlights changed rates in embed 
+
+    # highlights changed rates in embed
     def to_embed(self, rates):
 
         rates_dict = rates.to_dict()
-        
-        # bold updated rates
-        updated_rates = {
-            item.key: "**" + item.new + "**"
-            for item in self.items
-        }
 
-        for k,v in updated_rates.items():
+        # bold updated rates
+        updated_rates = {item.key: "**" + item.new + "**" for item in self.items}
+
+        for k, v in updated_rates.items():
             rates_dict[k] = v
-        
+
         # rename keys and format embed description
-        embed_description = "\n".join([str(v.rstrip(".0")) + "×" + " " + rates.RATES_NAMES.get(k,k) for k, v in rates_dict.items()])
-        
+        embed_description = "\n".join(
+            [
+                str(v.rstrip(".0")) + "×" + " " + rates.RATES_NAMES.get(k, k)
+                for k, v in rates_dict.items()
+            ]
+        )
+
         return embed_description
