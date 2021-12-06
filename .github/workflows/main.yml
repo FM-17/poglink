@@ -46,11 +46,13 @@ jobs:
       - name: Semantic Release 
         id: semantic_release
         uses: cycjimmy/semantic-release-action@v2.6.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with: 
           semantic_version: 18
           extra_plugins: |
             @semantic-release/exec@v6
-          branches: "[ main ]"
+          branches: "[ 'main' ]"
     outputs:
       package_version: ${{ steps.semantic_release.outputs.new_release_version }}
 
