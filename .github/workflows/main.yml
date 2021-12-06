@@ -37,14 +37,14 @@ jobs:
       - uses: actions/checkout@v2.4.0
       - run: echo ${{ github.ref }}
       - name: Semantic Release 
+        # if: github.ref == 'refs/heads/main' # if main branch, assume triggered by push
         uses: cycjimmy/semantic-release-action@v2.6.0
         with: 
           semantic_version: 18
           extra_plugins: |
             @semantic-release/exec@v6
-          dry_run: ${{ github.ref != 'main' }}
-          branches: |
-            [
-              "main",
-              "travis-fix-semantic-release"
-            ]
+          branches: "[ main ]"
+      - name: Publish non-release
+        # if: github.ref != 'refs/heads/master' # if not main branch, assume triggered by PR
+        run: |
+          make python-publish-test
