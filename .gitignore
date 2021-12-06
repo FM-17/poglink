@@ -33,6 +33,6 @@ config.yaml
 *.egg-info/
 build/
 dist/
-data/
+./data/
 .python-version
 .eggs/
