@@ -22,4 +22,8 @@ python-build: clean-python
 
 .PHONY: python-publish
 python-publish-test: python-build
-	twine upload --repository testpypi dist/*
+	scripts/python-publish.sh
+
+.PHONY: python-publish-prod
+python-publish-prod: python-build
+	PROD=true scripts/python-publish.sh
