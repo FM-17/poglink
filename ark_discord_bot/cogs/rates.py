@@ -8,7 +8,8 @@ import logging
 import yaml
 import os
 import json
-import copy 
+import copy
+
 logger = logging.getLogger(__name__)
 
 # create cog class
@@ -83,23 +84,27 @@ class Rates(commands.Cog):
                 continue
 
             # get old rates from file
-            try: 
+            try:
                 with open(self.output_path) as f:
                     last_rates_dict = json.load(f)
 
             except FileNotFoundError:
-                logger.warn(f"File '{os.path.basename(self.output_path)}' not found - Creating...")
+                logger.warn(
+                    f"File '{os.path.basename(self.output_path)}' not found - Creating..."
+                )
                 last_rates_dict = copy.deepcopy(rates).to_dict()
 
-            except JSONDecodeError: 
-                logger.warn(f"File '{os.path.basename(self.output_path)}' empty or corrupt - Populating with current rates")
+            except JSONDecodeError:
+                logger.warn(
+                    f"File '{os.path.basename(self.output_path)}' empty or corrupt - Populating with current rates"
+                )
                 last_rates_dict = copy.deepcopy(rates).to_dict()
-                        
+
             # save current rates to file
             last_rates = RatesStatus.from_dict(last_rates_dict)
             try:
                 with open(self.output_path, "w+") as f:
-                    json.dump(rates.to_dict(), f)  
+                    json.dump(rates.to_dict(), f)
             except Exception as e:
                 logger.error(e)
                 await asyncio.sleep(self.polling_delay)
@@ -115,6 +120,7 @@ class Rates(commands.Cog):
                 await self.send_embed(embed_description)
 
             await asyncio.sleep(self.polling_delay)
+
 
 # add cog to client
 def setup(client):
