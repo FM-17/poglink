@@ -31,20 +31,36 @@ jobs:
       - run: pip install -r requirements.dev.txt .
       - name: Run Black Linting
         run: black --check ark_discord_bot tests
-  release-python:
-    runs-on: ubuntu-latest 
+  semantic-release-python:
+    runs-on: ubuntu-latest
+    # if: github.ref == 'refs/heads/main' # if main branch, assume triggered by push 
     steps:
       - uses: actions/checkout@v2.4.0
-      - run: echo ${{ github.ref }}
       - name: Semantic Release 
-        # if: github.ref == 'refs/heads/main' # if main branch, assume triggered by push
         uses: cycjimmy/semantic-release-action@v2.6.0
         with: 
           semantic_version: 18
           extra_plugins: |
             @semantic-release/exec@v6
           branches: "[ main ]"
-      - name: Publish non-release
-        # if: github.ref != 'refs/heads/master' # if not main branch, assume triggered by PR
+  publish-non-release-python:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v2.4.0
+      - uses: actions/setup-python@v2.3.1
+        with: 
+          cache: 'pip'
+          cache-dependency-path: |
+            setup.py
+            requirements.dev.txt
+      - run: pip install -r requirements.dev.txt .
+      - name: Build non-release
         run: |
-          make python-publish-test
+          make python-build
+      - name: Publish to test.pypi.org
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_TEST_API_TOKEN }}
+
