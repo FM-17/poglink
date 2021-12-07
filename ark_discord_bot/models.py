@@ -249,8 +249,7 @@ class RatesDiff:
         # rename keys and format embed description
         embed_description = "\n".join(
             [
-                str(v.rstrip(".0")) + "×" + " " + rates.RATES_NAMES.get(k, k)
-                for k, v in rates_dict.items()
+                f"{v.rstrip(".0")} × {rates.RATES_NAMES.get(k,k)}" for k, v in rates_dict.items()
             ]
         )
 
