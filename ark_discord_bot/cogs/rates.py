@@ -88,7 +88,7 @@ class Rates(commands.Cog):
                 with open(self.output_path) as f:
                     last_rates_dict = json.load(f)
             except (FileNotFoundError, JSONDecodeError) as e:
-                logger.warn(f"Problem loading file at {self.output_path}: {e}") 
+                logger.warn(f"Problem loading file at {self.output_path}: {e}")
                 last_rates_dict = copy.deepcopy(rates).to_dict()
                 try:
                     with open(self.output_path, "w+") as f:
@@ -104,7 +104,7 @@ class Rates(commands.Cog):
             rates_diff = rates.get_diff(last_rates)
 
             if rates_diff.items:
-                
+
                 # save rates to file
                 try:
                     with open(self.output_path, "w+") as f:
