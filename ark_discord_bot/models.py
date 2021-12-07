@@ -244,8 +244,7 @@ class RatesDiff:
         # bold updated rates
         updated_rates = {item.key: f"**{item.new}**" for item in self.items}
 
-        for k, v in updated_rates.items():
-            rates_dict[k] = v
+        rates_dict.update(updated_rates)
 
         # rename keys and format embed description
         embed_description = "\n".join(
