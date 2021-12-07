@@ -49,7 +49,6 @@ class Bans(commands.Cog):
 
         with open(self.output_path) as f:
             last_bans = f.read()
-            logger.error(last_bans)
         # generate embed
         embed = discord.Embed(title="ARK Ban Summary", color=0x069420)
         embed.description = last_bans

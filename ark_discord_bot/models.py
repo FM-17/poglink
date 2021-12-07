@@ -25,7 +25,7 @@ class RatesStatus:
         self,
         **kwargs,
     ):
-        for k in self.RATES_NAMES.keys():
+        for k in self.RATES_NAMES:
             setattr(self, k, kwargs.get(k))
             del kwargs[k]
 
@@ -47,12 +47,12 @@ class RatesStatus:
         expected = {
             k: v
             for k, v in parsed_vals_dict.items()
-            if k in RatesStatus.RATES_NAMES.keys()
+            if k in RatesStatus.RATES_NAMES
         }
         extras = {
             k: v
             for k, v in parsed_vals_dict.items()
-            if k not in RatesStatus.RATES_NAMES.keys() and k != "extras"
+            if k not in RatesStatus.RATES_NAMES and k != "extras"
         }
 
         if "extras" in parsed_vals_dict:
@@ -105,7 +105,7 @@ class RatesStatus:
                         key=k,
                         old=old.get(k),
                         new=new.get(k),
-                        extra=k not in RatesStatus.RATES_NAMES.keys(),
+                        extra=k not in RatesStatus.RATES_NAMES,
                     )
                     for k, _ in set(new.items()) - set(old.items())
                 ],
@@ -249,7 +249,7 @@ class RatesDiff:
         # rename keys and format embed description
         embed_description = "\n".join(
             [
-                f"{v.rstrip(".0")} × {rates.RATES_NAMES.get(k,k)}" for k, v in rates_dict.items()
+                f"{v.rstrip('.0')} × {rates.RATES_NAMES.get(k,k)}" for k, v in rates_dict.items()
             ]
         )
 
