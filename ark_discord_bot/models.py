@@ -48,12 +48,12 @@ class RatesStatus:
         expected = {
             k: v
             for k, v in parsed_vals_dict.items()
-            if k in RatesStatus.RATES_NAMES.keys()
+            if k in RatesStatus.RATES_NAMES
         }
         extras = {
             k: v
             for k, v in parsed_vals_dict.items()
-            if k not in RatesStatus.RATES_NAMES.keys() and k != "extras"
+            if k not in RatesStatus.RATES_NAMES and k != "extras"
         }
 
         if "extras" in parsed_vals_dict:
@@ -106,7 +106,7 @@ class RatesStatus:
                         key=k,
                         old=old.get(k),
                         new=new.get(k),
-                        extra=k not in RatesStatus.RATES_NAMES.keys(),
+                        extra=k not in RatesStatus.RATES_NAMES,
                     )
                     for k, _ in set(new.items()) - set(old.items())
                 ],
