@@ -25,11 +25,12 @@ class RatesStatus:
         self,
         **kwargs,
     ):
-        for k in self.RATES_NAMES.keys():
-            setattr(self, k, kwargs.get(k))
-            del kwargs[k]
+        expected, extras = self.get_expected_and_extras(kwargs)
 
-        self.extras = kwargs
+        for k, v in expected.items():
+            setattr(self, k, v)
+
+        self.extras = extras
 
     def __eq__(self, __o: object) -> bool:
         return self.__dict__ == __o.__dict__
@@ -249,7 +250,8 @@ class RatesDiff:
         # rename keys and format embed description
         embed_description = "\n".join(
             [
-                f"{v.rstrip(".0")} × {rates.RATES_NAMES.get(k,k)}" for k, v in rates_dict.items()
+                f"{v.rstrip('.0')} × {rates.RATES_NAMES.get(k,k)}"
+                for k, v in rates_dict.items()
             ]
         )
 
