@@ -103,11 +103,11 @@ The following configuration parameters are available to be set in any of the abo
 - [ ] Add docs to DockerHub (even just a backlink to github would do)
 
 #### Bot Development
-- [ ] Rework `rates.py` to make use of RatesStatus and RatesDiff
 - [ ] Add emojis to rates embeds
 - [ ] Add docs explaining current auto-publishing functionality
-- [ ] Add more debugging code
+- [x] Add more debugging code
 - [x] Auto-publishing in announcement channels
+- [x] Rework `rates.py` to make use of RatesStatus and RatesDiff
 
 #### Low Priority / Next Release
 - [ ] Add ability to post other server rates. Rather than just using the `dynamicconfig.ini` endpoint, perhaps add a parameter that takes in a list of endpoints, ex. `["pc_smalltribes_dynamicconfig.ini", "xbox_smalltribes_dynamiconfig.ini"]`. Alternatively, combine all rates into a table that gets added to the embed.
