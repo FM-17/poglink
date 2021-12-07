@@ -242,7 +242,7 @@ class RatesDiff:
         rates_dict = rates.to_dict()
 
         # bold updated rates
-        updated_rates = {item.key: "**" + item.new + "**" for item in self.items}
+        updated_rates = {item.key: f"**{item.new}**" for item in self.items}
 
         for k, v in updated_rates.items():
             rates_dict[k] = v
