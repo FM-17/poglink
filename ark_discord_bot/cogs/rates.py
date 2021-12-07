@@ -92,7 +92,7 @@ class Rates(commands.Cog):
                 last_rates_dict = copy.deepcopy(rates).to_dict()
                 try:
                     with open(self.output_path, "w+") as f:
-                        json.dump(rates.to_dict(), f)
+                        json.dump(rates.to_dict(), f, indent=4)
                 except Exception as e:
                     logger.error(e)
                     await asyncio.sleep(self.polling_delay)
@@ -108,7 +108,7 @@ class Rates(commands.Cog):
                 # save rates to file
                 try:
                     with open(self.output_path, "w+") as f:
-                        json.dump(rates.to_dict(), f)
+                        json.dump(rates.to_dict(), f, indent=4)
                 except Exception as e:
                     logger.error(e)
                     await asyncio.sleep(self.polling_delay)
