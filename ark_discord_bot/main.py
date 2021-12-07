@@ -74,7 +74,8 @@ def run(**kwargs):
 
     # load all cogs on boot
     for ext in ark_discord_bot.cogs.__all__:
-        client.load_extension(f"ark_discord_bot.cogs.{ext}")
+        if ext != "ban":
+            client.load_extension(f"ark_discord_bot.cogs.{ext}")
 
     # run the bot
     try:

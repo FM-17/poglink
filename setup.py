@@ -14,7 +14,7 @@ else:
     use_scm_version = True
 
 with open("README.md") as f:
-    long_description=f.read()
+    long_description = f.read()
 
 setup(
     name="ark-discord-bot",

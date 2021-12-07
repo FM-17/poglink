@@ -8,27 +8,29 @@ from jinja2 import Template
 
 
 class RatesStatus:
-    DEFAULT_RATES_KEYS = [
-        "TamingSpeedMultiplier",
-        "HarvestAmountMultiplier",
-        "XPMultiplier",
-        "MatingIntervalMultiplier",
-        "BabyMatureSpeedMultiplier",
-        "EggHatchSpeedMultiplier",
-        "BabyCuddleIntervalMultiplier",
-        "BabyImprintAmountMultiplier",
-        "HexagonRewardMultiplier",
-    ]
+
+    RATES_NAMES = {
+        "TamingSpeedMultiplier": "Taming",
+        "HarvestAmountMultiplier": "Harvesting",
+        "XPMultiplier": "XP",
+        "MatingIntervalMultiplier": "Mating Interval",
+        "BabyMatureSpeedMultiplier": "Maturation",
+        "EggHatchSpeedMultiplier": "Hatching",
+        "BabyCuddleIntervalMultiplier": "Cuddle Interval",
+        "BabyImprintAmountMultiplier": "Imprinting",
+        "HexagonRewardMultiplier": "Hexagon Reward",
+    }
 
     def __init__(
         self,
         **kwargs,
     ):
-        for k in self.DEFAULT_RATES_KEYS:
-            setattr(self, k, kwargs.get(k))
-            del kwargs[k]
+        expected, extras = self.get_expected_and_extras(kwargs)
 
-        self.extras = kwargs
+        for k, v in expected.items():
+            setattr(self, k, v)
+
+        self.extras = extras
 
     def __eq__(self, __o: object) -> bool:
         return self.__dict__ == __o.__dict__
@@ -44,14 +46,12 @@ class RatesStatus:
     @staticmethod
     def get_expected_and_extras(parsed_vals_dict: dict) -> Tuple[dict, dict]:
         expected = {
-            k: v
-            for k, v in parsed_vals_dict.items()
-            if k in RatesStatus.DEFAULT_RATES_KEYS
+            k: v for k, v in parsed_vals_dict.items() if k in RatesStatus.RATES_NAMES
         }
         extras = {
             k: v
             for k, v in parsed_vals_dict.items()
-            if k not in RatesStatus.DEFAULT_RATES_KEYS and k != "extras"
+            if k not in RatesStatus.RATES_NAMES and k != "extras"
         }
 
         if "extras" in parsed_vals_dict:
@@ -104,7 +104,7 @@ class RatesStatus:
                         key=k,
                         old=old.get(k),
                         new=new.get(k),
-                        extra=k not in RatesStatus.DEFAULT_RATES_KEYS,
+                        extra=k not in RatesStatus.RATES_NAMES,
                     )
                     for k, _ in set(new.items()) - set(old.items())
                 ],
@@ -234,3 +234,23 @@ class RatesDiffItem:
 @dataclass
 class RatesDiff:
     items: List[RatesDiffItem] = field(default_factory=list)
+
+    # highlights changed rates in embed
+    def to_embed(self, rates):
+
+        rates_dict = rates.to_dict()
+
+        # bold updated rates
+        updated_rates = {item.key: f"**{item.new}**" for item in self.items}
+
+        rates_dict.update(updated_rates)
+
+        # rename keys and format embed description
+        embed_description = "\n".join(
+            [
+                f"{v.rstrip('.0')} × {rates.RATES_NAMES.get(k,k)}"
+                for k, v in rates_dict.items()
+            ]
+        )
+
+        return embed_description

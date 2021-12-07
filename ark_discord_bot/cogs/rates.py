@@ -1,3 +1,5 @@
+from json.decoder import JSONDecodeError
+from ark_discord_bot.models import RatesDiffItem, RatesDiff, RatesStatus
 import discord
 from discord.ext import commands
 import asyncio
@@ -5,6 +7,8 @@ import aiohttp
 import logging
 import yaml
 import os
+import json
+import copy
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +22,7 @@ class Rates(commands.Cog):
         self.polling_delay = client.config.polling_delay
         self.allowed_roles = client.config.allowed_roles
         self.data_dir = os.path.expanduser(client.config.data_dir)
-        self.output_path = os.path.join(self.data_dir, "last_rates.txt")
+        self.output_path = os.path.join(self.data_dir, "last_rates.json")
         self.keyMapping = {
             "TamingSpeedMultiplier": "Taming",
             "HarvestAmountMultiplier": "Harvesting",
@@ -35,46 +39,23 @@ class Rates(commands.Cog):
         if not os.path.exists(self.data_dir):
             os.makedirs(self.data_dir)
 
-    async def webpage_changed(self, response):
-        # read file
-        if os.path.exists(self.output_path):
-            with open(self.output_path) as f:
-                last_rates = f.read()
-        else:
-            last_rates = ""
-            logger.info("First run, skipping embed update")
-            with open(self.output_path, "w+") as f:
-                f.write(response)
-            return False
+    async def get_current_rates(self):
+        async with aiohttp.ClientSession() as session:
+            async with session.get(
+                self.webpage_url,
+                headers={"Pragma": "no-cache", "Cache-Control": "no-cache"},
+            ) as response:
+                response = await response.text()
+                rates = RatesStatus.from_raw(response)
+                return rates
 
-        # compare responses, use splitlines to handle carriage returns and newlines
-        if ("".join(response.splitlines())) == ("".join(last_rates.splitlines())):
-            return False
-        else:
-            # update text file and embed
-            with open(self.output_path, "w+") as f:
-                f.write(response)
-            return True
-
-    async def send_embed(self):
-        # read last_rates
-        with open(self.output_path) as f:
-            last_rates = f.read()
-
-        # format response for embed
-        response_dict = dict([p.split("=") for p in last_rates.split("\n")])
-        response_dict_pretty = {
-            self.keyMapping.get(k, k): (str(v.rstrip(".0")) + "×")
-            for k, v in response_dict.items()
-        }
+    async def send_embed(self, description):
 
         # generate embed
         embed = discord.Embed(
             title="ARK's official server rates have just been updated!", color=0x069420
         )
-        embed.description = "\n".join(
-            ["**" + v + "**" + " " + k for k, v in response_dict_pretty.items()]
-        )
+        embed.description = description
 
         # send embed
         channel = self.client.get_channel(self.channel_id)
@@ -82,10 +63,8 @@ class Rates(commands.Cog):
 
         # if in announcement channel, publish message
         if message.channel.type == discord.ChannelType.news:
-            logger.info("Publishing message")
+            logger.info("Announcement channel detected: Publishing message")
             await message.publish()
-        else:
-            logger.info("Message not published: Not in announcement channel")
 
     # Events
     @commands.Cog.listener()
@@ -93,20 +72,52 @@ class Rates(commands.Cog):
         logger.info("Cog Ready: Rates")
 
         while True:
+
+            # get current rates from ARK Web API
+            logger.info("Retrieving current rates")
             try:
-                async with aiohttp.ClientSession() as session:
-                    async with session.get(
-                        self.webpage_url,
-                        headers={"Pragma": "no-cache", "Cache-Control": "no-cache"},
-                    ) as response:
-                        response = await response.text()
-                        if await self.webpage_changed(response):
-                            logger.info("Webpage updated.")
-                            await self.send_embed()
-                        else:
-                            logger.info("Webpage not updated.")
+                rates = await self.get_current_rates()
+
             except Exception as e:
-                logger.error(f"Error checking webpage: {e}")
+                logger.error(f"Could not retrieve rates from ARK Web API: {e}")
+                await asyncio.sleep(self.polling_delay)
+                continue
+
+            # get old rates from file
+            try:
+                with open(self.output_path) as f:
+                    last_rates_dict = json.load(f)
+            except (FileNotFoundError, JSONDecodeError) as e:
+                logger.warn(f"Problem loading file at {self.output_path}: {e}")
+                last_rates_dict = copy.deepcopy(rates).to_dict()
+                try:
+                    with open(self.output_path, "w+") as f:
+                        json.dump(rates.to_dict(), f, indent=4)
+                except Exception as e:
+                    logger.error(e)
+                    await asyncio.sleep(self.polling_delay)
+                    continue
+
+            last_rates = RatesStatus.from_dict(last_rates_dict)
+
+            # compare rates to last rates
+            rates_diff = rates.get_diff(last_rates)
+
+            if rates_diff.items:
+
+                # save rates to file
+                try:
+                    with open(self.output_path, "w+") as f:
+                        json.dump(rates.to_dict(), f, indent=4)
+                except Exception as e:
+                    logger.error(e)
+                    await asyncio.sleep(self.polling_delay)
+                    continue
+
+                # generate and send embed
+                logger.info("Rates changed - sending embed")
+                embed_description = rates_diff.to_embed(rates)
+                await self.send_embed(embed_description)
 
             await asyncio.sleep(self.polling_delay)
 
