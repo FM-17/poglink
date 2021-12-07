@@ -117,5 +117,6 @@ The following configuration parameters are available to be set in any of the abo
 - [ ] Add auto-publish/no publish as a parameter for each cog, perhaps `auto-publish-channels = [<chan_ID1>, <chan_ID1>]`
 - [ ] In-game server notifications posted to Discord channels
 - [ ] Convert to use `setup.cfg` instead of `setup.py`
-
-*Initially developed for use in the official ARK: Survival Evolved Discord server*
+- [ ] Add `old_rates` and `current_rates` to `RatesDiff` so `self.current_rates` could be used instead of `to_embed` 
+- [ ] Allow for `old_rates=old` and `new_rates=new` to be passed into `RatesStatus.to_diff()`  
+ *Initially developed for use in the official ARK: Survival Evolved Discord server*
