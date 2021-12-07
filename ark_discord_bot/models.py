@@ -46,9 +46,7 @@ class RatesStatus:
     @staticmethod
     def get_expected_and_extras(parsed_vals_dict: dict) -> Tuple[dict, dict]:
         expected = {
-            k: v
-            for k, v in parsed_vals_dict.items()
-            if k in RatesStatus.RATES_NAMES
+            k: v for k, v in parsed_vals_dict.items() if k in RatesStatus.RATES_NAMES
         }
         extras = {
             k: v
