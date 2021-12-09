@@ -83,7 +83,7 @@ The following configuration parameters are available to be set in any of the abo
 | ---------------------- | ------------------------ | ----------------------------------------- | -------- | -------------------------------------------------------------------- |
 | `--allowed-roles`      | `BOT_ALLOWED_ROLES`      | None                                      | No       | Roles permitted to use bot commands (comma-separated list)           |
 | `--polling-delay`      | `BOT_POLLING_DELAY`      | 60                                        | No       | Delay between each API check                                         |
-| `--rates-urls`         | `BOT_RATES_URLS`         | http://arkdedicated.com/dynamicconfig.ini,http://arkdedicated.com/pc_smalltribes_dynamicconfig.ini,http://arkdedicated.com/xbox_smalltribes_dynamiconfig.ini | No       | API endpoint to check for server rates (comma-separated list)        |
+| `--rates-urls`         | `BOT_RATES_URLS`         | http://arkdedicated.com/dynamicconfig.ini | No       | API endpoint to check for server rates (comma-separated list)        |
 | `--bans-url`           | `BOT_BANS_URL`           | http://arkdedicated.com/bansummary.txt    | No       | API endpoint to check for a ban summary                              |
 | `--rates-channel-id`   | `BOT_RATES_CHANNEL_ID`   | None                                      | Yes      | Channel ID to post rates in                                          |
 | `--bans-channel-id`    | `BOT_BANS_CHANNEL_ID`    | None                                      | Yes      | Channel ID to post ban summary in                                    |

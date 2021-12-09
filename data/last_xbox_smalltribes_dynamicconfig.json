@@ -1,0 +1,11 @@
+{
+    "TamingSpeedMultiplier": "2.5",
+    "HarvestAmountMultiplier": "2.5",
+    "XPMultiplier": "2.5",
+    "MatingIntervalMultiplier": "0.5",
+    "BabyMatureSpeedMultiplier": "2.0",
+    "EggHatchSpeedMultiplier": "2.0",
+    "BabyCuddleIntervalMultiplier": "1.0",
+    "BabyImprintAmountMultiplier": "1.0",
+    "HexagonRewardMultiplier": "1.0"
+}
