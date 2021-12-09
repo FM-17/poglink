@@ -1,10 +1,10 @@
+import asyncio
+import logging
+import os
+
+import aiohttp
 import discord
 from discord.ext import commands
-import asyncio
-import aiohttp
-import logging
-import yaml
-import os
 
 logger = logging.getLogger(__name__)
 # create cog class

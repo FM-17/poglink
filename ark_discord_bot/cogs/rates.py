@@ -1,15 +1,15 @@
-from json.decoder import JSONDecodeError
-from ark_discord_bot.models import RatesDiffItem, RatesDiff, RatesStatus
-import discord
-from discord.ext import commands
 import asyncio
-import aiohttp
-import logging
-import yaml
-from urllib.parse import urlparse
-import os
-import json
 import copy
+import json
+import logging
+import os
+from json.decoder import JSONDecodeError
+from urllib.parse import urlparse
+
+import aiohttp
+import discord
+from ark_discord_bot.models import RatesStatus
+from discord.ext import commands
 
 logger = logging.getLogger(__name__)
 
