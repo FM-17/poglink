@@ -7,7 +7,6 @@ from json.decoder import JSONDecodeError
 from urllib.parse import urlparse
 
 import aiohttp
-from attr import s
 import discord
 from ark_discord_bot.models import RatesStatus
 from discord.ext import commands
