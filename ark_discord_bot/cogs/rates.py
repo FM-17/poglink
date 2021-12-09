@@ -89,7 +89,9 @@ class Rates(commands.Cog):
                 except ValueError:
                     logger.error("Please confirm that rates url(s) are correct")
                 except Exception as e:
-                    logger.error(f"Could not retrieve rates from ARK Web API: {e}")
+                    logger.error(
+                        f"Could not retrieve rates from ARK Web API at {url}: {e}"
+                    )
                     await asyncio.sleep(self.polling_delay)
                     continue
 
