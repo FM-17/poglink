@@ -53,8 +53,9 @@ def setup_argparse():
         help="Comma-separated list of allowed roles. Also can be set via BOT_ALLOWED_ROLES environment variable.",
     )
     parser.add_argument(
-        "--rates-url",
-        help="URL for ARK rates. Also can be set via BOT_RATES_URL environment variable.",
+        "--rates-urls",
+        type=parse_list,
+        help="Comma-separated list of URLs for ARK rates. Also can be set via BOT_RATES_URLS environment variable.",
     )
     parser.add_argument(
         "--rates-channel-id",

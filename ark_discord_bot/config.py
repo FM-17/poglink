@@ -9,7 +9,11 @@ logger = logging.getLogger(__name__)
 DEFAULT_CONFIG = {
     "allowed_roles": None,
     "polling_delay": 60,
-    "rates_url": "http://arkdedicated.com/dynamicconfig.ini",
+    "rates_urls": [
+        "http://arkdedicated.com/dynamicconfig.ini",
+        "http://arkdedicated.com/pc_smalltribes_dynamicconfig.ini",
+        "http://arkdedicated.com/xbox_smalltribes_dynamiconfig.ini",
+    ],
     "bans_url": "http://arkdedicated.com/bansummary.txt",
     "rates_channel_id": None,
     "bans_channel_id": None,
@@ -21,6 +25,11 @@ REQUIRED_VALUES = [
     "token",
     "rates_channel_id",
     "bans_channel_id",
+]
+
+LIST_VALUES = [
+    "allowed_roles",
+    "rates_urls",
 ]
 
 
@@ -50,13 +59,14 @@ def setup_config(args, default_config=DEFAULT_CONFIG):
             or default_val
         )
 
-    # handle special case for list parsing
-    if isinstance(config["allowed_roles"], str):
-        try:
-            config["allowed_roles"] = parse_list(config["allowed_roles"])
-        except TypeError as e:
-            logger.warning(
-                f"Incorrect variable format; should be comma separated list: {e}"
-            )
+    # handle special cases for list parsing
+    for val in LIST_VALUES:
+        if isinstance(config[val], str):
+            try:
+                config[val] = parse_list(config[val])
+            except TypeError as e:
+                logger.warning(
+                    f"Incorrect variable format for {val}; should be comma separated list. Actual value: {config[val]}; {e}"
+                )
 
     return config
