@@ -11,9 +11,7 @@ logger = logging.getLogger(__name__)
 DEFAULT_CONFIG = {
     "allowed_roles": None,
     "polling_delay": 60,
-    "rates_urls": [
-        "http://arkdedicated.com/dynamicconfig.ini"
-    ],
+    "rates_urls": ["http://arkdedicated.com/dynamicconfig.ini"],
     "bans_url": "http://arkdedicated.com/bansummary.txt",
     "rates_channel_id": None,
     "bans_channel_id": None,
