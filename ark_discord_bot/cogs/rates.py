@@ -7,6 +7,7 @@ from json.decoder import JSONDecodeError
 from urllib.parse import urlparse
 
 import aiohttp
+from attr import s
 import discord
 from ark_discord_bot.models import RatesStatus
 from discord.ext import commands
@@ -15,6 +16,25 @@ logger = logging.getLogger(__name__)
 
 # create cog class
 class Rates(commands.Cog):
+    DEFAULT_SERVER_INFO = {
+        "pc_smalltribes_dynamicconfig.ini": {
+            "short_name": "smalltribes",
+            "color": "0x044420",
+        },
+        "pc_arkpocalypse_dynamicconfig.ini": {
+            "short_name": "arkpocalypse",
+            "color": "0x030400",
+        },
+        "pc_conquest_dynamicconfig.ini": {
+            "short_name": "conquest",
+            "color": "0x069420",
+        },
+        "dynamicconfig.ini": {
+            "short_name": "official",
+            "color": "0x020300",
+        },
+    }
+
     def __init__(self, client):
         self.client = client
 
@@ -57,11 +77,11 @@ class Rates(commands.Cog):
                 rates = RatesStatus.from_raw(response)
                 return rates
 
-    async def send_embed(self, description):
-
+    async def send_embed(self, description, server_name, color=0x069420):
         # generate embed
         embed = discord.Embed(
-            title="ARK's official server rates have just been updated!", color=0x069420
+            title=f"ARK's {server_name} server rates have just been updated!",
+            color=color,
         )
         embed.description = description
 
@@ -128,8 +148,18 @@ class Rates(commands.Cog):
 
                     # generate and send embed
                     logger.info(f"Rates at {url} changed - sending embed")
+                    rates_url_basename = os.path.basename(urlparse(url).path)
+                    server_meta = self.DEFAULT_SERVER_INFO.get(
+                        rates_url_basename,
+                        {"short_name": rates_url_basename, "color": "0xff0000"},
+                    )
+
                     embed_description = rates_diff.to_embed(rates)
-                    await self.send_embed(embed_description)
+                    await self.send_embed(
+                        embed_description,
+                        server_name=server_meta.get("short_name"),
+                        color=server_meta.get("color"),
+                    )
 
             await asyncio.sleep(self.polling_delay)
 
