@@ -14,7 +14,7 @@ DEFAULT_CONFIG = {
     "rates_urls": [
         "http://arkdedicated.com/dynamicconfig.ini",
         "http://arkdedicated.com/pc_smalltribes_dynamicconfig.ini",
-        "http://arkdedicated.com/xbox_smalltribes_dynamiconfig.ini",
+        "http://arkdedicated.com/xbox_smalltribes_dynamicconfig.ini",
     ],
     "bans_url": "http://arkdedicated.com/bansummary.txt",
     "rates_channel_id": None,

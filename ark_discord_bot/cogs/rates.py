@@ -86,10 +86,12 @@ class Rates(commands.Cog):
                 try:
                     rates = await self.get_current_rates(url)
 
+                except ValueError:
+                    logger.error("Please confirm that rates url(s) are correct")
                 except Exception as e:
-                    logger.error(f"Could not retrieve rates from ARK Web API: {e}")
-                    await asyncio.sleep(self.polling_delay)
-                    continue
+                     logger.error(f"Could not retrieve rates from ARK Web API: {e}")
+                     await asyncio.sleep(self.polling_delay)
+                     continue
 
                 # get old rates from file
                 try:
