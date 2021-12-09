@@ -79,17 +79,17 @@ This bot can pull configuration from one of multiple locations. Each parameter w
 ### Parameter Summary
 The following configuration parameters are available to be set in any of the above described methods:
 
-| CLI Argument           | Env Var                  | Default                                   | Required | Description     |
-| ---------------------- | ------------------------ | ----------------------------------------- | -------- | --------------- |
-| `--allowed-roles`      | `BOT_ALLOWED_ROLES`      | None                                      | No       | Roles permitted to use bot commands |
-| `--polling-delay`      | `BOT_POLLING_DELAY`      | 60                                        | No       | Delay between each API check |
-| ``--rates-url``        | ``BOT_RATES_URL``        | http://arkdedicated.com/dynamicconfig.ini | No       | API endpoint to check for server rates |
-| ``--bans-url``         | ``BOT_BANS_URL``         | http://arkdedicated.com/bansummary.txt    | No       | API endpoint to check for a ban summary |
-| ``--rates-channel-id`` | ``BOT_RATES_CHANNEL_ID`` | None                                      | Yes      | Channel ID to post rates in |
-| ``--bans-channel-id``  | ``BOT_BANS_CHANNEL_ID``  | None                                      | Yes      | Channel ID to post ban summary in |
-| ``--token ``           | ``BOT_TOKEN``            | None                                      | Yes      | Bot token (from Discord Developer Portal) |
-| ``--data-dir``         | ``BOT_DATA_DIR``         | ~/.ark-discord-bot                        | No       | Directory that will contain bot data, such as the `config.yaml` file |
-| ``--debug``            | ``BOT_DEBUG``            | False                                     | No       | Enables debug logging |
+| CLI Argument           | Env Var                  | Default                                   | Required | Description                                                          |
+| ---------------------- | ------------------------ | ----------------------------------------- | -------- | -------------------------------------------------------------------- |
+| `--allowed-roles`      | `BOT_ALLOWED_ROLES`      | None                                      | No       | Roles permitted to use bot commands (comma-separated list)           |
+| `--polling-delay`      | `BOT_POLLING_DELAY`      | 60                                        | No       | Delay between each API check                                         |
+| `--rates-urls`         | `BOT_RATES_URLS`         | http://arkdedicated.com/dynamicconfig.ini,http://arkdedicated.com/pc_smalltribes_dynamicconfig.ini,http://arkdedicated.com/xbox_smalltribes_dynamiconfig.ini | No       | API endpoint to check for server rates (comma-separated list)        |
+| `--bans-url`           | `BOT_BANS_URL`           | http://arkdedicated.com/bansummary.txt    | No       | API endpoint to check for a ban summary                              |
+| `--rates-channel-id`   | `BOT_RATES_CHANNEL_ID`   | None                                      | Yes      | Channel ID to post rates in                                          |
+| `--bans-channel-id`    | `BOT_BANS_CHANNEL_ID`    | None                                      | Yes      | Channel ID to post ban summary in                                    |
+| `--token `             | `BOT_TOKEN`              | None                                      | Yes      | Bot token (from Discord Developer Portal)                            |
+| `--data-dir`           | `BOT_DATA_DIR`           | ~/.ark-discord-bot                        | No       | Directory that will contain bot data, such as the `config.yaml` file |
+| `--debug`              | `BOT_DEBUG`              | False                                     | No       | Enables debug logging                                                |
 
 ### Developer TODOs
 #### Deployment
@@ -110,7 +110,7 @@ The following configuration parameters are available to be set in any of the abo
 - [x] Rework `rates.py` to make use of RatesStatus and RatesDiff
 
 #### Low Priority / Next Release
-- [ ] Add ability to post other server rates. Rather than just using the `dynamicconfig.ini` endpoint, perhaps add a parameter that takes in a list of endpoints, ex. `["pc_smalltribes_dynamicconfig.ini", "xbox_smalltribes_dynamiconfig.ini"]`. Alternatively, combine all rates into a table that gets added to the embed.
+- [x] Add ability to post other server rates. Rather than just using the `dynamicconfig.ini` endpoint, perhaps add a parameter that takes in a list of endpoints, ex. `["pc_smalltribes_dynamicconfig.ini", "xbox_smalltribes_dynamiconfig.ini"]`. Alternatively, combine all rates into a table that gets added to the embed.
 - [ ] Rework bans.py to make use of bans models
 - [ ] Reformat ban summary output
 - [ ] Make `bans.py` edit the embed rather than sending a new one
