@@ -64,6 +64,8 @@ jobs:
   publish-non-release-python:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
+    outputs:
+        package_version: $ {{ steps.set-output-step.outputs.package_version }}
     steps:
       - uses: actions/checkout@v2.4.0
         with:
@@ -79,6 +81,10 @@ jobs:
       - name: Build non-release
         run: |
           make python-build
+      - id: set-output-step
+        run: |
+          PACKAGE_VERSION=$(python3 -c 'from setuptools_scm import get_version; print(get_version(local_scheme="no-local-version"))' || echo 0.0.1.dev0)
+          echo "::set-output name=package_version::${PACKAGE_VERSION}"
       - name: Publish to test.pypi.org
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
@@ -86,11 +92,58 @@ jobs:
           password: ${{ secrets.PYPI_TEST_API_TOKEN }}
           repository_url: https://test.pypi.org/legacy/
 
-  # adding as a placeholder
-  publish-docker-release:
-    runs-on: ubuntu-latest
-    needs: semantic-release-python
+  test-job:
+    runs-on: ubuntu-latest 
+    needs: publish-non-release-python
     env:
-      VERSION: ${{ needs.semantic-release-python.outputs.package_version }}
+      PYTHON_PACKAGE_VERSION: ${{ needs.semantic-release-python.outputs.package_version }}
     steps:
-      - run: echo ${VERSION}
+      - run: echo ${PYTHON_PACKAGE_VERSION}
+
+  # publish-release-docker:
+  #   runs-on: ubuntu-latest
+  #   needs: semantic-release-python
+  #   env:
+  #     PYTHON_PACKAGE_VERSION: ${{ needs.semantic-release-python.outputs.package_version }}
+  #   steps:
+  #     - run: echo ${PYTHON_PACKAGE_VERSION}
+  #     - name: Set up docker engine 
+  #       uses: docker/setup/buildx-action@v1
+  #     - name: Log in to Dockerhub
+  #       uses: docker/login-action@v1 
+  #       with:
+  #         username: ${{ secrets.DOCKERHUB_USERNAME }}
+  #         password: ${{ secrets.DOCKERHUB_TOKEN }}
+  #     - name: Build and push 
+  #       uses: docker/build-push-action@v2 
+  #       with: 
+  #         push: true
+  #         build-args: |
+  #           PYTHON_PACKAGE_VERSION=${PYTHON_PACKAGE_VERSION} 
+  #         tags: |
+  #           ${{ secrets.DOCKERHUB_USERNAME }}/ark-discord-bot:dev
+  #           ${{ secrets.DOCKERHUB_USERNAME }}/ark-discord-bot:${PYTHON_PACKAGE_VERSION}
+
+  # publish-non-release-docker:
+  #   runs-on: ubuntu-latest
+  #   needs: publish-non-release-python
+  #   env:
+  #     PYTHON_PACKAGE_VERSION: ${{ needs.publish-non-release-python.outputs.package_version }}
+  #   steps:
+  #     - run: echo ${PYTHON_PACKAGE_VERSION}
+  #     - name: Set up docker engine 
+  #       uses: docker/setup/buildx-action@v1
+  #     - name: Log in to Dockerhub
+  #       uses: docker/login-action@v1 
+  #       with:
+  #         username: ${{ secrets.DOCKERHUB_USERNAME }}
+  #         password: ${{ secrets.DOCKERHUB_TOKEN }}
+  #     - name: Build and push 
+  #       uses: docker/build-push-action@v2 
+  #       with: 
+  #         push: true
+  #         build-args: |
+  #           PYTHON_PACKAGE_VERSION=${PYTHON_PACKAGE_VERSION} 
+  #         tags: |
+  #           ${{ secrets.DOCKERHUB_USERNAME }}/ark-discord-bot:dev
+  #           ${{ secrets.DOCKERHUB_USERNAME }}/ark-discord-bot:${PYTHON_PACKAGE_VERSION}
