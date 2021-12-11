@@ -118,7 +118,8 @@ jobs:
 
   publish-non-release-docker:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && ${{ always() }}
+    needs: publish-non-release-python
     steps:
       - name: Set up docker engine 
         uses: docker/setup-buildx-action@v1
@@ -133,4 +134,5 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/ark-discord-bot:dev
-            ${{ secrets.DOCKERHUB_USERNAME }}/ark-discord-bot:${{github.sha}}
+            ${{ secrets.DOCKERHUB_USERNAME }}/ark-discord-bot:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/ark-discord-bot:${{ needs.publish-non-release-python.outputs.package_version }}
