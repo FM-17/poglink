@@ -5,6 +5,7 @@ import logging
 import os
 from json.decoder import JSONDecodeError
 from urllib.parse import urlparse
+import re
 
 import aiohttp
 import discord
@@ -16,22 +17,22 @@ logger = logging.getLogger(__name__)
 # create cog class
 class Rates(commands.Cog):
     DEFAULT_SERVER_INFO = {
-        "pc_smalltribes_dynamicconfig.ini": {
-            "short_name": "smalltribes",
-            "color": "0x044420",
+        "smalltribes": {
+            "short_name": "Smalltribes",
+            "color": 0xa34c44,
         },
-        "pc_arkpocalypse_dynamicconfig.ini": {
-            "short_name": "arkpocalypse",
-            "color": "0x030400",
+        "arkpocalypse": {
+            "short_name": "Arkpocalypse",
+            "color": 0x562b61,
         },
-        "pc_conquest_dynamicconfig.ini": {
-            "short_name": "conquest",
-            "color": "0x069420",
+        "conquest": {
+            "short_name": "Conquest/Classic",
+            "color": 0x6dff90,
         },
-        "dynamicconfig.ini": {
-            "short_name": "official",
-            "color": "0x020300",
-        },
+        None: {
+            "short_name": "Official",
+            "color": 0x63bcc3,
+        }
     }
 
     def __init__(self, client):
@@ -49,18 +50,6 @@ class Rates(commands.Cog):
             )
             for url in client.config.rates_urls
         ]
-        self.keyMapping = {
-            "TamingSpeedMultiplier": "Taming",
-            "HarvestAmountMultiplier": "Harvesting",
-            "XPMultiplier": "XP",
-            "MatingIntervalMultiplier": "Mating Interval",
-            "BabyMatureSpeedMultiplier": "Maturation",
-            "EggHatchSpeedMultiplier": "Hatching",
-            "BabyCuddleIntervalMultiplier": "Cuddle Interval",
-            "BabyImprintAmountMultiplier": "Imprinting",
-            "HexagonRewardMultiplier": "Hexagon Reward",
-        }
-
         # Create parent directory for persistent data if it doesn't exist yet
         if not os.path.exists(self.data_dir):
             os.makedirs(self.data_dir)
@@ -76,22 +65,36 @@ class Rates(commands.Cog):
                 rates = RatesStatus.from_raw(response)
                 return rates
 
-    async def send_embed(self, description, server_name, color=0x069420):
+    async def send_embed(self, description, url):
         # generate embed
-        embed = discord.Embed(
-            title=f"ARK's {server_name} server rates have just been updated!",
-            color=color,
-        )
-        embed.description = description
 
-        # send embed
-        channel = self.client.get_channel(self.channel_id)
-        message = await channel.send(embed=embed)
+        rates_url_basename = os.path.basename(urlparse(url).path)
+        
+        try:
+            server_basename = (re.search("(?:(.*)\_(.*)\_)?dynamicconfig", os.path.basename(urlparse(url).path)).group(2))
+            server_meta = self.DEFAULT_SERVER_INFO.get(server_basename)
+            # TODO: Add ability to accept custom rates URL
+        except Exception as e:
+            logger.error(f"Rates url could not be processed: {url} {e}")
+            pass
 
-        # if in announcement channel, publish message
-        if message.channel.type == discord.ChannelType.news:
-            logger.info("Announcement channel detected: Publishing message")
-            await message.publish()
+        else:
+            server_name = server_meta.get("short_name")
+
+            embed = discord.Embed( 
+                description=description,
+                title=f"ARK's {server_name} server rates have just been updated!",
+                color=server_meta.get("color"),
+            )
+
+            # send embed
+            channel = self.client.get_channel(self.channel_id)
+            message = await channel.send(embed=embed)
+
+            # if in announcement channel, publish message
+            if message.channel.type == discord.ChannelType.news:
+                logger.info("Announcement channel detected: Publishing message")
+                await message.publish()
 
     # Events
     @commands.Cog.listener()
@@ -106,7 +109,7 @@ class Rates(commands.Cog):
                     rates = await self.get_current_rates(url)
 
                 except ValueError:
-                    logger.error("Please confirm that rates url(s) are correct")
+                    logger.error(f"Could not process rates URL {url}")
                 except Exception as e:
                     logger.error(
                         f"Could not retrieve rates from ARK Web API at {url}: {e}"
@@ -147,18 +150,8 @@ class Rates(commands.Cog):
 
                     # generate and send embed
                     logger.info(f"Rates at {url} changed - sending embed")
-                    rates_url_basename = os.path.basename(urlparse(url).path)
-                    server_meta = self.DEFAULT_SERVER_INFO.get(
-                        rates_url_basename,
-                        {"short_name": rates_url_basename, "color": "0xff0000"},
-                    )
-
                     embed_description = rates_diff.to_embed(rates)
-                    await self.send_embed(
-                        embed_description,
-                        server_name=server_meta.get("short_name"),
-                        color=server_meta.get("color"),
-                    )
+                    await self.send_embed(embed_description, url)
 
             await asyncio.sleep(self.polling_delay)
 

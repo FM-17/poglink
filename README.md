@@ -108,6 +108,8 @@ The following configuration parameters are available to be set in any of the abo
 - [x] Add more debugging code
 - [x] Auto-publishing in announcement channels
 - [x] Rework `rates.py` to make use of RatesStatus and RatesDiff
+server
+- [ ] Add delay between change detection and sending embed, where another check is performed after delay
 
 #### Low Priority / Next Release
 - [x] Add ability to post other server rates. Rather than just using the `dynamicconfig.ini` endpoint, perhaps add a parameter that takes in a list of endpoints, ex. `["pc_smalltribes_dynamicconfig.ini", "xbox_smalltribes_dynamiconfig.ini"]`. Alternatively, combine all rates into a table that gets added to the embed.
@@ -119,4 +121,7 @@ The following configuration parameters are available to be set in any of the abo
 - [ ] Convert to use `setup.cfg` instead of `setup.py`
 - [ ] Add `old_rates` and `current_rates` to `RatesDiff` so `self.current_rates` could be used instead of `to_embed` 
 - [ ] Allow for `old_rates=old` and `new_rates=new` to be passed into `RatesStatus.to_diff()`  
- *Initially developed for use in the official ARK: Survival Evolved Discord server*
+- [ ] Add ability to provide custom rates URL
+
+
+ *Initially developed for use in the official ARK: Survival Evolved Discord 
