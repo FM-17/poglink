@@ -113,7 +113,7 @@ jobs:
           build-args: |
             PYTHON_PACKAGE_VERSION=${PYTHON_PACKAGE_VERSION} 
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/ark-discord-bot:dev
+            ${{ secrets.DOCKERHUB_USERNAME }}/ark-discord-bot:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/ark-discord-bot:${PYTHON_PACKAGE_VERSION}
 
   publish-non-release-docker:
