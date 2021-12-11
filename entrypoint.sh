@@ -20,4 +20,5 @@ if [ ! -e "${CONFIG_FILE}" ]; then
     cp /sample-config.yaml "${CONFIG_FILE}"
 fi
 
+# Run application with provided arguments
 ark-discord-bot $@

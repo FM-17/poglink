@@ -99,7 +99,7 @@ The following configuration parameters are available to be set in any of the abo
 - [ ] Rename bot and refactor
 - [ ] Add to pypi (Already added to test.pypi)
 - [x] Add [[Github Actions]] for pypi
-- [ ] Add [[Github Actions]] for [docker hub](https://medium.com/rockedscience/docker-ci-cd-pipeline-with-github-actions-6d4cd1731030)
+- [x] Add [[Github Actions]] for [docker hub](https://medium.com/rockedscience/docker-ci-cd-pipeline-with-github-actions-6d4cd1731030)
 - [ ] Add docs to DockerHub (even just a backlink to github would do)
 
 #### Bot Development
