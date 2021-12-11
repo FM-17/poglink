@@ -136,4 +136,4 @@ jobs:
             PYTHON_PACKAGE_VERSION=${PYTHON_PACKAGE_VERSION} 
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/ark-discord-bot:dev
-            ${{ secrets.DOCKERHUB_USERNAME }}/ark-discord-bot:${GITHUB_SHA}
+            ${{ secrets.DOCKERHUB_USERNAME }}/ark-discord-bot:${{github.sha}}
