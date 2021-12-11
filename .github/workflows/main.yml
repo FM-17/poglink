@@ -65,7 +65,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     outputs:
-        package_version: $ {{ steps.set-output-step.outputs.package_version }}
+        package_version: ${{ steps.set-output-step.outputs.package_version }}
     steps:
       - uses: actions/checkout@v2.4.0
         with:
