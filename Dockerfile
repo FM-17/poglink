@@ -1,5 +1,6 @@
 FROM python:3.6-alpine as build
 
+# Build requirements
 COPY requirements.txt .
 RUN pip install --upgrade pip \
     && pip install wheel \
@@ -7,29 +8,31 @@ RUN pip install --upgrade pip \
         -r requirements.txt \
         --wheel-dir /tmp/wheels
 
+# Build application
+COPY ark_discord_bot ./ark_discord_bot
+COPY setup.py .
+COPY README.md .
+ARG PYTHON_PACKAGE_VERSION=0.0.1
+RUN pip wheel --wheel-dir /tmp/wheels .
 
 FROM python:3.6-alpine
 
-# Copy python wheels from build stage
-COPY --from=build /tmp/wheels /tmp/wheels
-COPY requirements.txt .
+WORKDIR /app
 
+# Copy pre-built wheels from build stage
+COPY --from=build /tmp/wheels /tmp/wheels
+
+# Install application and dependencies
+COPY requirements.txt .
 RUN pip install --upgrade pip \
     && pip install \
         -r requirements.txt \
         --no-index \
-        --find-links /tmp/wheels 
-
-COPY ark_discord_bot ./ark_discord_bot
-COPY setup.py .
-
-RUN pip install . \
-    && rm -rf \
-        /tmp/wheels \
+        ark_discord_bot \
+        --find-links /tmp/wheels \
+    && rm -r \
         requirements.txt \
-        setup.py \
-        ark_discord_bot
-
+        /tmp/wheels 
 
 # Set up non-root user
 ARG USERNAME=bot
@@ -40,6 +43,7 @@ RUN apk add --no-cache shadow
 RUN groupadd --gid $USER_GID $USERNAME \
     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME
 
+# Set up entrypoint script to check for config file
 COPY entrypoint.sh .
 COPY sample-config.yaml /sample-config.yaml
 
