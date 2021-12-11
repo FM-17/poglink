@@ -19,20 +19,20 @@ class Rates(commands.Cog):
     DEFAULT_SERVER_INFO = {
         "smalltribes": {
             "short_name": "Smalltribes",
-            "color": 0xa34c44,
+            "color": 0xA34C44,
         },
         "arkpocalypse": {
             "short_name": "Arkpocalypse",
-            "color": 0x562b61,
+            "color": 0x562B61,
         },
         "conquest": {
             "short_name": "Conquest/Classic",
-            "color": 0x6dff90,
+            "color": 0x6DFF90,
         },
         None: {
             "short_name": "Official",
-            "color": 0x63bcc3,
-        }
+            "color": 0x63BCC3,
+        },
     }
 
     def __init__(self, client):
@@ -69,9 +69,11 @@ class Rates(commands.Cog):
         # generate embed
 
         rates_url_basename = os.path.basename(urlparse(url).path)
-        
+
         try:
-            server_basename = (re.search("(?:(.*)\_(.*)\_)?dynamicconfig", os.path.basename(urlparse(url).path)).group(2))
+            server_basename = re.search(
+                "(?:(.*)\_(.*)\_)?dynamicconfig", os.path.basename(urlparse(url).path)
+            ).group(2)
             server_meta = self.DEFAULT_SERVER_INFO.get(server_basename)
             # TODO: Add ability to accept custom rates URL
         except Exception as e:
@@ -81,7 +83,7 @@ class Rates(commands.Cog):
         else:
             server_name = server_meta.get("short_name")
 
-            embed = discord.Embed( 
+            embed = discord.Embed(
                 description=description,
                 title=f"ARK's {server_name} server rates have just been updated!",
                 color=server_meta.get("color"),
