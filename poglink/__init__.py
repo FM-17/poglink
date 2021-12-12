@@ -1,5 +1,7 @@
-import pkg_resources
-
+from importlib.metadata import version, PackageNotFoundError
 from . import cogs
 
-__version__ = pkg_resources.get_distribution("poglink").version
+try:
+    __version__ = version("poglink")
+except PackageNotFoundError:
+    pass
