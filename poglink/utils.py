@@ -32,7 +32,7 @@ def setup_argparse():
     parser.add_argument(
         "-d",
         "--data-dir",
-        help="Directory in which to store persistent data and config file. Defaults to ~/.ark-discord-bot",
+        help="Directory in which to store persistent data and config file. Defaults to ~/.poglink",
     )
     parser.add_argument(
         "-t",

@@ -4,14 +4,14 @@ import os
 import discord
 from discord.ext import commands
 
-import ark_discord_bot
-from ark_discord_bot.bot import ConfigurableBot
-from ark_discord_bot.config import REQUIRED_VALUES, setup_config
-from ark_discord_bot.utils import setup_argparse
+import poglink
+from poglink.bot import ConfigurableBot
+from poglink.config import REQUIRED_VALUES, setup_config
+from poglink.utils import setup_argparse
 
 # https://discord.com/api/oauth2/authorize?client_id=912847784477065278&permissions=117760&scope=bot//
 
-logger = logging.getLogger("ark-discord-bot")
+logger = logging.getLogger("poglink")
 
 
 def cli():
@@ -58,26 +58,26 @@ def run(**kwargs):
     @client.command()
     @commands.has_any_role(*client.config.allowed_roles)
     async def load(ctx, extension):
-        client.load_extension(f"ark_discord_bot.cogs.{extension}")
+        client.load_extension(f"poglink.cogs.{extension}")
 
     # unload a cogcd
     @client.command()
     @commands.has_any_role(*client.config.allowed_roles)
     async def unload(ctx, extension):
-        client.unload_extension(f"ark_discord_bot.cogs.{extension}")
+        client.unload_extension(f"poglink.cogs.{extension}")
 
     # reload a cog
     @client.command()
     @commands.has_any_role(*client.config.allowed_roles)
     async def reload(ctx, extension):
-        client.unload_extension(f"ark_discord_bot.cogs.{extension}")
-        client.load_extension(f"ark_discord_bot.cogs.{extension}")
+        client.unload_extension(f"poglink.cogs.{extension}")
+        client.load_extension(f"poglink.cogs.{extension}")
         await ctx.send(f"Extension '{extension}' reloaded.")
 
     # load all cogs on boot
-    for ext in ark_discord_bot.cogs.__all__:
+    for ext in poglink.cogs.__all__:
         if ext != "ban":
-            client.load_extension(f"ark_discord_bot.cogs.{ext}")
+            client.load_extension(f"poglink.cogs.{ext}")
 
     # run the bot
     try:

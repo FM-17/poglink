@@ -33,7 +33,7 @@ jobs:
             requirements.dev.txt
       - run: pip install -r requirements.dev.txt .
       - name: Run Black Linting
-        run: black --check ark_discord_bot tests
+        run: black --check poglink tests
 
   semantic-release-python:
     runs-on: ubuntu-latest
@@ -111,8 +111,8 @@ jobs:
           build-args: |
             PYTHON_PACKAGE_VERSION=${{ needs.semantic-release-python.outputs.package_version}}
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/ark-discord-bot:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/ark-discord-bot:${{ needs.semantic-release-python.outputs.package_version}}
+            ${{ secrets.DOCKERHUB_USERNAME }}/poglink:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/poglink:${{ needs.semantic-release-python.outputs.package_version}}
 
   publish-non-release-docker:
     runs-on: ubuntu-latest
@@ -131,7 +131,7 @@ jobs:
         with: 
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/ark-discord-bot:dev
-            ${{ secrets.DOCKERHUB_USERNAME }}/ark-discord-bot:${{ github.sha }}
-            ${{ secrets.DOCKERHUB_USERNAME }}/ark-discord-bot:${{ needs.publish-non-release-python.outputs.package_version || 'dev' }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/poglink:dev
+            ${{ secrets.DOCKERHUB_USERNAME }}/poglink:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/poglink:${{ needs.publish-non-release-python.outputs.package_version || 'dev' }}
 

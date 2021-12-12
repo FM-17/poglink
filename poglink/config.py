@@ -3,7 +3,7 @@ import os
 
 import yaml
 
-from ark_discord_bot.utils import parse_list
+from poglink.utils import parse_list
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +16,7 @@ DEFAULT_CONFIG = {
     "rates_channel_id": None,
     "bans_channel_id": None,
     "token": None,
-    "data_dir": "~/.ark-discord-bot",
+    "data_dir": "~/.poglink",
 }
 
 REQUIRED_VALUES = [

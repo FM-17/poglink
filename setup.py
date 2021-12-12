@@ -17,7 +17,7 @@ with open("README.md") as f:
     long_description = f.read()
 
 setup(
-    name="ark-discord-bot",
+    name="poglink",
     version=version,
     use_scm_version=use_scm_version,
     setup_requires=["setuptools_scm"],
@@ -27,12 +27,12 @@ setup(
     long_description_content_type="text/markdown",
     author="FM-17",
     author_email="info@fm17.dev",
-    url="https://github.com/FM-17/ark-discord-bot",
+    url="https://github.com/FM-17/poglink",
     packages=find_packages(),
     install_requires=["discord>=1.7", "pyyaml", "python-dateutil", "jinja2"],
     entry_points={
         "console_scripts": [
-            "ark-discord-bot=ark_discord_bot.main:cli",
+            "poglink=poglink.main:cli",
         ]
     },
 )

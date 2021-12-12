@@ -18,41 +18,41 @@ There are a few different ways to run this bot on your own machine. Either in yo
 ### Installing in Python
 1. Get the code via either of the following two methods:
 
-    a) Download & extract the [latest bot release](https://github.com/FM-17/ark_discord_bot/releases/latest)
+    a) Download & extract the [latest bot release](https://github.com/FM-17/poglink/releases/latest)
 
-    b) Clone the repo via `git clone https://github.com/FM-17/ark_discord_bot.git` 
+    b) Clone the repo via `git clone https://github.com/FM-17/poglink.git` 
 
 2. Copy `sample_config.yaml`, rename it to `config.yaml`, and fill in the required values.
 3. Install the bot
     
     I'd suggest doing this within a virtual environment via [pyenv](https://github.com/pyenv/pyenv) or [virtualenv](https://pypi.org/project/virtualenv/), but its not required.
     ```bash
-    cd {download location}/ark-discord-bot/
+    cd {download location}/poglink/
     pip install .
     ```
 
 ### Running in Python
 To run the bot in Python you can either:
-1. Execute via the CLI entrypoint: `ark-discord-bot`, passing config parameters any of the ways described below; or
-2. Import within your own Python code and execute `ark_discord_bot.main.run`, passing in configuration parameters as keyword arguments.
+1. Execute via the CLI entrypoint: `poglink`, passing config parameters any of the ways described below; or
+2. Import within your own Python code and execute `poglink.main.run`, passing in configuration parameters as keyword arguments.
 
 ### Installing in Docker
 `WIP`
   
 ### Running in Docker / Docker Compose
-To run in a container, you can simply execute `docker run fm17/ark-discord-bot`, passing in any relevant configuration parameters as environment variables. In order to pass in a configuration file or to maintain persistent data between containers, mount a volume to the `/data` dir inside the container (or whichever data directory is configured via the `--data-dir` CLI argument or the `BOT_DATA_DIR` environment variable). Sim
+To run in a container, you can simply execute `docker run fm17/poglink`, passing in any relevant configuration parameters as environment variables. In order to pass in a configuration file or to maintain persistent data between containers, mount a volume to the `/data` dir inside the container (or whichever data directory is configured via the `--data-dir` CLI argument or the `BOT_DATA_DIR` environment variable). Sim
 
-In the example below, the host's `~/.ark-discord-bot` directory has been mounted to the container's `/data` directory. Therefore the `config.yaml` file must be moved to the `~/.ark-discord-bot` directory in order to be passed into the container. Both of these mounting directories can be modified as needed, see [Configuration](#configuration) for more details.
+In the example below, the host's `~/.poglink` directory has been mounted to the container's `/data` directory. Therefore the `config.yaml` file must be moved to the `~/.poglink` directory in order to be passed into the container. Both of these mounting directories can be modified as needed, see [Configuration](#configuration) for more details.
 
 Example `docker-compose.yaml`
 ```yaml
 version: "3"
 services:
   bot:
-    image: fm17/ark-discord-bot:latest
-    container_name: ark-discord-bot
+    image: fm17/poglink:latest
+    container_name: poglink
     volumes:
-      - ~/.ark-discord-bot:/data
+      - ~/.poglink:/data
     command: "" # provide CLI args here
     networks:
       - bot-net
@@ -64,10 +64,10 @@ networks:
 ## Configuration
 This bot can pull configuration from one of multiple locations. Each parameter will be parsed independently in the following order of precedence:
 1. CLI arguments
-    - See help menu by running `ark-discord-bot -h` for more information.
+    - See help menu by running `poglink -h` for more information.
 2. Configuration File
     - Assumed to be named `config.yaml` within the data directory.
-    - Data directory is set to `~/.ark-discord-bot` unless otherwise specified.
+    - Data directory is set to `~/.poglink` unless otherwise specified.
 3. Environment variables
     - Each parameter can be set via an environment variable prefixed with `BOT_`.
     - E.g. to configure the bot's polling delay, set `BOT_POLLING_DELAY`.
@@ -88,7 +88,7 @@ The following configuration parameters are available to be set in any of the abo
 | `--rates-channel-id`   | `BOT_RATES_CHANNEL_ID`   | None                                      | Yes      | Channel ID to post rates in                                          |
 | `--bans-channel-id`    | `BOT_BANS_CHANNEL_ID`    | None                                      | Yes      | Channel ID to post ban summary in                                    |
 | `--token `             | `BOT_TOKEN`              | None                                      | Yes      | Bot token (from Discord Developer Portal)                            |
-| `--data-dir`           | `BOT_DATA_DIR`           | ~/.ark-discord-bot                        | No       | Directory that will contain bot data, such as the `config.yaml` file |
+| `--data-dir`           | `BOT_DATA_DIR`           | ~/.poglink                        | No       | Directory that will contain bot data, such as the `config.yaml` file |
 | `--debug`              | `BOT_DEBUG`              | False                                     | No       | Enables debug logging                                                |
 
  *Initially developed for use in the official ARK: Survival Evolved Discord 
