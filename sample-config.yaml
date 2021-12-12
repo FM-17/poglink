@@ -8,5 +8,5 @@ bans_channel_id: <channel to post bans in>
 # OPTIONAL
 polling_delay: 60
 allowed_roles: <roles permitted to use bot commands>
-rates_url: "http://arkdedicated.com/dynamicconfig.ini"
+rates_urls: "http://arkdedicated.com/dynamicconfig.ini"
 bans_url: "http://arkdedicated.com/bansummary.txt"
