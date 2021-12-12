@@ -96,6 +96,7 @@ jobs:
     needs: semantic-release-python
     if: ${{ needs.semantic-release-python.outputs.package_version }}
     steps:
+      - uses: actions/checkout@v2.4.0
       - name: Set up docker engine 
         uses: docker/setup-buildx-action@v1
       - name: Log in to Dockerhub
@@ -118,12 +119,14 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           repository: ${{ secrets.DOCKERHUB_USERNAME }}/ark-discord-bot
+          short-description: ${{ github.event.repository.description }}
 
   publish-non-release-docker:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     needs: publish-non-release-python
     steps:
+      - uses: actions/checkout@v2.4.0
       - name: Set up docker engine 
         uses: docker/setup-buildx-action@v1
       - name: Log in to Dockerhub
@@ -145,4 +148,5 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           repository: ${{ secrets.DOCKERHUB_USERNAME }}/ark-discord-bot
+          short-description: ${{ github.event.repository.description }}
 
