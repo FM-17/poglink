@@ -34,7 +34,7 @@ clean-python:
 ##	Build python source distribution (tarball).
 .PHONY: python-build
 python-build: clean-python
-	python setup.py sdist
+	python -m build
 
 ## - python-publish-test
 ##	Publish python package to test.pypi.org.
