@@ -16,7 +16,7 @@ lint:
 ##	Check linting of code with black.
 .PHONY: lint-check 
 lint-check:
-	black poglink tests --check
+	black poglink tests --diff --color
 
 ## - isort
 ##	Automatically sort imports in project code using isort.
@@ -28,7 +28,7 @@ isort:
 ##	Check sorting of imports in project code using isort.
 .PHONY: isort-check 
 isort-check:
-	isort poglink tests --check
+	isort poglink tests --diff --color
 
 ## - test
 ##	Run pytest tests.
