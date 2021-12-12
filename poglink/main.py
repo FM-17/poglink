@@ -9,7 +9,6 @@ from poglink.bot import ConfigurableBot
 from poglink.config import REQUIRED_VALUES, setup_config
 from poglink.utils import setup_argparse
 
-# https://discord.com/api/oauth2/authorize?client_id=912847784477065278&permissions=117760&scope=bot//
 
 logger = logging.getLogger("poglink")
 
@@ -76,7 +75,7 @@ def run(**kwargs):
 
     # load all cogs on boot
     for ext in poglink.cogs.__all__:
-        if ext != "ban":
+        if ext != "bans":
             client.load_extension(f"poglink.cogs.{ext}")
 
     # run the bot
