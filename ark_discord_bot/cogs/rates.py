@@ -67,9 +67,7 @@ class Rates(commands.Cog):
 
     async def send_embed(self, description, url):
         # generate embed
-
-        rates_url_basename = os.path.basename(urlparse(url).path)
-
+        
         try:
             server_basename = re.search(
                 "(?:(.*)\_(.*)\_)?dynamicconfig", os.path.basename(urlparse(url).path)
