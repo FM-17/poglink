@@ -55,7 +55,7 @@ To run the bot in Python you can either:
 ### Installing in Docker
 Run the following command to pull the latest docker image
 ```
-docker pull travipross/poglink
+docker pull fm17/poglink
 ```
 
 ### Running in Docker / Docker Compose
