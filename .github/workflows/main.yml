@@ -118,7 +118,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: ${{ secrets.DOCKERHUB_USERNAME }}/ark-discord-bot
+          repository: ${{ secrets.DOCKERHUB_USERNAME }}/poglink
           short-description: ${{ github.event.repository.description }}
 
   publish-non-release-docker:
@@ -147,6 +147,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: ${{ secrets.DOCKERHUB_USERNAME }}/ark-discord-bot
+          repository: ${{ secrets.DOCKERHUB_USERNAME }}/poglink
           short-description: ${{ github.event.repository.description }}
 
