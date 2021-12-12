@@ -9,7 +9,7 @@ import re
 
 import aiohttp
 import discord
-from ark_discord_bot.models import RatesStatus
+from poglink.models import RatesStatus
 from discord.ext import commands
 
 logger = logging.getLogger(__name__)
