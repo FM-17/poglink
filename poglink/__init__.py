@@ -1,4 +1,5 @@
-from importlib_metadata import version, PackageNotFoundError
+from importlib_metadata import PackageNotFoundError, version
+
 from . import cogs
 
 try:
