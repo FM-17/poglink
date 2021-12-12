@@ -1,7 +1,7 @@
 import aiohttp
 import aiohttp
 import pytest
-from ark_discord_bot.models import RatesStatus
+from poglink.models import RatesStatus
 
 
 @pytest.mark.asyncio

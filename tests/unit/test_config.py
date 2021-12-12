@@ -3,7 +3,7 @@ import os
 import yaml
 import tempfile
 import argparse
-from ark_discord_bot.config import setup_config, DEFAULT_CONFIG
+from poglink.config import setup_config, DEFAULT_CONFIG
 
 
 @pytest.fixture

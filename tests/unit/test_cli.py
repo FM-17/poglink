@@ -1,4 +1,4 @@
-from ark_discord_bot.utils import setup_argparse, parse_list
+from poglink.utils import setup_argparse, parse_list
 
 
 def test_parse_list():

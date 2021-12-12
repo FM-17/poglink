@@ -1,6 +1,6 @@
 import pytest
 import copy
-from ark_discord_bot.models import RatesDiffItem, RatesDiff, RatesStatus
+from poglink.models import RatesDiffItem, RatesDiff, RatesStatus
 
 
 @pytest.fixture()
