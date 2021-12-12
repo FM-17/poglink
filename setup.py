@@ -22,7 +22,7 @@ setup(
     use_scm_version=use_scm_version,
     setup_requires=["setuptools_scm"],
     python_requires=">=3.7",
-    description="A bot for notifying of changes to the ARK Web API via Discord.",
+    description="A bot that integrates the ARK Web API with Discord.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     author="FM-17",
