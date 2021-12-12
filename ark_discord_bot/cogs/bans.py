@@ -1,10 +1,10 @@
+import asyncio
+import logging
+import os
+
+import aiohttp
 import discord
 from discord.ext import commands
-import asyncio
-import aiohttp
-import logging
-import yaml
-import os
 
 logger = logging.getLogger(__name__)
 # create cog class
@@ -71,10 +71,10 @@ class Bans(commands.Cog):
                     ) as response:
                         response = await response.text()
                         if await self.webpage_changed(response):
-                            logger.info("Webpage updated.")
+                            logger.info("Ban summary updated.")
                             await self.send_embed()
                         else:
-                            logger.info("Webpage not updated.")
+                            logger.info("Ban summary not updated.")
             except Exception as e:
                 logger.error(f"Error checking webpage: {e}")
 

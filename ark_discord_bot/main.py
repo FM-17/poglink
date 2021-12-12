@@ -1,11 +1,13 @@
+import logging
+import os
+
 import discord
 from discord.ext import commands
+
 import ark_discord_bot
-import logging
-from ark_discord_bot.utils import setup_argparse
 from ark_discord_bot.bot import ConfigurableBot
-from ark_discord_bot.config import setup_config, REQUIRED_VALUES
-import os
+from ark_discord_bot.config import REQUIRED_VALUES, setup_config
+from ark_discord_bot.utils import setup_argparse
 
 # https://discord.com/api/oauth2/authorize?client_id=912847784477065278&permissions=117760&scope=bot//
 

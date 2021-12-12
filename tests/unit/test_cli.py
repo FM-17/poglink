@@ -27,8 +27,8 @@ def test_parser():
             "500",
             "-a",
             "test,admin",
-            "--rates-url",
-            "www.test.com",
+            "--rates-urls",
+            "www.test.com,www.test123.com",
             "--rates-channel-id",
             "1234",
             "--bans-url",
@@ -43,7 +43,7 @@ def test_parser():
     assert args.token == "MYTOKEN"
     assert args.polling_delay == 500
     assert args.allowed_roles == ["test", "admin"]
-    assert args.rates_url == "www.test.com"
+    assert args.rates_urls == ["www.test.com", "www.test123.com"]
     assert args.rates_channel_id == "1234"
     assert args.bans_url == "www.bans.com"
     assert args.bans_channel_id == "4321"

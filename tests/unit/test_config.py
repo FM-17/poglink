@@ -45,7 +45,7 @@ def config_dir(file_config_vals):
 @pytest.fixture
 def env(config_dir):
     os.environ["BOT_DATA_DIR"] = config_dir
-    os.environ["BOT_RATES_URL"] = "https://www.google.com"
+    os.environ["BOT_RATES_URLS"] = "https://www.google.com,https://www.bing.com"
     os.environ["BOT_TOKEN"] = "fedcba"
 
 
@@ -56,7 +56,10 @@ def test_setup_config(args, env):
     assert config.get("bans_channel_id") == "54321"
 
     # Values are read from environment vars
-    assert config.get("rates_url") == "https://www.google.com"
+    assert config.get("rates_urls") == [
+        "https://www.google.com",
+        "https://www.bing.com",
+    ]
 
     # Values are read from File
     assert config.get("allowed_roles") == ["test", "admin"]

@@ -1,8 +1,8 @@
-from discord.ext import commands
-import os
-import yaml
 import logging
-import json
+import os
+
+import yaml
+from discord.ext import commands
 
 logger = logging.getLogger(__name__)
 
