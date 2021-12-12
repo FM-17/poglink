@@ -16,14 +16,29 @@ This bot monitors the ARK Web API and posts changes to Discord.
 There are a few different ways to run this bot on your own machine. Either in your own Python environment or in a docker container.
 
 ### Installing in Python
+
+- Before installing, copy `sample_config.yaml`, rename it to `config.yaml`, and fill in the required values.
+
+- You'll also need to decide where you want to store this configuration file. By default, the bot will look for it in `~/.poglink`, but you can change the location via the `-d` CLI argument. 
+
+- Whether you decide to use the default location, or a custom one, you'll need to move the `config.yaml` file to that directory before running.
+
+- For example, if you chose to use the default, you'd need to move the `config.yaml` file to `~/.poglink/config.yaml`
+
+#### Installing from PyPi
+
+Run the following command to install from PyPi
+
+    pip install poglink
+    
+#### Installing from Git repo
 1. Get the code via either of the following two methods:
 
     a) Download & extract the [latest bot release](https://github.com/FM-17/poglink/releases/latest)
 
     b) Clone the repo via `git clone https://github.com/FM-17/poglink.git` 
 
-2. Copy `sample_config.yaml`, rename it to `config.yaml`, and fill in the required values.
-3. Install the bot
+2. Install the bot
     
     I'd suggest doing this within a virtual environment via [pyenv](https://github.com/pyenv/pyenv) or [virtualenv](https://pypi.org/project/virtualenv/), but its not required.
     ```bash
@@ -32,15 +47,19 @@ There are a few different ways to run this bot on your own machine. Either in yo
     ```
 
 ### Running in Python
+
 To run the bot in Python you can either:
 1. Execute via the CLI entrypoint: `poglink`, passing config parameters any of the ways described below; or
 2. Import within your own Python code and execute `poglink.main.run`, passing in configuration parameters as keyword arguments.
 
 ### Installing in Docker
-`WIP`
-  
+Run the following command to pull the latest docker image
+```
+docker pull travipross/poglink
+```
+
 ### Running in Docker / Docker Compose
-To run in a container, you can simply execute `docker run fm17/poglink`, passing in any relevant configuration parameters as environment variables. In order to pass in a configuration file or to maintain persistent data between containers, mount a volume to the `/data` dir inside the container (or whichever data directory is configured via the `--data-dir` CLI argument or the `BOT_DATA_DIR` environment variable). Sim
+To run in a container, you can simply execute `docker run fm17/poglink`, passing in any relevant configuration parameters as environment variables. In order to pass in a configuration file or to maintain persistent data between containers, mount a volume to the `/data` dir inside the container (or whichever data directory is configured via the `--data-dir` CLI argument or the `BOT_DATA_DIR` environment variable). 
 
 In the example below, the host's `~/.poglink` directory has been mounted to the container's `/data` directory. Therefore the `config.yaml` file must be moved to the `~/.poglink` directory in order to be passed into the container. Both of these mounting directories can be modified as needed, see [Configuration](#configuration) for more details.
 
