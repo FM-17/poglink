@@ -20,7 +20,7 @@ jobs:
       - run: pip install -r requirements.dev.txt .
       - run: pytest
 
-  lint:
+  formatting:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.4.0
@@ -32,8 +32,10 @@ jobs:
             setup.py
             requirements.dev.txt
       - run: pip install -r requirements.dev.txt .
-      - name: Run Black Linting
-        run: black --check poglink tests
+      - name: Run isort check 
+        run: make isort-check
+      - name: Run Black lint check
+        run: make lint-check
 
   semantic-release-python:
     runs-on: ubuntu-latest
