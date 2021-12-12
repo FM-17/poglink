@@ -21,4 +21,4 @@ if [ ! -e "${CONFIG_FILE}" ]; then
 fi
 
 # Run application with provided arguments
-ark-discord-bot $@
+poglink $@

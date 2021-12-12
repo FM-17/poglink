@@ -5,7 +5,7 @@ all: help
 ##	Automatically format project code with black.
 .PHONY: lint 
 lint:
-	black ark_discord_bot tests
+	black poglink tests
 
 ## - test
 ##	Run pytest tests.

@@ -9,7 +9,7 @@ RUN pip install --upgrade pip \
         --wheel-dir /tmp/wheels
 
 # Build application
-COPY ark_discord_bot ./ark_discord_bot
+COPY poglink ./poglink
 COPY setup.py .
 COPY README.md .
 ARG PYTHON_PACKAGE_VERSION=0.0.1
@@ -28,7 +28,7 @@ RUN pip install --upgrade pip \
     && pip install \
         -r requirements.txt \
         --no-index \
-        ark_discord_bot \
+        poglink \
         --find-links /tmp/wheels \
     && rm -r \
         requirements.txt \

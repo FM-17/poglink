@@ -1,6 +1,6 @@
 import pytest
 import datetime
-from ark_discord_bot.models import BansStatus
+from poglink.models import BansStatus
 
 
 @pytest.fixture()

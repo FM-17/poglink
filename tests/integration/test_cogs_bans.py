@@ -1,7 +1,7 @@
 import pytest
 import aiohttp
-from ark_discord_bot.cogs.bans import Bans
-from ark_discord_bot.bot import ConfigurableBot
+from poglink.cogs.bans import Bans
+from poglink.bot import ConfigurableBot
 
 
 @pytest.fixture()
