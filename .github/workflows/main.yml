@@ -112,6 +112,12 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/poglink:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/poglink:${{ needs.semantic-release-python.outputs.package_version}}
+      - name: Push Readme 
+        uses: peter-evans/dockerhub-description@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: ${{ secrets.DOCKERHUB_USERNAME }}/ark-discord-bot
 
   publish-non-release-docker:
     runs-on: ubuntu-latest
@@ -133,4 +139,10 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/poglink:dev
             ${{ secrets.DOCKERHUB_USERNAME }}/poglink:${{ github.sha }}
             ${{ secrets.DOCKERHUB_USERNAME }}/poglink:${{ needs.publish-non-release-python.outputs.package_version || 'dev' }}
+      - name: Push Readme 
+        uses: peter-evans/dockerhub-description@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: ${{ secrets.DOCKERHUB_USERNAME }}/ark-discord-bot
 
