@@ -1,6 +1,11 @@
 .PHONY: all 
 all: help
 
+## - format
+##	Automatically run black linting and isort sorting.
+.PHONY: format 
+format: isort lint
+
 ## - lint
 ##	Automatically format project code with black.
 .PHONY: lint 
