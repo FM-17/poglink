@@ -7,11 +7,23 @@ all: help
 lint:
 	black poglink tests
 
+## - lint-check
+##	Check linting of code with black.
+.PHONY: lint-check 
+lint-check:
+	black poglink tests --check
+
 ## - isort
-##	Automatically format project code with black.
+##	Automatically sort imports in project code using isort.
 .PHONY: isort 
 isort:
 	isort poglink tests
+
+## - isort-check
+##	Check sorting of imports in project code using isort.
+.PHONY: isort-check 
+isort-check:
+	isort poglink tests --check
 
 ## - test
 ##	Run pytest tests.
