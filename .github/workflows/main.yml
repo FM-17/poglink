@@ -85,7 +85,7 @@ jobs:
         run: |
           PACKAGE_VERSION=$(python3 -c 'from setuptools_scm import get_version; print(get_version(local_scheme="no-local-version"))' || echo 0.0.1.dev0)
           echo "::set-output name=package_version::${PACKAGE_VERSION}"
-      - name: Publish to test.pypi.org
+      - name: Publish to pypi.org
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
