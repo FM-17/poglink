@@ -96,6 +96,7 @@ jobs:
     needs: semantic-release-python
     if: ${{ needs.semantic-release-python.outputs.package_version }}
     steps:
+      - uses: actions/checkout@v2.4.0
       - name: Set up docker engine 
         uses: docker/setup-buildx-action@v1
       - name: Log in to Dockerhub
@@ -112,12 +113,20 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/poglink:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/poglink:${{ needs.semantic-release-python.outputs.package_version}}
+      - name: Push Readme 
+        uses: peter-evans/dockerhub-description@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: ${{ secrets.DOCKERHUB_USERNAME }}/poglink
+          short-description: ${{ github.event.repository.description }}
 
   publish-non-release-docker:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     needs: publish-non-release-python
     steps:
+      - uses: actions/checkout@v2.4.0
       - name: Set up docker engine 
         uses: docker/setup-buildx-action@v1
       - name: Log in to Dockerhub
@@ -133,4 +142,11 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/poglink:dev
             ${{ secrets.DOCKERHUB_USERNAME }}/poglink:${{ github.sha }}
             ${{ secrets.DOCKERHUB_USERNAME }}/poglink:${{ needs.publish-non-release-python.outputs.package_version || 'dev' }}
+      - name: Push Readme 
+        uses: peter-evans/dockerhub-description@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: ${{ secrets.DOCKERHUB_USERNAME }}/poglink
+          short-description: ${{ github.event.repository.description }}
 
