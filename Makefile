@@ -7,6 +7,12 @@ all: help
 lint:
 	black poglink tests
 
+## - isort
+##	Automatically format project code with black.
+.PHONY: isort 
+isort:
+	isort poglink tests
+
 ## - test
 ##	Run pytest tests.
 .PHONY: test 

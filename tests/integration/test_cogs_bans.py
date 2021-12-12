@@ -1,7 +1,8 @@
-import pytest
 import aiohttp
-from poglink.cogs.bans import Bans
+import pytest
+
 from poglink.bot import ConfigurableBot
+from poglink.cogs.bans import Bans
 
 
 @pytest.fixture()

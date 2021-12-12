@@ -3,14 +3,15 @@ import copy
 import json
 import logging
 import os
+import re
 from json.decoder import JSONDecodeError
 from urllib.parse import urlparse
-import re
 
 import aiohttp
 import discord
-from poglink.models import RatesStatus
 from discord.ext import commands
+
+from poglink.models import RatesStatus
 
 logger = logging.getLogger(__name__)
 

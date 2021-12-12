@@ -9,7 +9,6 @@ from poglink.bot import ConfigurableBot
 from poglink.config import REQUIRED_VALUES, setup_config
 from poglink.utils import setup_argparse
 
-
 logger = logging.getLogger("poglink")
 
 
