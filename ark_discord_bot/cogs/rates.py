@@ -69,11 +69,17 @@ class Rates(commands.Cog):
         # generate embed
 
         try:
-            server_basename = re.search(
-                "(?:(.*)\_(.*)\_)?dynamicconfig", os.path.basename(urlparse(url).path)
-            ).group(2)
-            server_meta = self.DEFAULT_SERVER_INFO.get(server_basename)
+            server_match_dict = (
+                re.match(
+                    "(?P<host>.*\/)?(?:(?P<platform>.*)\_(?P<game_mode>.*)\_)?dynamicconfig\.ini",
+                    os.path.basename(urlparse(url).path),
+                )
+            ).groupdict()
+            server_meta = self.DEFAULT_SERVER_INFO.get(
+                server_match_dict.get("game_mode")
+            )
             # TODO: Add ability to accept custom rates URL
+
         except Exception as e:
             logger.error(f"Rates url could not be processed: {url} {e}")
             pass
