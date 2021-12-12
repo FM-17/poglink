@@ -1,6 +1,6 @@
 This bot monitors the ARK Web API and posts changes to Discord.
 
-![image](https://user-images.githubusercontent.com/82160306/143663008-ae44ae7a-4499-4abe-9568-89109f390128.png)
+![image](https://user-images.githubusercontent.com/82160306/145702199-a14a4469-76c5-49fd-b5e0-1f6eb197a1e4.png)
 
 ## Requirements
 - Python 3.7+
@@ -110,4 +110,4 @@ The following configuration parameters are available to be set in any of the abo
 | `--data-dir`           | `BOT_DATA_DIR`           | ~/.poglink                        | No       | Directory that will contain bot data, such as the `config.yaml` file |
 | `--debug`              | `BOT_DEBUG`              | False                                     | No       | Enables debug logging                                                |
 
- *Initially developed for use in the official ARK: Survival Evolved Discord 
+ *Initially developed for use in the official ARK: Survival Evolved Discord*
