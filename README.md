@@ -1,5 +1,3 @@
-This bot monitors the ARK Web API and posts changes to Discord.
-
 ![image](https://user-images.githubusercontent.com/82160306/145702199-a14a4469-76c5-49fd-b5e0-1f6eb197a1e4.png)
 
 *Initially developed for use in the official ARK: Survival Evolved Discord*
