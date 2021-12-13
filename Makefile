@@ -6,6 +6,11 @@ all: help
 .PHONY: format 
 format: isort lint
 
+## - format-check
+##	Check (but don't apply) black linting and isort sorting.
+.PHONY: format-check 
+format-check: lint-check isort-check
+
 ## - lint
 ##	Automatically format project code with black.
 .PHONY: lint 
