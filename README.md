@@ -5,7 +5,7 @@ Poglink is a locally-hosted bot that monitors the ARK Web API and posts any chan
 ## Server Rates Notifications
 ![image](https://i.ibb.co/2t9gR5K/poglink.png)
 
-ARK's server rates are updated via [dynamic config URL's](https://arkdedicated.com/dynamicconfig.ini). When provided with these URL's, Poglink will automatically notify your Discord of any changes to the server rates.
+ARK's server rates are updated via [dynamic config URLs](https://arkdedicated.com/dynamicconfig.ini). When provided with these URLs, Poglink will automatically notify your Discord of any changes to the server rates.
 
 Recently updated rates will be shown in **bold**, and the embed title will be automatically adjusted to indicate the game mode. If Poglink is set up in an [announcement channel](https://support.discord.com/hc/en-us/articles/360032008192-Announcement-Channels-), it will publish its messages so you don't have to.
 
