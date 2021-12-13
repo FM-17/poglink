@@ -159,7 +159,7 @@ class Rates(commands.Cog):
 
                     # generate and send embed
                     logger.info(f"Rates at {url} changed - sending embed")
-                    embed_description = rates_diff.to_embed(rates)
+                    embed_description = rates_diff.to_embed()
                     await self.send_embed(embed_description, url)
 
             await asyncio.sleep(self.polling_delay)
