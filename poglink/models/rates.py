@@ -66,7 +66,7 @@ class RatesStatus:
 
         return cls(**expected, **extras)
 
-    def update(self, vals, raw=False):
+    def update_vals(self, vals, raw=False):
 
         parsed_vals = self.parse_raw(vals) if raw else vals
 
