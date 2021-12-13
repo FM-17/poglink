@@ -7,7 +7,7 @@
 
 ## Create the bot
 
-This bot runs on your own machine or server. You'll need to create the bot and invite it to your Discord server before you can run it.
+This bot runs on your own machine or server. You'll need to create the bot on the Discord Developer Portal and invite it to your Discord server before you can run it.
 1. Create a bot on the [Discord Developer Portal](https://discordapp.com/developers/)
 2. Enable **Message Content Intent** from the Bot tab. 
 3. Navigate to **OAuth2 > URL Generator** Make sure the bot has `Send Messages`, `Read Messages/View Channels`, `Read Message History` and `Embed Links` permissions.
