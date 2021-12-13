@@ -2,7 +2,7 @@ import copy
 
 import pytest
 
-from poglink.models import RatesDiff, RatesDiffItem, RatesStatus
+from poglink.models import RatesDiff, RatesDiffItem, RatesStatus, rates
 
 
 @pytest.fixture()
@@ -183,3 +183,25 @@ def test_rates_eq(sample_rates_dict, sample_rates_txt):
     rates_from_txt = RatesStatus.from_raw(sample_rates_txt)
 
     assert rates_from_dict == rates_from_txt
+
+def test_rates_method_to_embed(sample_rates_dict):
+    old_rates = RatesStatus.from_dict(sample_rates_dict)
+    sample_rates_dict["XPMultiplier"] = 1.0
+    sample_rates_dict["MatingIntervalMultiplier"] = 1.0
+    new_rates = RatesStatus.from_dict(sample_rates_dict)
+
+    rates_diff = RatesDiff.from_statuses(old=old_rates, new=new_rates)
+
+    highlighted_embed = """\
+3 × Taming
+3 × Harvesting
+**1.0** × XP
+**1.0** × Mating Interval
+3 × Maturation
+3 × Hatching
+0.6 × Cuddle Interval
+3 × Imprinting
+1.5 × Hexagon Reward
+6942 × MyMadeUpValue\
+""" 
+    assert rates_diff.to_embed() == highlighted_embed
