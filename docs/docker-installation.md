@@ -8,7 +8,7 @@ docker pull fm17/poglink
 ## Usage
 To run in a container, you can simply execute `docker run fm17/poglink`, passing in any relevant configuration parameters as environment variables. In order to pass in a configuration file or to maintain persistent data between containers, **mount a volume** to the `/data` dir inside the container (or whichever data directory is configured via the `--data-dir` CLI argument or the `BOT_DATA_DIR` environment variable). 
 
-In the example below, the host's `~/.poglink` directory has been mounted to the container's `/data` directory. Therefore the `config.yaml` file must be located in `~/.poglink` in order to be passed into the container. Both of these mounting directories can be modified as needed, see [Configuration](#configuration) for more details.
+In the example below, the host's `~/.poglink` directory has been mounted to the container's `/data` directory. Therefore the `config.yaml` file must be located in `~/.poglink` in order to be passed into the container. Both of these mounting directories can be modified as needed, see [Configuration](https://github.com/FM-17/poglink/blob/main/docs/configuration.md) for more details.
 
 Example `docker-compose.yaml`
 ```yaml

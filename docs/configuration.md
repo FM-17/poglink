@@ -27,3 +27,23 @@ The following configuration parameters are available to be set in any of the abo
 | `--token `             | `BOT_TOKEN`              | None                                      | Yes      | Bot token (from Discord Developer Portal)                            |
 | `--data-dir`           | `BOT_DATA_DIR`           | ~/.poglink                        | No       | Directory that will contain bot data, such as the `config.yaml` file |
 | `--debug`              | `BOT_DEBUG`              | False                                     | No       | Enables debug logging                                                |
+
+## Configuration Examples
+
+Running Poglink with the default data directory (`~/.poglink`)
+
+```bash
+poglink
+```
+
+Running Poglink with data stored in `~/bots/poglink/data`
+
+```bash
+poglink --data-dir ~/bots/poglink/data
+```
+
+Running Poglink with multiple rates urls
+
+```bash
+poglink --rates-urls http://arkdedicated.com/dynamicconfig.ini,http://arkdedicated.com/pc_smalltribes_dynamicconfig.ini
+```

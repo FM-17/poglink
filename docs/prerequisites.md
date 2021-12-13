@@ -1,5 +1,5 @@
 
-# Prequisites
+# Prerequisites
 ## Install dependencies
 
 - Python 3.7+
@@ -15,7 +15,7 @@ This bot runs on your own machine or server. You'll need to create the bot and i
 
 ## Prepare data directory and config file
 
-By default, this bot will save all data to `~/.poglink`, but you can choose a different directory if you'd like [#TODO add link]. 
+By default, this bot will save all data to `~/.poglink`, but you can choose a different directory if you'd like (see [Configuration](https://github.com/FM-17/poglink/blob/main/docs/configuration.md)). 
 
 1. Create the data directory if it doesn't already exist, for example
   
@@ -30,10 +30,10 @@ By default, this bot will save all data to `~/.poglink`, but you can choose a di
     touch config.yaml # creates empty config file
     ```
 
-3. Copy the contents of [sample_config.yaml](https://github.com/FM-17/poglink/blob/main/sample-config.yaml) into your `config.yaml` file and configure all **required** parameters. See configuration [#TODO add link] for more details.
+3. Copy the contents of [sample_config.yaml](https://github.com/FM-17/poglink/blob/main/sample-config.yaml) into your `config.yaml` file and configure all **required** parameters. See [Configuration](https://github.com/FM-17/poglink/blob/main/docs/configuration.md) for more details.
 
 ## Next steps
 You're now ready to install and run the bot. There are a number of ways to do this. Pick your favourite.
 
-- Running natively in Python #TODO: Add link
-- Running within Docker container #TODO: Add link
+- [Running natively in Python](https://github.com/FM-17/poglink/blob/main/docs/native-installation.md)
+- [Running within Docker container](https://github.com/FM-17/poglink/blob/main/docs/docker-installation.md)
