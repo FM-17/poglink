@@ -143,7 +143,7 @@ class Rates(commands.Cog):
                 last_rates = RatesStatus.from_dict(last_rates_dict)
 
                 # compare rates to last rates
-                #TODO: I think this is backwards; it should be last_rates.get_diff(rates)
+                # TODO: I think this is backwards; it should be last_rates.get_diff(rates)
                 rates_diff = rates.get_diff(last_rates)
 
                 if rates_diff.items:

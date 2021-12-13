@@ -184,6 +184,7 @@ def test_rates_eq(sample_rates_dict, sample_rates_txt):
 
     assert rates_from_dict == rates_from_txt
 
+
 def test_rates_method_to_embed(sample_rates_dict):
     old_rates = RatesStatus.from_dict(sample_rates_dict)
     sample_rates_dict["XPMultiplier"] = 1.0
@@ -203,5 +204,5 @@ def test_rates_method_to_embed(sample_rates_dict):
 3 × Imprinting
 1.5 × Hexagon Reward
 6942 × MyMadeUpValue\
-""" 
+"""
     assert rates_diff.to_embed() == highlighted_embed
