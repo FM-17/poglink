@@ -129,19 +129,19 @@ class RatesDiff:
         )
 
     # highlights changed rates in embed
-    def to_embed(self, rates):
+    def to_embed(self):
 
-        rates_dict = rates.to_dict()
+        rates_dict = self.old.to_dict()
 
         # bold updated rates
-        updated_rates = {item.key: f"**{item.new}**" for item in self.items}
+        updated_rates = {item.key: f"**{item.new_val}**" for item in self.items}
 
         rates_dict.update(updated_rates)
 
         # rename keys and format embed description
         embed_description = "\n".join(
             [
-                f"{v.rstrip('.0')} × {rates.RATES_NAMES.get(k,k)}"
+                f"{v.rstrip('.0')} × {self.old.RATES_NAMES.get(k,k)}"
                 for k, v in rates_dict.items()
             ]
         )
