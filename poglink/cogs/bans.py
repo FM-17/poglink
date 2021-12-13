@@ -52,7 +52,7 @@ class Bans(commands.Cog):
         # generate embed
         embed = discord.Embed(title="ARK Ban Summary", color=0x069420)
         embed.description = last_bans
-
+        embed.set_image(url="https://i.stack.imgur.com/Fzh0w.png")
         # send embed
         channel = self.client.get_channel(self.channel_id)
         await channel.send(embed=embed)

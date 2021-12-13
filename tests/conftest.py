@@ -1,7 +1,7 @@
-import pytest
-import shutil
 import os
+import shutil
 
+import pytest
 
 SAMPLE_BANSUMMARY_PATH_1 = "tests/data/bansummary-1.txt"
 SAMPLE_BANSUMMARY_PATH_2 = "tests/data/bansummary-2.txt"

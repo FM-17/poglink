@@ -3,14 +3,15 @@ import copy
 import json
 import logging
 import os
+import re
 from json.decoder import JSONDecodeError
 from urllib.parse import urlparse
-import re
 
 import aiohttp
 import discord
-from poglink.models import RatesStatus
 from discord.ext import commands
+
+from poglink.models import RatesStatus
 
 logger = logging.getLogger(__name__)
 
@@ -142,7 +143,7 @@ class Rates(commands.Cog):
                 last_rates = RatesStatus.from_dict(last_rates_dict)
 
                 # compare rates to last rates
-                rates_diff = rates.get_diff(last_rates)
+                rates_diff = last_rates.get_diff(rates)
 
                 if rates_diff.items:
 
@@ -157,7 +158,7 @@ class Rates(commands.Cog):
 
                     # generate and send embed
                     logger.info(f"Rates at {url} changed - sending embed")
-                    embed_description = rates_diff.to_embed(rates)
+                    embed_description = rates_diff.to_embed()
                     await self.send_embed(embed_description, url)
 
             await asyncio.sleep(self.polling_delay)

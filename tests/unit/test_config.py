@@ -1,9 +1,11 @@
-import pytest
-import os
-import yaml
-import tempfile
 import argparse
-from poglink.config import setup_config, DEFAULT_CONFIG
+import os
+import tempfile
+
+import pytest
+import yaml
+
+from poglink.config import DEFAULT_CONFIG, setup_config
 
 
 @pytest.fixture
