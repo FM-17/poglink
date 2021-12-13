@@ -4,7 +4,8 @@ This bot can pull configuration from one of multiple locations. Each parameter w
     - See help menu by running `poglink -h` for more information.
 2. Configuration File
     - Assumed to be named `config.yaml` within the data directory.
-    - Data directory is set to `~/.poglink` unless otherwise specified.
+    - Data directory is set to `~/.poglink` when running natively unless otherwise specified. See [Docker Instructions](https://github.com/FM-17/poglink/blob/main/docs/docker-installation.md) for more informations on how to configure this directory as a bind-mount.
+    - See the supplied [sample configuration file](https://github.com/FM-17/poglink/blob/main/sample-config.yaml) for a reference of how to set parameters in this way.
 3. Environment variables
     - Each parameter can be set via an environment variable prefixed with `BOT_`.
     - E.g. to configure the bot's polling delay, set `BOT_POLLING_DELAY`.
