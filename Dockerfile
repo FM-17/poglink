@@ -11,6 +11,8 @@ RUN pip install --upgrade pip \
 # Build application
 COPY poglink ./poglink
 COPY setup.py .
+COPY setup.cfg .
+COPY LICENSE .
 COPY README.md .
 ARG PYTHON_PACKAGE_VERSION=0.0.1
 RUN pip wheel --wheel-dir /tmp/wheels .

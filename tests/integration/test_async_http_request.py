@@ -1,6 +1,6 @@
 import aiohttp
-import aiohttp
 import pytest
+
 from poglink.models import RatesStatus
 
 

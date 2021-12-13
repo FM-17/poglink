@@ -1,4 +1,4 @@
-from poglink.utils import setup_argparse, parse_list
+from poglink.utils import parse_list, setup_argparse
 
 
 def test_parse_list():
