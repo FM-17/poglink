@@ -9,15 +9,13 @@ ARK's server rates are updated via [dynamic config URL's](https://arkdedicated.c
 
 Recently updated rates will be shown in **bold**, and the embed title will be automatically adjusted to indicate the game mode. If Poglink is set up in an [announcement channel](https://support.discord.com/hc/en-us/articles/360032008192-Announcement-Channels-), it will publish its messages so you don't have to.
 
-## Getting Started
---- 
+## Getting Started 
 - [Prerequisites](https://github.com/FM-17/poglink/blob/main/docs/prerequisites.md)
 - [Running natively in Python](https://github.com/FM-17/poglink/blob/main/docs/native-installation.md)
 - [Running within Docker container](https://github.com/FM-17/poglink/blob/main/docs/docker-installation.md)
 - [Configuration](https://github.com/FM-17/poglink/blob/main/docs/configuration.md)
 
 ## Future updates
----
 - Configurable delay between change detection and posting to discord
 - Option to disable auto-publishing in announcement channels
 - Optional in-game server notification integration
