@@ -6,6 +6,11 @@ all: help
 .PHONY: format 
 format: isort lint
 
+## - format-check
+##	Check (but don't apply) black linting and isort sorting.
+.PHONY: format-check 
+format-check: lint-check isort-check
+
 ## - lint
 ##	Automatically format project code with black.
 .PHONY: lint 
@@ -16,7 +21,7 @@ lint:
 ##	Check linting of code with black.
 .PHONY: lint-check 
 lint-check:
-	black poglink tests --diff --color
+	black poglink tests --diff --color --check
 
 ## - isort
 ##	Automatically sort imports in project code using isort.
@@ -28,7 +33,7 @@ isort:
 ##	Check sorting of imports in project code using isort.
 .PHONY: isort-check 
 isort-check:
-	isort poglink tests --diff --color
+	isort poglink tests --diff --color --check
 
 ## - test
 ##	Run pytest tests.
