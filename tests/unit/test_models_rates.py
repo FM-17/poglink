@@ -156,10 +156,16 @@ def test_get_diff(sample_rates_dict):
     assert diff == RatesDiff(
         items=[
             RatesDiffItem(
-                key="BabyMatureSpeedMultiplier", old="3.0", new="4.2", extra=False
+                key="BabyMatureSpeedMultiplier",
+                old_val="3.0",
+                new_val="4.2",
+                is_extra=False,
             ),
             RatesDiffItem(
-                key="CompletelyRandomNewThing", old=None, new="2.2", extra=True
+                key="CompletelyRandomNewThing",
+                old_val=None,
+                new_val="2.2",
+                is_extra=True,
             ),
         ],
         old=rates,

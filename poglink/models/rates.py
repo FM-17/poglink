@@ -89,33 +89,15 @@ class RatesStatus:
         return "\n".join([f"{k}={v}" for k, v in self.to_dict().items()])
 
     def get_diff(self, newrates: "RatesStatus"):
-        old = self.to_dict()
-        new = newrates.to_dict()
-
-        return RatesDiff(
-            items=sorted(
-                [
-                    RatesDiffItem(
-                        key=k,
-                        old=old.get(k),
-                        new=new.get(k),
-                        extra=k not in RatesStatus.RATES_NAMES,
-                    )
-                    for k, _ in set(new.items()) - set(old.items())
-                ],
-                key=lambda x: x.key,
-            ),
-            old=self,
-            new=newrates,
-        )
+        return RatesDiff.from_statuses(self, newrates)
 
 
 @dataclass
 class RatesDiffItem:
     key: str
-    old: Any
-    new: Any
-    extra: bool = False
+    old_val: Any
+    new_val: Any
+    is_extra: bool = False
 
 
 @dataclass
@@ -134,9 +116,9 @@ class RatesDiff:
                 [
                     RatesDiffItem(
                         key=k,
-                        old=old_dict.get(k),
-                        new=new_dict.get(k),
-                        extra=k not in RatesStatus.RATES_NAMES,
+                        old_val=old_dict.get(k),
+                        new_val=new_dict.get(k),
+                        is_extra=k not in RatesStatus.RATES_NAMES,
                     )
                     for k, _ in set(new_dict.items()) - set(old_dict.items())
                 ],
