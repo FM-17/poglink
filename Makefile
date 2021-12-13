@@ -28,7 +28,7 @@ isort:
 ##	Check sorting of imports in project code using isort.
 .PHONY: isort-check 
 isort-check:
-	isort poglink tests --diff --color
+	isort poglink tests --diff --color --check
 
 ## - test
 ##	Run pytest tests.
