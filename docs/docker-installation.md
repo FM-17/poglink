@@ -10,6 +10,11 @@ To run in a container, you can simply execute `docker run fm17/poglink`, passing
 
 In the example below, the host's `~/.poglink` directory has been mounted to the container's `/data` directory. Therefore the `config.yaml` file must be located in `~/.poglink` in order to be passed into the container. Both of these mounting directories can be modified as needed, see [Configuration](https://github.com/FM-17/poglink/blob/main/docs/configuration.md) for more details.
 
+```
+docker run -v ~/.poglink:/data poglink
+```
+The same can be achieved by using Docker Compose:
+
 Example `docker-compose.yaml`
 ```yaml
 version: "3"
