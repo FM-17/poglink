@@ -109,7 +109,9 @@ class RatesStatus:
                     for k, _ in set(new.items()) - set(old.items())
                 ],
                 key=lambda x: x.key,
-            )
+            ),
+            old=self,
+            new=newrates,
         )
 
 
@@ -217,7 +219,7 @@ class BansStatus:
 {{- ban_summary.platform }}: {{ ban_summary.nbans}}
 {% endfor %}
 
-{% endfor -%}
+{% endfor -%}items: List[RatesDiffItem] = field(default_factory=list)
 Last Updated: {{ banstatus.last_updated.strftime('%d %b %Y %H:%M:%S') }} ET 
 """
     )
@@ -233,7 +235,31 @@ class RatesDiffItem:
 
 @dataclass
 class RatesDiff:
+    old: RatesStatus = field(default_factory=RatesStatus)
+    new: RatesStatus = field(default_factory=RatesStatus)
     items: List[RatesDiffItem] = field(default_factory=list)
+
+    @classmethod
+    def from_statuses(cls, old, new):
+        old_dict = old.to_dict()
+        new_dict = new.to_dict()
+
+        return RatesDiff(
+            items=sorted(
+                [
+                    RatesDiffItem(
+                        key=k,
+                        old=old_dict.get(k),
+                        new=new_dict.get(k),
+                        extra=k not in RatesStatus.RATES_NAMES,
+                    )
+                    for k, _ in set(new_dict.items()) - set(old_dict.items())
+                ],
+                key=lambda x: x.key,
+            ),
+            old=old,
+            new=new,
+        )
 
     # highlights changed rates in embed
     def to_embed(self, rates):

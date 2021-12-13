@@ -161,13 +161,15 @@ def test_get_diff(sample_rates_dict):
             RatesDiffItem(
                 key="CompletelyRandomNewThing", old=None, new="2.2", extra=True
             ),
-        ]
+        ],
+        old=rates,
+        new=newrates,
     )
 
     rates_copy = copy.deepcopy(rates)
     diff = rates.get_diff(rates_copy)
 
-    assert diff == RatesDiff()
+    assert diff == RatesDiff(old=rates, new=rates_copy)
 
 
 def test_rates_comparison(sample_rates_dict, sample_rates_txt):
