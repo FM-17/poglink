@@ -92,6 +92,7 @@ class Rates(commands.Cog):
                 title=f"ARK's {server_name} server rates have just been updated!",
                 color=server_meta.get("color"),
             )
+            embed.set_image(url="https://i.stack.imgur.com/Fzh0w.png")
 
             # send embed
             channel = self.client.get_channel(self.channel_id)
