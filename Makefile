@@ -16,7 +16,7 @@ lint:
 ##	Check linting of code with black.
 .PHONY: lint-check 
 lint-check:
-	black poglink tests --diff --color
+	black poglink tests --diff --color --check
 
 ## - isort
 ##	Automatically sort imports in project code using isort.
