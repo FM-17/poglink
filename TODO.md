@@ -28,5 +28,5 @@ server
 - [ ] In-game server notifications posted to Discord channels
 - [x] Convert to use `setup.cfg` instead of `setup.py`
 - [x] Add `old_rates` and `current_rates` to `RatesDiff` so `self.current_rates` could be used instead of `to_embed` 
-- [ ] Allow for `old_rates=old` and `new_rates=new` to be passed into `RatesStatus.to_diff()`  
+- [x] Allow for `old_rates=old` and `new_rates=new` to be passed into `RatesStatus.to_diff()`  
 - [ ] Add ability to provide custom rates URL
