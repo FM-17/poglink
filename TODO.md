@@ -27,6 +27,6 @@ server
 - [ ] Add auto-publish/no publish as a parameter for each cog, perhaps `auto-publish-channels = [<chan_ID1>, <chan_ID1>]`
 - [ ] In-game server notifications posted to Discord channels
 - [x] Convert to use `setup.cfg` instead of `setup.py`
-- [ ] Add `old_rates` and `current_rates` to `RatesDiff` so `self.current_rates` could be used instead of `to_embed` 
+- [x] Add `old_rates` and `current_rates` to `RatesDiff` so `self.current_rates` could be used instead of `to_embed` 
 - [ ] Allow for `old_rates=old` and `new_rates=new` to be passed into `RatesStatus.to_diff()`  
 - [ ] Add ability to provide custom rates URL
