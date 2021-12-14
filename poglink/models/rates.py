@@ -1,3 +1,4 @@
+import re
 from dataclasses import dataclass, field
 from typing import Any, List, Tuple
 
@@ -141,7 +142,7 @@ class RatesDiff:
         # rename keys and format embed description
         embed_description = "\n".join(
             [
-                f"{v.rstrip('.0')} × {self.old.RATES_NAMES.get(k,k)}"  # TODO: rstrip won't remove '.0' if wrapped in ** from above
+                "{} × {}".format(re.sub(r"\.0", "", v), self.old.RATES_NAMES.get(k, k))
                 for k, v in rates_dict.items()
             ]
         )

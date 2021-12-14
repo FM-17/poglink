@@ -196,13 +196,13 @@ def test_rates_method_to_embed(sample_rates_dict):
     highlighted_embed = """\
 3 × Taming
 3 × Harvesting
-**1.0** × XP
-**1.0** × Mating Interval
+**1** × XP
+**1** × Mating Interval
 3 × Maturation
 3 × Hatching
 0.6 × Cuddle Interval
 3 × Imprinting
 1.5 × Hexagon Reward
-6942 × MyMadeUpValue\
+69420 × MyMadeUpValue\
 """
     assert rates_diff.to_embed() == highlighted_embed
