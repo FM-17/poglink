@@ -30,3 +30,4 @@ server
 - [x] Add `old_rates` and `current_rates` to `RatesDiff` so `self.current_rates` could be used instead of `to_embed` 
 - [x] Allow for `old_rates=old` and `new_rates=new` to be passed into `RatesStatus.to_diff()`  
 - [ ] Add ability to provide custom rates URL
+- [ ] Add a check that will explicitly state that a certain platform's rates have changed if they differ from the rates of the same game mode on other platforms
