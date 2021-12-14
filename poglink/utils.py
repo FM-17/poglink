@@ -61,14 +61,14 @@ def setup_argparse():
         "--rates-channel-id",
         help="Discord 'rates' channel ID. Also can be set via BOT_RATES_CHANNEL_ID environment variable.",
     )
-    parser.add_argument(
-        "--bans-url",
-        help="URL for ARK bans. Also can be set via BOT_BANS_URL environment variable.",
-    )
-    parser.add_argument(
-        "--bans-channel-id",
-        help="Discord 'bans' channel ID. Also can be set via BOT_BANS_CHANNEL_ID environment variable.",
-    )
+    # parser.add_argument(
+    #     "--bans-url",
+    #     help="URL for ARK bans. Also can be set via BOT_BANS_URL environment variable.",
+    # ) # TODO: Reimplement when bans are enabled
+    # parser.add_argument(
+    #     "--bans-channel-id",
+    #     help="Discord 'bans' channel ID. Also can be set via BOT_BANS_CHANNEL_ID environment variable.",
+    # ) # TODO: Reimplement when bans are enabled
     parser.add_argument("--debug", action="store_true", help="Set log level to DEBUG.")
 
     return parser

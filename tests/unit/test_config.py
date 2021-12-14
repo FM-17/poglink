@@ -55,7 +55,9 @@ def test_setup_config(args, env):
     config = setup_config(args)
 
     # Values are read from CLI
-    assert config.get("bans_channel_id") == "54321"
+    assert (
+        config.get("bans_channel_id") == None
+    )  # "54321", # TODO: Reimplement when bans are enabled
 
     # Values are read from environment vars
     assert config.get("rates_urls") == [
@@ -67,7 +69,9 @@ def test_setup_config(args, env):
     assert config.get("allowed_roles") == ["test", "admin"]
 
     # Default value is populated
-    assert config.get("bans_url") == "http://arkdedicated.com/bansummary.txt"
+    assert (
+        config.get("bans_url") == None
+    )  # "http://arkdedicated.com/bansummary.txt", # TODO: Reimplement when bans are enabled
 
     # File takes precedence over env
     assert config.get("token") == "abcdef"
