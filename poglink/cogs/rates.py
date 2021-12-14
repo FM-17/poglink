@@ -115,6 +115,7 @@ class Rates(commands.Cog):
                 logger.info(f"Retrieving current rates at {url}")
                 try:
                     rates = await self.get_current_rates(url)
+                    await asyncio.sleep(5)
 
                 except ValueError:
                     logger.error(f"Could not process rates URL {url}")
@@ -122,7 +123,7 @@ class Rates(commands.Cog):
                     logger.error(
                         f"Could not retrieve rates from ARK Web API at {url}: {e}"
                     )
-                    await asyncio.sleep(self.polling_delay)
+                    await asyncio.sleep(5)
                     continue
 
                 # get old rates from file
@@ -137,7 +138,7 @@ class Rates(commands.Cog):
                             json.dump(rates.to_dict(), f, indent=4)
                     except Exception as e:
                         logger.error(e)
-                        await asyncio.sleep(self.polling_delay)
+                        await asyncio.sleep(5)
                         continue
 
                 last_rates = RatesStatus.from_dict(last_rates_dict)
@@ -153,7 +154,7 @@ class Rates(commands.Cog):
                             json.dump(rates.to_dict(), f, indent=4)
                     except Exception as e:
                         logger.error(e)
-                        await asyncio.sleep(self.polling_delay)
+                        await asyncio.sleep(5)
                         continue
 
                     # generate and send embed
