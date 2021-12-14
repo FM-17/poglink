@@ -11,6 +11,7 @@ import aiohttp
 import discord
 from discord.ext import commands
 
+from poglink.config import MIN_POLLING_DELAY
 from poglink.models import RatesStatus
 
 logger = logging.getLogger(__name__)
@@ -115,7 +116,7 @@ class Rates(commands.Cog):
                 logger.info(f"Retrieving current rates at {url}")
                 try:
                     rates = await self.get_current_rates(url)
-                    await asyncio.sleep(5)
+                    await asyncio.sleep(MIN_POLLING_DELAY)
 
                 except ValueError:
                     logger.error(f"Could not process rates URL {url}")
@@ -123,7 +124,7 @@ class Rates(commands.Cog):
                     logger.error(
                         f"Could not retrieve rates from ARK Web API at {url}: {e}"
                     )
-                    await asyncio.sleep(5)
+                    await asyncio.sleep(MIN_POLLING_DELAY)
                     continue
 
                 # get old rates from file
@@ -138,7 +139,7 @@ class Rates(commands.Cog):
                             json.dump(rates.to_dict(), f, indent=4)
                     except Exception as e:
                         logger.error(e)
-                        await asyncio.sleep(5)
+                        await asyncio.sleep(MIN_POLLING_DELAY)
                         continue
 
                 last_rates = RatesStatus.from_dict(last_rates_dict)
@@ -154,7 +155,7 @@ class Rates(commands.Cog):
                             json.dump(rates.to_dict(), f, indent=4)
                     except Exception as e:
                         logger.error(e)
-                        await asyncio.sleep(5)
+                        await asyncio.sleep(MIN_POLLING_DELAY)
                         continue
 
                     # generate and send embed
