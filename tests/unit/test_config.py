@@ -1,4 +1,5 @@
 import argparse
+import logging
 import os
 import tempfile
 
@@ -15,6 +16,7 @@ def cli_config_vals():
         {
             "bans_channel_id": "54321",
             "rates_channel_id": "2468",
+            "polling_delay": 2,
         }
     )
     return vals
@@ -51,7 +53,7 @@ def env(config_dir):
     os.environ["BOT_TOKEN"] = "fedcba"
 
 
-def test_setup_config(args, env):
+def test_setup_config(args, env, caplog):
     config = setup_config(args)
 
     # Values are read from CLI
@@ -74,3 +76,8 @@ def test_setup_config(args, env):
 
     # CLI takes precedence over file
     assert config.get("rates_channel_id") == "2468"
+
+    # Min polling delay is enforced and logged
+    assert config.get("polling_delay") == 5
+    with caplog.at_level(logging.WARNING):
+        assert "below minimum value" in caplog.text
