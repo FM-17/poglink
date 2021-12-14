@@ -31,10 +31,10 @@ def test_parser():
             "www.test.com,www.test123.com",
             "--rates-channel-id",
             "1234",
-            "--bans-url",
-            "www.bans.com",
-            "--bans-channel-id",
-            "4321",
+            # "--bans-url",  # TODO: Reimplement when bans are enabled
+            # "www.bans.com",# TODO: Reimplement when bans are enabled
+            # "--bans-channel-id", # TODO: Reimplement when bans are enabled
+            # "4321", # TODO: Reimplement when bans are enabled
             "--debug",
         ]
     )
@@ -45,6 +45,6 @@ def test_parser():
     assert args.allowed_roles == ["test", "admin"]
     assert args.rates_urls == ["www.test.com", "www.test123.com"]
     assert args.rates_channel_id == "1234"
-    assert args.bans_url == "www.bans.com"
-    assert args.bans_channel_id == "4321"
+    # assert args.bans_url == "www.bans.com" # TODO: Reimplement when bans are enabled
+    # assert args.bans_channel_id == "4321" # TODO: Reimplement when bans are enabled
     assert args.debug == True

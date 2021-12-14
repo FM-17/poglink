@@ -1,4 +1,5 @@
 import argparse
+import logging
 import os
 import tempfile
 
@@ -15,6 +16,7 @@ def cli_config_vals():
         {
             "bans_channel_id": "54321",
             "rates_channel_id": "2468",
+            "polling_delay": 2,
         }
     )
     return vals
@@ -51,11 +53,13 @@ def env(config_dir):
     os.environ["BOT_TOKEN"] = "fedcba"
 
 
-def test_setup_config(args, env):
+def test_setup_config(args, env, caplog):
     config = setup_config(args)
 
     # Values are read from CLI
-    assert config.get("bans_channel_id") == "54321"
+    assert (
+        config.get("bans_channel_id") == None
+    )  # "54321", # TODO: Reimplement when bans are enabled
 
     # Values are read from environment vars
     assert config.get("rates_urls") == [
@@ -67,10 +71,17 @@ def test_setup_config(args, env):
     assert config.get("allowed_roles") == ["test", "admin"]
 
     # Default value is populated
-    assert config.get("bans_url") == "http://arkdedicated.com/bansummary.txt"
+    assert (
+        config.get("bans_url") == None
+    )  # "http://arkdedicated.com/bansummary.txt", # TODO: Reimplement when bans are enabled
 
     # File takes precedence over env
     assert config.get("token") == "abcdef"
 
     # CLI takes precedence over file
     assert config.get("rates_channel_id") == "2468"
+
+    # Min polling delay is enforced and logged
+    assert config.get("polling_delay") == 5
+    with caplog.at_level(logging.WARNING):
+        assert "below minimum value" in caplog.text

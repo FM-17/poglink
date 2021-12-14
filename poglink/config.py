@@ -7,14 +7,15 @@ from poglink.utils import parse_list
 
 logger = logging.getLogger(__name__)
 
+MIN_POLLING_DELAY = 5
 
 DEFAULT_CONFIG = {
     "allowed_roles": [],
     "polling_delay": 60,
     "rates_urls": ["http://arkdedicated.com/dynamicconfig.ini"],
-    "bans_url": "http://arkdedicated.com/bansummary.txt",
+    # "bans_url": "http://arkdedicated.com/bansummary.txt",
     "rates_channel_id": None,
-    "bans_channel_id": None,
+    # "bans_channel_id": None, # TODO: Reimplement when bans are enabled
     "token": None,
     "data_dir": "~/.poglink",
 }
@@ -22,7 +23,7 @@ DEFAULT_CONFIG = {
 REQUIRED_VALUES = [
     "token",
     "rates_channel_id",
-    "bans_channel_id",
+    # "bans_channel_id", # TODO: Reimplement when bans are enabled
 ]
 
 LIST_VALUES = [
@@ -66,5 +67,12 @@ def setup_config(args, default_config=DEFAULT_CONFIG):
                 logger.warning(
                     f"Incorrect variable format for {val}; should be comma separated list. Actual value: {config[val]}; {e}"
                 )
+
+    # handle special case for polling delay
+    if config["polling_delay"] < MIN_POLLING_DELAY:
+        logger.warning(
+            f"Polling delay ({config['polling_delay']}) below minimum value. Setting to minimum value ({MIN_POLLING_DELAY})."
+        )
+        config["polling_delay"] = MIN_POLLING_DELAY
 
     return config

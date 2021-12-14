@@ -23,3 +23,5 @@ Recently updated rates will be shown in **bold**, and the embed title will be au
 - Optional ban summary integration
 - Bot setup workflow in Discord
 - Platform selection
+
+> _📝 The developers of this bot are not affiliated with ARK: Survival Evolved or Studio Wildcard._
