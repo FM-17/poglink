@@ -1,0 +1,9 @@
+[Unit]
+Description=Runs Poglink bot as a system service.
+
+[Service]
+Type=simple
+ExecStart=##PYTHON## -m poglink.main
+
+[Install]
+WantedBy=multi-user.target
