@@ -30,3 +30,4 @@ server
 - [x] Add `old_rates` and `current_rates` to `RatesDiff` so `self.current_rates` could be used instead of `to_embed` 
 - [x] Allow for `old_rates=old` and `new_rates=new` to be passed into `RatesStatus.to_diff()`  
 - [ ] Add ability to provide custom rates URL
+- [ ] Make `to_embed` strip `.0` regardless of bolding
