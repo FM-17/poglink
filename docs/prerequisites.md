@@ -15,6 +15,8 @@ This bot runs on your own machine or server. You'll need to create the bot on th
 
 ## Prepare data directory and config file
 
+The recommended approach to setting configuration values is through a configuration file. The following instructions will guide you to running the bot for the first time, using file-based configuration.
+
 By default, this bot will save all data to `~/.poglink`, but you can choose a different directory if you'd like (see [Configuration](https://github.com/FM-17/poglink/blob/main/docs/configuration.md)). 
 
 **Note:** This bot will always save its data (cached server statuses) to the same directory as the config file, as these locations are both controlled via the `data_dir` parameter.
