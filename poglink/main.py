@@ -74,7 +74,7 @@ def run(**kwargs):
 
     # load all cogs on boot
     for ext in poglink.cogs.__all__:
-        if ext != "bans":
+        if ext != "bans":  # TODO: Reimplement when bans are enabled
             client.load_extension(f"poglink.cogs.{ext}")
 
     # run the bot

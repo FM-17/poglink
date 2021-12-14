@@ -13,9 +13,9 @@ DEFAULT_CONFIG = {
     "allowed_roles": [],
     "polling_delay": 60,
     "rates_urls": ["http://arkdedicated.com/dynamicconfig.ini"],
-    "bans_url": "http://arkdedicated.com/bansummary.txt",
+    # "bans_url": "http://arkdedicated.com/bansummary.txt",
     "rates_channel_id": None,
-    "bans_channel_id": None,
+    # "bans_channel_id": None, # TODO: Reimplement when bans are enabled
     "token": None,
     "data_dir": "~/.poglink",
 }
@@ -23,7 +23,7 @@ DEFAULT_CONFIG = {
 REQUIRED_VALUES = [
     "token",
     "rates_channel_id",
-    "bans_channel_id",
+    # "bans_channel_id", # TODO: Reimplement when bans are enabled
 ]
 
 LIST_VALUES = [
