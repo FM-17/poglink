@@ -10,8 +10,8 @@ from urllib.parse import urlparse
 import aiohttp
 import discord
 from discord.ext import commands
-from poglink.config import MIN_POLLING_DELAY
 
+from poglink.config import MIN_POLLING_DELAY
 from poglink.models import RatesStatus
 
 logger = logging.getLogger(__name__)
