@@ -24,7 +24,7 @@ class Rates(commands.Cog):
         },
         "arkpocalypse": {
             "short_name": "Arkpocalypse",
-            "color": 0x562B61,
+            "color": 0xF8DE74,
         },
         "conquest": {
             "short_name": "Conquest/Classic",
