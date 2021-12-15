@@ -202,7 +202,6 @@ def test_rates_method_to_embed(sample_rates_dict):
 3 × Hatching
 0.6 × Cuddle Interval
 3 × Imprinting
-1.5 × Hexagon Reward
-69420 × MyMadeUpValue\
+1.5 × Hexagon Reward\
 """
     assert rates_diff.to_embed() == highlighted_embed
