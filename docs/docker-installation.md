@@ -36,4 +36,6 @@ If you choose to use `docker-compose`, the bot can be started by navigating to t
 docker-compose up
 ```
 
+Note: If you wish for the container to automatically restart after a reboot or unexpected crash, add `restart: unless-stopped` to the `bot` service defined above.
+
 >📝 Learn more about `docker-compose` [here](https://docs.docker.com/compose/)
