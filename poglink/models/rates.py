@@ -135,7 +135,7 @@ class RatesDiff:
         rates_dict = self.old.to_dict()
 
         # bold updated rates
-        updated_rates = {item.key: f"**{item.new_val}**" for item in self.items}
+        updated_rates = {item.key: f"**{item.new_val}**" for item in self.items if not item.is_extra}
 
         rates_dict.update(updated_rates)
 
