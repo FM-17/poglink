@@ -5,7 +5,7 @@ StartLimitBurst=4
 
 [Service]
 Type=simple
-Environment=DATA_DIR=##DATA_DIR##
+Environment=BOT_DATA_DIR=##DATA_DIR##
 ExecStart=##PYTHON## -m poglink.main
 Restart=on-failure
 RestartSec=5
