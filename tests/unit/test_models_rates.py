@@ -142,6 +142,9 @@ def test_rates_method_to_dict(sample_rates_dict, sample_rates_txt):
 
     assert rates.to_dict() == sample_rates_dict
 
+    del sample_rates_dict["MyMadeUpValue"]
+    assert rates.to_dict(include_extras=False) == sample_rates_dict
+
 
 def test_rates_method_get_diff(sample_rates_dict):
     rates = RatesStatus.from_dict(sample_rates_dict)
