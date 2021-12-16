@@ -134,7 +134,9 @@ def test_rates_staticmethod_get_expected_and_extras(sample_rates_dict):
 def test_rates_method_to_raw(sample_rates_dict, sample_rates_txt):
     rates = RatesStatus.from_dict(sample_rates_dict)
 
-    assert rates.to_raw() == """\
+    assert (
+        rates.to_raw()
+        == """\
 TamingSpeedMultiplier=3.0
 HarvestAmountMultiplier=3.0
 XPMultiplier=3.0
@@ -144,6 +146,7 @@ EggHatchSpeedMultiplier=3.0
 BabyCuddleIntervalMultiplier=0.6
 BabyImprintAmountMultiplier=3.0
 HexagonRewardMultiplier=1.5"""
+    )
 
 
 def test_rates_method_to_dict(sample_rates_dict, sample_rates_txt):
@@ -158,7 +161,7 @@ def test_rates_method_to_dict(sample_rates_dict, sample_rates_txt):
         "EggHatchSpeedMultiplier": "3.0",
         "BabyCuddleIntervalMultiplier": "0.6",
         "BabyImprintAmountMultiplier": "3.0",
-        "HexagonRewardMultiplier": "1.5"
+        "HexagonRewardMultiplier": "1.5",
     }
 
 
