@@ -78,7 +78,7 @@ class RatesStatus:
 
         self.extras.update(extras)
 
-    def to_dict(self, include_extras=True):
+    def to_dict(self, include_extras=False):
         expected, extras = self.get_expected_and_extras(self.__dict__)
 
         output_dict = expected

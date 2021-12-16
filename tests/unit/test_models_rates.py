@@ -134,16 +134,32 @@ def test_rates_staticmethod_get_expected_and_extras(sample_rates_dict):
 def test_rates_method_to_raw(sample_rates_dict, sample_rates_txt):
     rates = RatesStatus.from_dict(sample_rates_dict)
 
-    assert rates.to_raw() == sample_rates_txt
+    assert rates.to_raw() == """\
+TamingSpeedMultiplier=3.0
+HarvestAmountMultiplier=3.0
+XPMultiplier=3.0
+MatingIntervalMultiplier=0.6
+BabyMatureSpeedMultiplier=3.0
+EggHatchSpeedMultiplier=3.0
+BabyCuddleIntervalMultiplier=0.6
+BabyImprintAmountMultiplier=3.0
+HexagonRewardMultiplier=1.5"""
 
 
 def test_rates_method_to_dict(sample_rates_dict, sample_rates_txt):
     rates = RatesStatus.from_raw(sample_rates_txt)
 
-    assert rates.to_dict() == sample_rates_dict
-
-    del sample_rates_dict["MyMadeUpValue"]
-    assert rates.to_dict(include_extras=False) == sample_rates_dict
+    assert rates.to_dict() == {
+        "TamingSpeedMultiplier": "3.0",
+        "HarvestAmountMultiplier": "3.0",
+        "XPMultiplier": "3.0",
+        "MatingIntervalMultiplier": "0.6",
+        "BabyMatureSpeedMultiplier": "3.0",
+        "EggHatchSpeedMultiplier": "3.0",
+        "BabyCuddleIntervalMultiplier": "0.6",
+        "BabyImprintAmountMultiplier": "3.0",
+        "HexagonRewardMultiplier": "1.5"
+    }
 
 
 def test_rates_method_get_diff(sample_rates_dict):
@@ -163,13 +179,7 @@ def test_rates_method_get_diff(sample_rates_dict):
                 old_val="3.0",
                 new_val="4.2",
                 is_extra=False,
-            ),
-            RatesDiffItem(
-                key="CompletelyRandomNewThing",
-                old_val=None,
-                new_val="2.2",
-                is_extra=True,
-            ),
+            )
         ],
         old=rates,
         new=newrates,
