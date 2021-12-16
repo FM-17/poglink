@@ -78,11 +78,13 @@ class RatesStatus:
 
         self.extras.update(extras)
 
-    def to_dict(self):
+    def to_dict(self, include_extras=False):
         expected, extras = self.get_expected_and_extras(self.__dict__)
 
         output_dict = expected
-        output_dict.update(extras)
+
+        if include_extras:
+            output_dict.update(extras)
 
         return output_dict
 
@@ -132,7 +134,7 @@ class RatesDiff:
     # highlights changed rates in embed
     def to_embed(self):
 
-        rates_dict = self.old.to_dict()
+        rates_dict = self.old.to_dict(include_extras=False)
 
         # bold updated rates
         updated_rates = {item.key: f"**{item.new_val}**" for item in self.items}
