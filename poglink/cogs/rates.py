@@ -120,7 +120,9 @@ class Rates(commands.Cog):
                 try:
                     rates = await self.get_current_rates(url)
                     logger.debug(f"Current rates: {rates.to_dict()}")
-                    logger.debug(f"Sleeping for {MIN_POLLING_DELAY} seconds before checking next URL")
+                    logger.debug(
+                        f"Sleeping for {MIN_POLLING_DELAY} seconds before checking next URL"
+                    )
                     await asyncio.sleep(MIN_POLLING_DELAY)
 
                 except ValueError:
