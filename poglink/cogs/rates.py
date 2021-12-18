@@ -54,10 +54,12 @@ class Rates(commands.Cog):
         ]
         # Create parent directory for persistent data if it doesn't exist yet
         if not os.path.exists(self.data_dir):
+            logger.info(f"Data directory doesn't exist yet; creating: {self.data_dir}")
             os.makedirs(self.data_dir)
 
     @staticmethod
     async def get_current_rates(url):
+        logger.debug(f"Requesting current server rates")
         async with aiohttp.ClientSession() as session:
             async with session.get(
                 url,
@@ -65,11 +67,12 @@ class Rates(commands.Cog):
             ) as response:
                 response = await response.text()
                 rates = RatesStatus.from_raw(response)
+                logger.debug(f"Obtained server rates: {RatesStatus}")
                 return rates
 
     async def send_embed(self, description, url):
         # generate embed
-
+        logger.debug(f"Attempting to send embed. desc: {description}, url: {url}")
         try:
             server_match_dict = (
                 re.match(
@@ -80,30 +83,30 @@ class Rates(commands.Cog):
             server_meta = self.DEFAULT_SERVER_INFO.get(
                 server_match_dict.get("game_mode")
             )
+            logger.debug(f"Server meta: {server_meta}")
             # TODO: Add ability to accept custom rates URL
 
         except Exception as e:
             logger.error(f"Rates url could not be processed: {url} {e}")
-            pass
+            return
 
-        else:
-            server_name = server_meta.get("short_name")
+        server_name = server_meta.get("short_name")
 
-            embed = discord.Embed(
-                description=description,
-                title=f"ARK's {server_name} server rates have just been updated!",
-                color=server_meta.get("color"),
-            )
-            embed.set_image(url="https://i.stack.imgur.com/Fzh0w.png")
+        embed = discord.Embed(
+            description=description,
+            title=f"ARK's {server_name} server rates have just been updated!",
+            color=server_meta.get("color"),
+        )
+        embed.set_image(url="https://i.stack.imgur.com/Fzh0w.png")
 
-            # send embed
-            channel = self.client.get_channel(self.channel_id)
-            message = await channel.send(embed=embed)
+        # send embed
+        channel = self.client.get_channel(self.channel_id)
+        message = await channel.send(embed=embed)
 
-            # if in announcement channel, publish message
-            if message.channel.type == discord.ChannelType.news:
-                logger.info("Announcement channel detected: Publishing message")
-                await message.publish()
+        # if in announcement channel, publish message
+        if message.channel.type == discord.ChannelType.news:
+            logger.info("Announcement channel detected: Publishing message")
+            await message.publish()
 
     # Events
     @commands.Cog.listener()
@@ -116,6 +119,10 @@ class Rates(commands.Cog):
                 logger.info(f"Retrieving current rates at {url}")
                 try:
                     rates = await self.get_current_rates(url)
+                    logger.debug(f"Current rates: {rates.to_dict()}")
+                    logger.debug(
+                        f"Sleeping for {MIN_POLLING_DELAY} seconds before checking next URL"
+                    )
                     await asyncio.sleep(MIN_POLLING_DELAY)
 
                 except ValueError:
@@ -131,6 +138,7 @@ class Rates(commands.Cog):
                 try:
                     with open(output_path) as f:
                         last_rates_dict = json.load(f)
+                        logger.debug(f"Last rates: {last_rates_dict}")
                 except (FileNotFoundError, JSONDecodeError) as e:
                     logger.warn(f"Problem loading file at {output_path}: {e}")
                     last_rates_dict = copy.deepcopy(rates).to_dict()
@@ -146,10 +154,11 @@ class Rates(commands.Cog):
 
                 # compare rates to last rates
                 rates_diff = last_rates.get_diff(rates)
+                logger.debug(f"RatesDiff: {rates_diff}")
 
                 if rates_diff.items:
-
                     # save rates to file
+                    logger.debug(f"Saving latest to file: {output_path}")
                     try:
                         with open(output_path, "w+") as f:
                             json.dump(rates.to_dict(), f, indent=4)

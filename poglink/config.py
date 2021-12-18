@@ -38,6 +38,7 @@ def setup_config(args, default_config=DEFAULT_CONFIG):
         args.data_dir or os.getenv("BOT_DATA_DIR") or DEFAULT_CONFIG.get("data_dir")
     )
     config_path = os.path.join(data_dir, "config.yaml")
+    logger.debug(f"Setting up configuration. Checking for config file: {config_path}")
 
     if os.path.exists(config_path):
         with open(os.path.expanduser(config_path)) as f:
@@ -75,4 +76,5 @@ def setup_config(args, default_config=DEFAULT_CONFIG):
         )
         config["polling_delay"] = MIN_POLLING_DELAY
 
+    logger.debug(f"Configuration loaded from sources: {config}")
     return config

@@ -54,6 +54,7 @@ class BotConfig:
         if os.path.isdir(fullpath):
             fullpath = os.path.join(fullpath, "config.yaml")
 
+        logger.debug(f"Loading configuration from file: {config_path}")
         if os.path.isfile(fullpath):
             try:
                 with open(fullpath) as f:
