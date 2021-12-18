@@ -31,6 +31,7 @@ def cli():
     # Override default log level
     if args.debug or os.getenv("BOT_DEBUG", "").lower() == "true":
         ch.setLevel(logging.DEBUG)
+        logger.debug("Debug mode activated.")
 
     # Set up configuration dict
     config_dict = setup_config(args)
@@ -56,24 +57,28 @@ def run(**kwargs):
     @client.command()
     @commands.has_any_role(*client.config.allowed_roles)
     async def load(ctx, extension):
+        logger.debug(f"Loading extension: {extension}")
         client.load_extension(f"poglink.cogs.{extension}")
 
     # unload a cogcd
     @client.command()
     @commands.has_any_role(*client.config.allowed_roles)
     async def unload(ctx, extension):
+        logger.debug(f"Unloading extension: {extension}")
         client.unload_extension(f"poglink.cogs.{extension}")
 
     # reload a cog
     @client.command()
     @commands.has_any_role(*client.config.allowed_roles)
     async def reload(ctx, extension):
+        logger.debug(f"Reloading extension: {extension}")
         client.unload_extension(f"poglink.cogs.{extension}")
         client.load_extension(f"poglink.cogs.{extension}")
         await ctx.send(f"Extension '{extension}' reloaded.")
 
     # load all cogs on boot
     for ext in poglink.cogs.__all__:
+        logger.debug(f"Loading extension: {ext}")
         if ext != "bans":  # TODO: Reimplement when bans are enabled
             client.load_extension(f"poglink.cogs.{ext}")
 

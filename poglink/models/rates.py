@@ -1,6 +1,9 @@
+import logging
 import re
 from dataclasses import dataclass, field
 from typing import Any, List, Tuple
+
+logger = logging.getLogger(__name__)
 
 
 class RatesStatus:
@@ -52,7 +55,7 @@ class RatesStatus:
 
         if "extras" in parsed_vals_dict:
             extras.update(parsed_vals_dict.get("extras"))
-
+        logger.debug(f"Splitting rates; expected: {expected}, extras: {extras}")
         return expected, extras
 
     @classmethod
