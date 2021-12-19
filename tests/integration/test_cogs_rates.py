@@ -3,7 +3,7 @@ import os
 import pytest
 
 from poglink.cogs.rates import Rates
-from poglink.error import RatesFetchError, RatesProcessError
+from poglink.error import RatesFetchError, RatesProcessError, RatesWriteError
 from poglink.models.rates import RatesDiffItem
 
 
@@ -55,4 +55,10 @@ async def test_rates_compare_posted_rates(rates_cog, rates_url_1, rates_url_2):
     with pytest.raises(RatesProcessError):
         rates_diff = await rates_cog.compare_posted_rates(
             "https://www.google.com", output_path
+        )
+
+    # 5th request; write error
+    with pytest.raises(RatesWriteError):
+        rates_diff = await rates_cog.compare_posted_rates(
+            rates_url_1, "/invalid/directory"
         )
