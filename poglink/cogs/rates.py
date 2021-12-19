@@ -159,7 +159,7 @@ class Rates(commands.Cog):
         while True:
             for url, output_path in zip(self.webpage_urls, self.output_paths):
                 try:
-                    rates_diff = self.compare_posted_rates(url, output_path)
+                    rates_diff = await self.compare_posted_rates(url, output_path)
                 except RatesFetchError as e:
                     logger.error(
                         f"Could not retrieve rates from ARK Web API at {url}: {e}"
