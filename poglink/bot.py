@@ -15,7 +15,7 @@ class BotConfig:
         bans_channel_id=None,
         polling_delay=None,
         allowed_roles=None,
-        rates_url=None,
+        rates_urls=None,
         # bans_url=None,
         data_dir=None,
         **kwargs,
@@ -25,7 +25,7 @@ class BotConfig:
         self.bans_channel_id = bans_channel_id
         self.polling_delay = polling_delay
         self.allowed_roles = allowed_roles
-        self.rates_url = rates_url
+        self.rates_urls = rates_urls
         # self.bans_url = bans_url
         self.data_dir = data_dir
 

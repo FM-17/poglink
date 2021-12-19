@@ -56,6 +56,7 @@ class Rates(commands.Cog):
             )
             for url in client.config.rates_urls
         ]
+        logger.debug(f"URLs: {self.webpage_urls}, Output paths: {self.output_paths}")
         # Create parent directory for persistent data if it doesn't exist yet
         if not os.path.exists(self.data_dir):
             logger.info(f"Data directory doesn't exist yet; creating: {self.data_dir}")
@@ -112,13 +113,11 @@ class Rates(commands.Cog):
             logger.info("Announcement channel detected: Publishing message")
             await message.publish()
 
-    async def compare_and_notify(self, webpage_url, output_path):
+    async def compare_posted_rates(self, webpage_url, output_path):
         # get current rates from ARK Web API
         logger.info(f"Retrieving current rates at {webpage_url}")
         try:
             rates = await self.get_current_rates(webpage_url)
-            await asyncio.sleep(MIN_POLLING_DELAY)
-
         except ValueError as e:
             raise RatesProcessError(e) from e
         except Exception as e:
@@ -129,7 +128,7 @@ class Rates(commands.Cog):
             with open(output_path) as f:
                 last_rates_dict = json.load(f)
         except (FileNotFoundError, JSONDecodeError) as e:
-            logger.warn(f"Problem loading file at {output_path}: {e}")
+            logger.warning(f"Problem loading file at {output_path}: {e}")
             last_rates_dict = copy.deepcopy(rates).to_dict()
             try:
                 with open(output_path, "w+") as f:
@@ -150,10 +149,8 @@ class Rates(commands.Cog):
             except Exception as e:
                 raise RatesWriteError(e) from e
 
-            # generate and send embed
-            logger.info(f"Rates at {webpage_url} changed - sending embed")
-            embed_description = rates_diff.to_embed()
-            await self.send_embed(embed_description, webpage_url)
+        return rates_diff
+            
 
     # Events
     @commands.Cog.listener()
@@ -163,7 +160,7 @@ class Rates(commands.Cog):
         while True:
             for url, output_path in zip(self.webpage_urls, self.output_paths):
                 try:
-                    self.compare_and_notify(url, output_path)
+                    rates_diff = self.compare_posted_rates(url, output_path)
                 except RatesFetchError as e:
                     logger.error(
                         f"Could not retrieve rates from ARK Web API at {url}: {e}"
@@ -174,6 +171,14 @@ class Rates(commands.Cog):
                     logger.error(f"Failed to write rates to {output_path}: {e}")
                 except Exception as e:
                     logger.error(e)
+
+                if rates_diff.items:
+                    # generate and send embed
+                    logger.info(f"Rates at {url} changed - sending embed")
+                    embed_description = rates_diff.to_embed()
+                    await self.send_embed(embed_description, url)
+                else:
+                    logger.debug(f"No change in rates at {url}.")
 
                 time.sleep(MIN_POLLING_DELAY)
 
