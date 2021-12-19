@@ -3,7 +3,7 @@ import os
 import pytest
 
 from poglink.cogs.rates import Rates
-from poglink.error import RatesFetchError
+from poglink.error import RatesFetchError, RatesProcessError
 from poglink.models.rates import RatesDiffItem
 
 
@@ -45,8 +45,14 @@ async def test_rates_compare_posted_rates(rates_cog, rates_url_1, rates_url_2):
         in rates_diff.items
     )
 
-    # 3rd request; error
+    # 3rd request; fetch error
     with pytest.raises(RatesFetchError):
         rates_diff = await rates_cog.compare_posted_rates(
             "http://localhost:5000/bogus-url.txt", output_path
+        )
+
+    # 4th request; parse error
+    with pytest.raises(RatesProcessError):
+        rates_diff = await rates_cog.compare_posted_rates(
+            "https://www.google.com", output_path
         )
