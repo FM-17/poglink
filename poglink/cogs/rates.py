@@ -150,7 +150,6 @@ class Rates(commands.Cog):
                 raise RatesWriteError(e) from e
 
         return rates_diff
-            
 
     # Events
     @commands.Cog.listener()

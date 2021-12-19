@@ -31,8 +31,8 @@ async def test_bans_webpage_changed(bans_cog, configured_httpserver, last_bans):
         ) as resp:
             assert resp.status == 200
             text = await resp.text()
-    
+
     assert "PC Bans: 42069" in text
-    
+
     changed_status = await bans_cog.webpage_changed(text)
     assert changed_status == True
