@@ -58,13 +58,21 @@ def last_rates():
 def configured_httpserver(
     httpserver,
     sample_bansummary_1,
+    sample_bansummary_2,
     sample_dynamicconfig_1,
+    sample_dynamicconfig_2,
 ):
     httpserver.expect_request("/bansummary.txt").respond_with_data(
         sample_bansummary_1, content_type="text/plain"
     )
+    httpserver.expect_request("/bansummary-changed.txt").respond_with_data(
+        sample_bansummary_2, content_type="text/plain"
+    )
     httpserver.expect_request("/dynamicconfig.ini").respond_with_data(
         sample_dynamicconfig_1, content_type="text/plain"
+    )
+    httpserver.expect_request("/dynamicconfig-changed.ini").respond_with_data(
+        sample_dynamicconfig_2, content_type="text/plain"
     )
 
     return httpserver
