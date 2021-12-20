@@ -45,19 +45,30 @@ async def test_rates_compare_posted_rates(rates_cog, rates_url_1, rates_url_2):
         in rates_diff.items
     )
 
-    # 3rd request; fetch error
+
+@pytest.mark.asyncio
+async def test_rates_compare_posted_rates_bad_fetch(rates_cog):
+    output_path = rates_cog.output_paths[0]
+
     with pytest.raises(RatesFetchError):
         rates_diff = await rates_cog.compare_posted_rates(
             "http://localhost:5000/bogus-url.txt", output_path
         )
 
-    # 4th request; parse error
+
+@pytest.mark.asyncio
+async def test_rates_compare_posted_rates_bad_parse(rates_cog):
+    output_path = rates_cog.output_paths[0]
+
     with pytest.raises(RatesProcessError):
         rates_diff = await rates_cog.compare_posted_rates(
             "https://www.google.com", output_path
         )
 
-    # 5th request; write error
+
+@pytest.mark.asyncio
+async def test_rates_compare_posted_rates_bad_write(rates_cog, rates_url_1):
+
     with pytest.raises(RatesWriteError):
         rates_diff = await rates_cog.compare_posted_rates(
             rates_url_1, "/invalid/directory"
