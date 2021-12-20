@@ -24,8 +24,10 @@ class BotConfig:
         self.rates_channel_id = rates_channel_id
         self.bans_channel_id = bans_channel_id
         self.polling_delay = polling_delay
-        self.allowed_roles = allowed_roles
-        self.rates_urls = rates_urls
+        self.allowed_roles = (
+            [allowed_roles] if isinstance(allowed_roles, str) else allowed_roles
+        )
+        self.rates_urls = [rates_urls] if isinstance(rates_urls, str) else rates_urls
         # self.bans_url = bans_url
         self.data_dir = data_dir
 
