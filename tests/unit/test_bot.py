@@ -72,3 +72,12 @@ def test_configurable_bot(sample_config_dict):
     assert bot.config.allowed_roles == ["admin"]
     assert bot.config.rates_urls == ["www.arkrates.com"]
     assert bot.config.data_dir == "/my/fake/dir"
+
+
+def test_comma_separation(sample_application_config_comma_yaml):
+    botconfig = BotConfig.from_file(sample_application_config_comma_yaml)
+    assert botconfig.allowed_roles == ["admin", "regular_users"]
+    assert botconfig.rates_urls == [
+        "http://arkdedicated.com/dynamicconfig.ini",
+        "http://www.google.com",
+    ]

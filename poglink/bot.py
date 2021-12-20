@@ -4,6 +4,9 @@ import os
 import yaml
 from discord.ext import commands
 
+from poglink.config import LIST_VALUES
+from poglink.utils import parse_list
+
 logger = logging.getLogger(__name__)
 
 
@@ -24,12 +27,20 @@ class BotConfig:
         self.rates_channel_id = rates_channel_id
         self.bans_channel_id = bans_channel_id
         self.polling_delay = polling_delay
-        self.allowed_roles = (
-            [allowed_roles] if isinstance(allowed_roles, str) else allowed_roles
-        )
-        self.rates_urls = [rates_urls] if isinstance(rates_urls, str) else rates_urls
+        self.allowed_roles = allowed_roles
+        self.rates_urls = rates_urls
         # self.bans_url = bans_url
         self.data_dir = data_dir
+
+        # handle special cases for list parsing
+        for val in LIST_VALUES:
+            if isinstance(getattr(self, val), str):
+                try:
+                    setattr(self, val, parse_list(getattr(self, val)))
+                except TypeError as e:
+                    logger.warning(
+                        f"Incorrect variable format for {val}; should be comma separated list. Actual value: {config[val]}; {e}"
+                    )
 
         for k, v in kwargs.items():
             setattr(self, k, v)

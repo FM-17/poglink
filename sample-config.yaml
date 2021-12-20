@@ -7,6 +7,8 @@ rates_channel_id: <channel to post rates in>
 
 # OPTIONAL
 polling_delay: 60
-allowed_roles: <roles permitted to use bot commands>
-rates_urls: "http://arkdedicated.com/dynamicconfig.ini"
+allowed_roles: 
+  - <roles permitted to use bot commands>
+rates_urls: 
+  - "http://arkdedicated.com/dynamicconfig.ini"
 # bans_url: "http://arkdedicated.com/bansummary.txt" # TODO: Reimplement when bans are enabled
