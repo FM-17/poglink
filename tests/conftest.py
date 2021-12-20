@@ -49,6 +49,7 @@ def sample_dynamicconfig_2():
 def sample_application_config_yaml():
     return "tests/data/application-config-1.yaml"
 
+
 @pytest.fixture
 def sample_application_config_comma_yaml():
     return "tests/data/application-config-2.yaml"

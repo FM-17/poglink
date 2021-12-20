@@ -76,6 +76,7 @@ def test_configurable_bot(sample_config_dict):
 
 def test_comma_separation(sample_application_config_comma_yaml):
     botconfig = BotConfig.from_file(sample_application_config_comma_yaml)
+
     assert botconfig.allowed_roles == ["admin", "regular_users"]
     assert botconfig.rates_urls == [
         "http://arkdedicated.com/dynamicconfig.ini",
