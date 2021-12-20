@@ -13,12 +13,7 @@ import discord
 from discord.ext import commands
 
 from poglink.config import MIN_POLLING_DELAY
-from poglink.error import (
-    RatesFetchError,
-    RatesProcessError,
-    RatesReadError,
-    RatesWriteError,
-)
+from poglink.error import RatesFetchError, RatesProcessError, RatesWriteError
 from poglink.models import RatesStatus
 
 logger = logging.getLogger(__name__)
@@ -146,16 +141,13 @@ class Rates(commands.Cog):
         # compare rates to last rates
         rates_diff = last_rates.get_diff(rates)
 
-        try:
-            if rates_diff.items:
-                # save rates to file
-                try:
-                    with open(output_path, "w+") as f:
-                        json.dump(rates.to_dict(), f, indent=4)
-                except Exception as e:
-                    raise RatesWriteError(e) from e
-        except Exception as e:
-            raise RatesReadError(e) from e
+        if rates_diff.items:
+            # save rates to file
+            try:
+                with open(output_path, "w+") as f:
+                    json.dump(rates.to_dict(), f, indent=4)
+            except Exception as e:
+                raise RatesWriteError(e) from e
 
         return rates_diff
 
@@ -178,16 +170,14 @@ class Rates(commands.Cog):
                     logger.error(f"Failed to write rates to {output_path}: {e}")
                 except Exception as e:
                     logger.error(e)
-                try:
-                    if rates_diff.items:
-                        # generate and send embed
-                        logger.info(f"Rates at {url} changed - sending embed")
-                        embed_description = rates_diff.to_embed()
-                        await self.send_embed(embed_description, url)
-                    else:
-                        logger.debug(f"No change in rates at {url}.")
-                except Exception as e:
-                    raise RatesReadError(e) from e
+
+                if rates_diff.items:
+                    # generate and send embed
+                    logger.info(f"Rates at {url} changed - sending embed")
+                    embed_description = rates_diff.to_embed()
+                    await self.send_embed(embed_description, url)
+                else:
+                    logger.debug(f"No change in rates at {url}.")
 
                 time.sleep(self.polling_delay)
 
