@@ -1,0 +1,8 @@
+token: abcd
+rates_channel_id: "1234"
+polling_delay: 60
+allowed_roles: 
+  - admin
+  - regular_users
+rates_urls: 
+  - "http://arkdedicated.com/dynamicconfig.ini"

@@ -34,6 +34,9 @@ class BotConfig:
         for k, v in kwargs.items():
             setattr(self, k, v)
 
+    def __eq__(self, __o: object) -> bool:
+        return self.__dict__ == __o.__dict__
+
     @classmethod
     def from_dict(cls, d):
         return cls(**d)
