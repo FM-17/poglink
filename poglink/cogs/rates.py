@@ -13,7 +13,12 @@ import discord
 from discord.ext import commands
 
 from poglink.config import MIN_POLLING_DELAY
-from poglink.error import RatesFetchError, RatesProcessError, RatesReadError, RatesWriteError
+from poglink.error import (
+    RatesFetchError,
+    RatesProcessError,
+    RatesReadError,
+    RatesWriteError,
+)
 from poglink.models import RatesStatus
 
 logger = logging.getLogger(__name__)
@@ -141,7 +146,7 @@ class Rates(commands.Cog):
         # compare rates to last rates
         rates_diff = last_rates.get_diff(rates)
 
-        try: 
+        try:
             if rates_diff.items:
                 # save rates to file
                 try:
@@ -150,7 +155,7 @@ class Rates(commands.Cog):
                 except Exception as e:
                     raise RatesWriteError(e) from e
         except Exception as e:
-            raise RatesReadError(e) from e 
+            raise RatesReadError(e) from e
 
         return rates_diff
 
@@ -182,7 +187,7 @@ class Rates(commands.Cog):
                     else:
                         logger.debug(f"No change in rates at {url}.")
                 except Exception as e:
-                    raise RatesReadError(e) from e 
+                    raise RatesReadError(e) from e
 
                 time.sleep(self.polling_delay)
 
