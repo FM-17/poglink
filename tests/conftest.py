@@ -56,6 +56,11 @@ def sample_application_config_comma_yaml():
 
 
 @pytest.fixture
+def application_config_broken():
+    return "tests/data/application-config-broken.yaml"
+
+
+@pytest.fixture
 def sample_application_config_json():
     return "tests/data/application-config-1.json"
 

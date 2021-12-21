@@ -3,6 +3,7 @@ import copy
 import pytest
 
 from poglink.bot import BotConfig, ConfigurableBot
+from poglink.error import ConfigReadError
 
 
 @pytest.fixture
@@ -82,3 +83,8 @@ def test_comma_separation(sample_application_config_comma_yaml):
         "http://arkdedicated.com/dynamicconfig.ini",
         "http://www.google.com",
     ]
+
+
+def test_config_read_error(application_config_broken):
+    with pytest.raises(ConfigReadError):
+        botconfig = BotConfig.from_file(application_config_broken)

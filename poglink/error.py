@@ -8,3 +8,7 @@ class RatesFetchError(Exception):
 
 class RatesProcessError(Exception):
     pass
+
+
+class ConfigReadError(Exception):
+    pass

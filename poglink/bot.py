@@ -5,6 +5,7 @@ import yaml
 from discord.ext import commands
 
 from poglink.config import LIST_VALUES
+from poglink.error import ConfigReadError
 from poglink.utils import parse_list
 
 logger = logging.getLogger(__name__)
@@ -79,7 +80,7 @@ class BotConfig:
                 logger.error(
                     f"Could not read config file at specified location: {config_path}"
                 )
-                raise Exception(f"Could not read file at {fullpath}")
+                raise ConfigReadError(f"Could not read file at {fullpath}")
         else:
             logger.error(f"File does not exist at location: {fullpath}")
             raise FileNotFoundError("File does not exist at location")
