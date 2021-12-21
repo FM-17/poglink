@@ -51,20 +51,3 @@ def last_rates():
     with open(LAST_DYNAMICCONFIG_PATH) as f:
         yield f.read()
     os.remove(LAST_DYNAMICCONFIG_PATH)
-
-
-# http
-@pytest.fixture
-def configured_httpserver(
-    httpserver,
-    sample_bansummary_1,
-    sample_dynamicconfig_1,
-):
-    httpserver.expect_request("/bansummary.txt").respond_with_data(
-        sample_bansummary_1, content_type="text/plain"
-    )
-    httpserver.expect_request("/dynamicconfig.ini").respond_with_data(
-        sample_dynamicconfig_1, content_type="text/plain"
-    )
-
-    return httpserver
