@@ -4,6 +4,10 @@ import os
 import yaml
 from discord.ext import commands
 
+from poglink.config import LIST_VALUES
+from poglink.error import ConfigReadError
+from poglink.utils import parse_list
+
 logger = logging.getLogger(__name__)
 
 
@@ -29,8 +33,21 @@ class BotConfig:
         # self.bans_url = bans_url
         self.data_dir = data_dir
 
+        # handle special cases for list parsing
+        for val in LIST_VALUES:
+            if isinstance(getattr(self, val), str):
+                try:
+                    setattr(self, val, parse_list(getattr(self, val)))
+                except TypeError as e:
+                    logger.warning(
+                        f"Incorrect variable format for {val}; should be comma separated list. Actual value: {config[val]}; {e}"
+                    )
+
         for k, v in kwargs.items():
             setattr(self, k, v)
+
+    def __eq__(self, __o: object) -> bool:
+        return self.__dict__ == __o.__dict__
 
     @classmethod
     def from_dict(cls, d):
@@ -63,7 +80,7 @@ class BotConfig:
                 logger.error(
                     f"Could not read config file at specified location: {config_path}"
                 )
-                raise Exception(f"Could not read file at {fullpath}")
+                raise ConfigReadError(f"Could not read file at {fullpath}")
         else:
             logger.error(f"File does not exist at location: {fullpath}")
             raise FileNotFoundError("File does not exist at location")

@@ -3,6 +3,7 @@ import os
 
 import yaml
 
+from poglink.error import ConfigReadError
 from poglink.utils import parse_list
 
 logger = logging.getLogger(__name__)
@@ -41,8 +42,12 @@ def setup_config(args, default_config=DEFAULT_CONFIG):
     logger.debug(f"Setting up configuration. Checking for config file: {config_path}")
 
     if os.path.exists(config_path):
-        with open(os.path.expanduser(config_path)) as f:
-            config_from_file = yaml.safe_load(f)
+        try:
+            with open(os.path.expanduser(config_path)) as f:
+                config_from_file = yaml.safe_load(f)
+        except Exception as e:
+            logger.error(f"Problem reading configuration file at {config_path}: {e}")
+            raise ConfigReadError(e) from e
     else:
         logger.warning(
             f"No configuration file found at {config_path}. Configuration must be set via CLI args or environment variables."
