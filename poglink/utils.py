@@ -1,4 +1,5 @@
 import argparse
+import os
 
 
 def parse_list(raw):
@@ -72,3 +73,41 @@ def setup_argparse():
     parser.add_argument("--debug", action="store_true", help="Set log level to DEBUG.")
 
     return parser
+
+
+def rotate_backups(full_path, max_copies=2):
+    """Rotates backup files by appending sequential integer extensions.
+
+    Example: If ``full_path`` is ``/my/path/to/file.txt``, then calling this function will
+    rename / back up the file to ``/my/path/to/file.txt.1``. If another file is then written as
+    ``file.txt`` and this function is called again, it will rename the previous backup to
+    ``/my/path/to/file.txt.2``, and rename the new file to ``/my/path/to/file.txt.1``.
+
+    The ``max_copies`` parameter controls to what limit this rolling backup is performed. Files
+    in excess of this limit are deleted, in a first-in-first-out manner. The ``max_copies`` parameter
+    considers the main file in addition to its backups. That is, if ``max_copies`` is set to 3, there
+    will never be more than:
+
+    - /my/path/to/file.txt
+    - /my/path/to/file.txt.1
+    - /my/path/to/file.txt.2
+
+    Args:
+        full_path (str): Full path to base file being rotated
+        max_copies (int, optional): Maximum number of files to keep (backups + main). Defaults to 2.
+    """
+    full_path = os.path.expanduser(full_path)
+
+    for i in reversed(range(max_copies)):
+        if i == 0:
+            old_filename = full_path
+        else:
+            old_filename = f"{full_path}.{i}"
+        new_filename = f"{full_path}.{i+1}"
+
+        if os.path.isfile(old_filename):
+            if i == max_copies - 1:
+                os.remove(old_filename)
+                continue
+
+            os.rename(old_filename, new_filename)
