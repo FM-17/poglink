@@ -19,7 +19,8 @@ def rates_cog(sample_bot):
         except:
             pass
 
-
+# TODO: Update test (and maybe also Rates cog) to test new comparison method
+@pytest.mark.skip(reason="compare_posted_rates method was removed")
 @pytest.mark.asyncio
 async def test_rates_compare_posted_rates(rates_cog, rates_url_1, rates_url_2):
     output_path = rates_cog.output_paths[0]
@@ -47,29 +48,20 @@ async def test_rates_compare_posted_rates(rates_cog, rates_url_1, rates_url_2):
 
 
 @pytest.mark.asyncio
-async def test_rates_compare_posted_rates_bad_fetch(rates_cog):
+async def test_rates_get_current_rates_bad_fetch(rates_cog):
     output_path = rates_cog.output_paths[0]
 
     with pytest.raises(RatesFetchError):
-        rates_diff = await rates_cog.compare_posted_rates(
-            "http://localhost:5000/bogus-url.txt", output_path
+        rates_diff = await rates_cog.get_current_rates(
+            "http://localhost:5000/bogus-url.txt"
         )
 
 
 @pytest.mark.asyncio
-async def test_rates_compare_posted_rates_bad_parse(rates_cog):
+async def test_rates_get_current_rates_bad_parse(rates_cog):
     output_path = rates_cog.output_paths[0]
 
     with pytest.raises(RatesProcessError):
-        rates_diff = await rates_cog.compare_posted_rates(
-            "https://www.google.com", output_path
-        )
-
-
-@pytest.mark.asyncio
-async def test_rates_compare_posted_rates_bad_write(rates_cog, rates_url_1):
-
-    with pytest.raises(RatesWriteError):
-        rates_diff = await rates_cog.compare_posted_rates(
-            rates_url_1, "/invalid/directory"
+        rates_diff = await rates_cog.get_current_rates(
+            "https://www.google.com"
         )

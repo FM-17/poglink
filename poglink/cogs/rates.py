@@ -56,6 +56,15 @@ class Rates(commands.Cog):
             )
             for url in client.config.rates_urls
         ]
+        self.last_rates = [
+            None for _ in self.webpage_urls
+        ]
+        self.stable_rates = [
+            None for _ in self.webpage_urls
+        ]
+        self.consecutive_count = [
+            0 for _ in self.webpage_urls
+        ]
         logger.debug(f"URLs: {self.webpage_urls}, Output paths: {self.output_paths}")
         # Create parent directory for persistent data if it doesn't exist yet
         if not os.path.exists(self.data_dir):
@@ -66,14 +75,20 @@ class Rates(commands.Cog):
     async def get_current_rates(url):
         logger.debug(f"Requesting current server rates")
         async with aiohttp.ClientSession() as session:
-            async with session.get(
-                url,
-                headers={"Pragma": "no-cache", "Cache-Control": "no-cache"},
-            ) as response:
-                response = await response.text()
-                rates = RatesStatus.from_raw(response)
-                logger.debug(f"Obtained server rates: {RatesStatus}")
-                return rates
+            try:
+                async with session.get(
+                    url,
+                    headers={"Pragma": "no-cache", "Cache-Control": "no-cache"},
+                ) as response:
+                    response = await response.text()
+                    rates = RatesStatus.from_raw(response)
+                    logger.debug(f"Obtained server rates: {RatesStatus}")
+                    return rates
+            except ValueError as e:
+                raise RatesProcessError(e) from e
+            except Exception as e:
+                raise RatesFetchError(e) from e
+
 
     async def send_embed(self, description, url):
         # generate embed
@@ -113,75 +128,63 @@ class Rates(commands.Cog):
             logger.info("Announcement channel detected: Publishing message")
             await message.publish()
 
-    async def compare_posted_rates(self, webpage_url, output_path):
-        # get current rates from ARK Web API
-        logger.info(f"Retrieving current rates at {webpage_url}")
-        try:
-            rates = await self.get_current_rates(webpage_url)
-        except ValueError as e:
-            raise RatesProcessError(e) from e
-        except Exception as e:
-            raise RatesFetchError(e) from e
-
-        # get old rates from file
-        try:
-            with open(output_path) as f:
-                last_rates_dict = json.load(f)
-        except (FileNotFoundError, JSONDecodeError) as e:
-            logger.warning(f"Problem loading file at {output_path}: {e}")
-            last_rates_dict = copy.deepcopy(rates).to_dict()
-            try:
-                with open(output_path, "w+") as f:
-                    json.dump(rates.to_dict(), f, indent=4)
-            except Exception as e:
-                raise RatesWriteError(e) from e
-
-        last_rates = RatesStatus.from_dict(last_rates_dict)
-
-        # compare rates to last rates
-        rates_diff = last_rates.get_diff(rates)
-
-        if rates_diff.items:
-            # save rates to file
-            try:
-                with open(output_path, "w+") as f:
-                    json.dump(rates.to_dict(), f, indent=4)
-            except Exception as e:
-                raise RatesWriteError(e) from e
-
-        return rates_diff
-
     # Events
     @commands.Cog.listener()
     async def on_ready(self):
         logger.info("Cog Ready: Rates")
 
         while True:
-            for url, output_path in zip(self.webpage_urls, self.output_paths):
+            for idx in range(len(self.webpage_urls)):
+                url = self.webpage_urls[idx]
+            
+                # Fetch current rates from online
                 try:
-                    rates_diff = await self.compare_posted_rates(url, output_path)
+                    current_rates = await self.get_current_rates(url)
                 except RatesFetchError as e:
                     logger.error(
                         f"Could not retrieve rates from ARK Web API at {url}: {e}"
                     )
                 except RatesProcessError as e:
                     logger.error(f"Could not process rates URL {url}: {e}")
-                except RatesWriteError as e:
-                    logger.error(f"Failed to write rates to {output_path}: {e}")
                 except Exception as e:
                     logger.error(e)
 
-                if rates_diff.items:
-                    # generate and send embed
-                    logger.info(f"Rates at {url} changed - sending embed")
-                    embed_description = rates_diff.to_embed()
-                    await self.send_embed(embed_description, url)
-                else:
-                    logger.debug(f"No change in rates at {url}.")
+                # Only if last rates exist, get diff
+                if self.last_rates[idx]: 
+                    rates_diff = self.last_rates[idx].get_diff(current_rates)
 
-                await asyncio.sleep(self.polling_delay)
+                    # If there is a difference, reset consecutive count; otherwise increment it
+                    if rates_diff.items:
+                        self.consecutive_count[idx] = 1
+                        self.last_rates[idx] = current_rates
+                        logger.info(f"Rates for {url} changed. Resetting consecutive rates count to 1")
+                    else:
+                        self.consecutive_count[idx] += 1
+                        logger.info(f"Rates for {url} unchanged. Consecutive count = {self.consecutive_count[idx]}")
 
+                    
+                    if self.consecutive_count[idx] == 2:
+                        logger.info(f"New rates have become stable. Comparing against previous stable rates.")
+                        if self.stable_rates[idx]:
+                            stable_diff = self.stable_rates[idx].get_diff(current_rates)
+                            if stable_diff.items:
+                                # generate and send embed
+                                logger.info(f"Rates at {url} changed since last stable value - sending embed")
+                                embed_description = stable_diff.to_embed()
+                                await self.send_embed(embed_description, url)
+                        else:
+                            logger.info("No previous stable rates recorded. Updating new stable value, but no updates to publish.")
 
+                        self.stable_rates[idx] = current_rates
+                else: 
+                    logger.info(f"No previous rates stored yet; skipping.")
+              
+                # Update last rates value for next iteration
+                self.last_rates[idx] = current_rates
+                    
+            await asyncio.sleep(self.polling_delay)
+
+                
 # add cog to client
 def setup(client):
     client.add_cog(Rates(client))
