@@ -179,7 +179,7 @@ class Rates(commands.Cog):
                 else:
                     logger.debug(f"No change in rates at {url}.")
 
-                time.sleep(self.polling_delay)
+                await asyncio.sleep(self.polling_delay)
 
 
 # add cog to client
