@@ -19,6 +19,7 @@ def rates_cog(sample_bot):
         except:
             pass
 
+
 # TODO: Update test (and maybe also Rates cog) to test new comparison method
 @pytest.mark.skip(reason="compare_posted_rates method was removed")
 @pytest.mark.asyncio
@@ -62,6 +63,4 @@ async def test_rates_get_current_rates_bad_parse(rates_cog):
     output_path = rates_cog.output_paths[0]
 
     with pytest.raises(RatesProcessError):
-        rates_diff = await rates_cog.get_current_rates(
-            "https://www.google.com"
-        )
+        rates_diff = await rates_cog.get_current_rates("https://www.google.com")

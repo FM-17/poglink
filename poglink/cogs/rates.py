@@ -56,15 +56,9 @@ class Rates(commands.Cog):
             )
             for url in client.config.rates_urls
         ]
-        self.last_rates = [
-            None for _ in self.webpage_urls
-        ]
-        self.stable_rates = [
-            None for _ in self.webpage_urls
-        ]
-        self.consecutive_count = [
-            0 for _ in self.webpage_urls
-        ]
+        self.last_rates = [None for _ in self.webpage_urls]
+        self.stable_rates = [None for _ in self.webpage_urls]
+        self.consecutive_count = [0 for _ in self.webpage_urls]
         logger.debug(f"URLs: {self.webpage_urls}, Output paths: {self.output_paths}")
         # Create parent directory for persistent data if it doesn't exist yet
         if not os.path.exists(self.data_dir):
@@ -88,7 +82,6 @@ class Rates(commands.Cog):
                 raise RatesProcessError(e) from e
             except Exception as e:
                 raise RatesFetchError(e) from e
-
 
     async def send_embed(self, description, url):
         # generate embed
@@ -136,7 +129,7 @@ class Rates(commands.Cog):
         while True:
             for idx in range(len(self.webpage_urls)):
                 url = self.webpage_urls[idx]
-            
+
                 # Fetch current rates from online
                 try:
                     current_rates = await self.get_current_rates(url)
@@ -150,41 +143,50 @@ class Rates(commands.Cog):
                     logger.error(e)
 
                 # Only if last rates exist, get diff
-                if self.last_rates[idx]: 
+                if self.last_rates[idx]:
                     rates_diff = self.last_rates[idx].get_diff(current_rates)
 
                     # If there is a difference, reset consecutive count; otherwise increment it
                     if rates_diff.items:
                         self.consecutive_count[idx] = 1
                         self.last_rates[idx] = current_rates
-                        logger.info(f"Rates for {url} changed. Resetting consecutive rates count to 1")
+                        logger.info(
+                            f"Rates for {url} changed. Resetting consecutive rates count to 1"
+                        )
                     else:
                         self.consecutive_count[idx] += 1
-                        logger.info(f"Rates for {url} unchanged. Consecutive count = {self.consecutive_count[idx]}")
+                        logger.info(
+                            f"Rates for {url} unchanged. Consecutive count = {self.consecutive_count[idx]}"
+                        )
 
-                    
                     if self.consecutive_count[idx] == 2:
-                        logger.info(f"New rates have become stable. Comparing against previous stable rates.")
+                        logger.info(
+                            f"New rates have become stable. Comparing against previous stable rates."
+                        )
                         if self.stable_rates[idx]:
                             stable_diff = self.stable_rates[idx].get_diff(current_rates)
                             if stable_diff.items:
                                 # generate and send embed
-                                logger.info(f"Rates at {url} changed since last stable value - sending embed")
+                                logger.info(
+                                    f"Rates at {url} changed since last stable value - sending embed"
+                                )
                                 embed_description = stable_diff.to_embed()
                                 await self.send_embed(embed_description, url)
                         else:
-                            logger.info("No previous stable rates recorded. Updating new stable value, but no updates to publish.")
+                            logger.info(
+                                "No previous stable rates recorded. Updating new stable value, but no updates to publish."
+                            )
 
                         self.stable_rates[idx] = current_rates
-                else: 
+                else:
                     logger.info(f"No previous rates stored yet; skipping.")
-              
+
                 # Update last rates value for next iteration
                 self.last_rates[idx] = current_rates
-                    
+
             await asyncio.sleep(self.polling_delay)
 
-                
+
 # add cog to client
 def setup(client):
     client.add_cog(Rates(client))
