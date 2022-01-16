@@ -1,11 +1,8 @@
 import asyncio
-import copy
-import json
 import logging
 import os
 import re
 import time
-from json.decoder import JSONDecodeError
 from urllib.parse import urlparse
 
 import aiohttp
@@ -13,7 +10,7 @@ import discord
 from discord.ext import commands
 
 from poglink.config import MIN_POLLING_DELAY
-from poglink.error import RatesFetchError, RatesProcessError, RatesWriteError
+from poglink.error import RatesFetchError, RatesProcessError
 from poglink.models import RatesStatus
 
 logger = logging.getLogger(__name__)
