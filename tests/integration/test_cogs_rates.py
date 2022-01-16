@@ -31,7 +31,7 @@ async def test_send_embed(rates_cog):
         color=0x63BCC3,
     )
     sample_embed.set_image(url=EMBED_IMAGE)
-    
+
     # Publish the embed using the Rates cog
     await rates_cog.send_embed(
         description="test", url="www.mysite.com/dynamicconfig.ini"
