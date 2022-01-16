@@ -118,69 +118,69 @@ class Rates(commands.Cog):
             logger.info("Announcement channel detected: Publishing message")
             await message.publish()
 
+    async def compare_and_notify_all(self):
+        for idx in range(len(self.webpage_urls)):
+            url = self.webpage_urls[idx]
+
+            # Fetch current rates from online
+            try:
+                current_rates = await self.get_current_rates(url)
+            except RatesFetchError as e:
+                logger.error(f"Could not retrieve rates from ARK Web API at {url}: {e}")
+            except RatesProcessError as e:
+                logger.error(f"Could not process rates URL {url}: {e}")
+            except Exception as e:
+                logger.error(e)
+
+            # Only if last rates exist, get diff
+            if self.last_rates[idx]:
+                rates_diff = self.last_rates[idx].get_diff(current_rates)
+
+                # If there is a difference, reset consecutive count; otherwise increment it
+                if rates_diff.items:
+                    self.consecutive_count[idx] = 1
+                    self.last_rates[idx] = current_rates
+                    logger.info(
+                        f"Rates for {url} changed. Resetting consecutive rates count to 1"
+                    )
+                else:
+                    self.consecutive_count[idx] += 1
+                    logger.info(
+                        f"Rates for {url} unchanged. Consecutive count = {self.consecutive_count[idx]}"
+                    )
+
+                if self.consecutive_count[idx] == 2:
+                    logger.info(
+                        f"New rates have become stable. Comparing against previous stable rates."
+                    )
+                    if self.stable_rates[idx]:
+                        stable_diff = self.stable_rates[idx].get_diff(current_rates)
+                        if stable_diff.items:
+                            # generate and send embed
+                            logger.info(
+                                f"Rates at {url} changed since last stable value - sending embed"
+                            )
+                            embed_description = stable_diff.to_embed()
+                            await self.send_embed(embed_description, url)
+                    else:
+                        logger.info(
+                            "No previous stable rates recorded. Updating new stable value, but no updates to publish."
+                        )
+
+                    self.stable_rates[idx] = current_rates
+            else:
+                logger.info(f"No previous rates stored yet; skipping.")
+
+            # Update last rates value for next iteration
+            self.last_rates[idx] = current_rates
+
     # Events
     @commands.Cog.listener()
     async def on_ready(self):
         logger.info("Cog Ready: Rates")
 
         while True:
-            for idx in range(len(self.webpage_urls)):
-                url = self.webpage_urls[idx]
-
-                # Fetch current rates from online
-                try:
-                    current_rates = await self.get_current_rates(url)
-                except RatesFetchError as e:
-                    logger.error(
-                        f"Could not retrieve rates from ARK Web API at {url}: {e}"
-                    )
-                except RatesProcessError as e:
-                    logger.error(f"Could not process rates URL {url}: {e}")
-                except Exception as e:
-                    logger.error(e)
-
-                # Only if last rates exist, get diff
-                if self.last_rates[idx]:
-                    rates_diff = self.last_rates[idx].get_diff(current_rates)
-
-                    # If there is a difference, reset consecutive count; otherwise increment it
-                    if rates_diff.items:
-                        self.consecutive_count[idx] = 1
-                        self.last_rates[idx] = current_rates
-                        logger.info(
-                            f"Rates for {url} changed. Resetting consecutive rates count to 1"
-                        )
-                    else:
-                        self.consecutive_count[idx] += 1
-                        logger.info(
-                            f"Rates for {url} unchanged. Consecutive count = {self.consecutive_count[idx]}"
-                        )
-
-                    if self.consecutive_count[idx] == 2:
-                        logger.info(
-                            f"New rates have become stable. Comparing against previous stable rates."
-                        )
-                        if self.stable_rates[idx]:
-                            stable_diff = self.stable_rates[idx].get_diff(current_rates)
-                            if stable_diff.items:
-                                # generate and send embed
-                                logger.info(
-                                    f"Rates at {url} changed since last stable value - sending embed"
-                                )
-                                embed_description = stable_diff.to_embed()
-                                await self.send_embed(embed_description, url)
-                        else:
-                            logger.info(
-                                "No previous stable rates recorded. Updating new stable value, but no updates to publish."
-                            )
-
-                        self.stable_rates[idx] = current_rates
-                else:
-                    logger.info(f"No previous rates stored yet; skipping.")
-
-                # Update last rates value for next iteration
-                self.last_rates[idx] = current_rates
-
+            await self.compare_and_notify_all()
             await asyncio.sleep(self.polling_delay)
 
 
