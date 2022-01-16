@@ -1,8 +1,10 @@
 import os
 
+import discord
+import discord.ext.test as dpytest
 import pytest
 
-from poglink.cogs.rates import Rates
+from poglink.cogs.rates import EMBED_IMAGE, Rates
 from poglink.error import RatesFetchError, RatesProcessError, RatesWriteError
 from poglink.models.rates import RatesDiffItem
 
@@ -18,6 +20,26 @@ def rates_cog(sample_bot):
             os.remove(f)
         except:
             pass
+
+
+@pytest.mark.asyncio
+async def test_send_embed(rates_cog):
+    # Define an embed that matches what should be published by the cog
+    sample_embed = discord.Embed(
+        description="test",
+        title="ARK's Official server rates have just been updated!",
+        color=0x63BCC3,
+    )
+    sample_embed.set_image(url=EMBED_IMAGE)
+    
+    # Publish the embed using the Rates cog
+    await rates_cog.send_embed(
+        description="test", url="www.mysite.com/dynamicconfig.ini"
+    )
+
+    # Ensure embed appears in the queue and nothing else.
+    assert dpytest.verify().message().embed(embed=sample_embed)
+    assert dpytest.verify().message().nothing()
 
 
 # TODO: Update test (and maybe also Rates cog) to test new comparison method

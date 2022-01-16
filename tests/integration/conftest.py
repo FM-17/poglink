@@ -1,10 +1,15 @@
+import discord.ext.test
 import pytest
 
 from poglink.bot import ConfigurableBot
 
 
 @pytest.fixture()
-def sample_bot(bans_url_1, rates_url_1):
+def sample_bot(bans_url_1, rates_url_1, event_loop):
+    # Define intents required to publish embeds
+    intents = discord.Intents.default()
+    intents.members = True
+
     bot = ConfigurableBot(
         ".",
         {
@@ -12,7 +17,16 @@ def sample_bot(bans_url_1, rates_url_1):
             "rates_urls": [rates_url_1],
             "data_dir": "tests/data",
         },
+        loop=event_loop,  # Ensure pytest uses same event loop for async functions as bot
+        intents=intents,
     )
+
+    # Configure bot for testing
+    discord.ext.test.configure(bot)
+
+    # Override rates channel id with test channel id
+    bot.config.rates_channel_id = bot.guilds[0].text_channels[0].id
+
     return bot
 
 
