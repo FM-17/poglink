@@ -160,7 +160,7 @@ class RatesDiff:
 
         # rename keys and format embed description
         embed_description = "\n".join(
-            [ 
+            [
                 "{} × {}".format(re.sub(r"\.0", "", v), self.old.RATES_NAMES.get(k, k))
                 for k, v in rates_dict.items()
             ]

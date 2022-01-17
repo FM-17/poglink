@@ -1,10 +1,10 @@
 import asyncio
+import datetime
 import logging
 import os
 import re
 import time
 from urllib.parse import urlparse
-import datetime;
 
 import aiohttp
 import discord
@@ -107,9 +107,9 @@ class Rates(commands.Cog):
             return
 
         server_name = server_meta.get("short_name")
-        
+
         # generate dynamic timestamp (https://hammertime.djdavid98.art/)
-        ts = int(datetime.datetime.now().timestamp()//60 * 60)
+        ts = int(datetime.datetime.now().timestamp() // 60 * 60)
         ts_string = f"<t:{ts}:t>"
 
         embed = discord.Embed(
@@ -188,7 +188,6 @@ class Rates(commands.Cog):
             # Update last rates value for next iteration
             self.last_rates[idx] = current_rates
             await asyncio.sleep(self.url_delay)
-
 
     # Events
     @commands.Cog.listener()
