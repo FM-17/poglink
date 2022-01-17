@@ -189,11 +189,9 @@ class Rates(commands.Cog):
 
         # publish initial rates for each url upon startup.
         if self.publish_on_startup:
-            blank_rates = RatesStatus()
             for url in self.webpage_urls:
                 rates = await self.get_current_rates(url)
-                rates_diff = rates.get_diff(blank_rates)
-                await self.send_embed(rates_diff.to_embed(), url)
+                await self.send_embed(rates.to_embed(), url)
 
         while True:
             await self.compare_and_notify_all()
