@@ -17,6 +17,7 @@ from poglink.models import RatesStatus
 logger = logging.getLogger(__name__)
 
 EMBED_IMAGE = "https://i.stack.imgur.com/Fzh0w.png"
+RATE_LIMIT_DELAY = 1
 
 # create cog class
 class Rates(commands.Cog):
@@ -45,7 +46,6 @@ class Rates(commands.Cog):
         self.webpage_urls = client.config.rates_urls
         self.channel_id = client.config.rates_channel_id
         self.polling_delay = client.config.polling_delay
-        self.url_delay = 5
         self.allowed_roles = client.config.allowed_roles
         self.data_dir = os.path.expanduser(client.config.data_dir)
         self.output_paths = [
@@ -64,6 +64,7 @@ class Rates(commands.Cog):
             logger.info(f"Data directory doesn't exist yet; creating: {self.data_dir}")
             os.makedirs(self.data_dir)
         self.publish_on_startup = client.config.publish_on_startup
+        self.rate_limit_delay = RATE_LIMIT_DELAY  # Can be overridden manually, but not part of the config when instantiated
 
     @staticmethod
     async def get_current_rates(url):
@@ -191,7 +192,7 @@ class Rates(commands.Cog):
 
             # Update last rates value for next iteration
             self.last_rates[idx] = current_rates
-            await asyncio.sleep(self.url_delay)
+            await asyncio.sleep(self.rate_limit_delay)
 
     # Events
     @commands.Cog.listener()
@@ -199,11 +200,12 @@ class Rates(commands.Cog):
         logger.info("Cog Ready: Rates")
 
         # publish initial rates for each url upon startup.
+        # TODO: Add test for this
         if self.publish_on_startup:
             for url in self.webpage_urls:
                 rates = await self.get_current_rates(url)
                 await self.send_embed(rates.to_embed(), url)
-                await asyncio.sleep(self.url_delay)
+                await asyncio.sleep(self.rate_limit_delay)
 
         while True:
             await self.compare_and_notify_all()

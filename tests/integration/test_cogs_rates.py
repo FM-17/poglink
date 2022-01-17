@@ -21,6 +21,7 @@ with open(SAMPLE_DYNAMICCONFIG_PATH_2) as f:
 @pytest.fixture()
 def rates_cog(sample_bot):
     rates_cog = Rates(sample_bot)
+    rates_cog.rate_limit_delay = 0  # Override rate limit for testing. If we ever have tests fail due to this, we can adjust
     yield rates_cog
 
     # Clean up
