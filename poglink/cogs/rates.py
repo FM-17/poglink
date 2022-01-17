@@ -84,12 +84,15 @@ class Rates(commands.Cog):
         # generate embed
         logger.debug(f"Attempting to send embed. desc: {description}, url: {url}")
         try:
-            server_match_dict = (
-                re.match(
-                    "(?P<host>.*\/)?(?:(?P<platform>.*)\_(?P<game_mode>.*)\_)?dynamicconfig\.ini",
-                    os.path.basename(urlparse(url).path),
-                )
-            ).groupdict()
+            match = re.match(
+                "(?P<host>.*\/)?(?:(?P<platform>.*)\_(?P<game_mode>.*)\_)?dynamicconfig\.ini",
+                os.path.basename(urlparse(url).path),
+            )
+            if match:
+                server_match_dict = match.groupdict()
+            else:
+                server_match_dict = {}
+
             server_meta = self.DEFAULT_SERVER_INFO.get(
                 server_match_dict.get("game_mode")
             )
@@ -127,10 +130,13 @@ class Rates(commands.Cog):
                 current_rates = await self.get_current_rates(url)
             except RatesFetchError as e:
                 logger.error(f"Could not retrieve rates from ARK Web API at {url}: {e}")
+                continue
             except RatesProcessError as e:
                 logger.error(f"Could not process rates URL {url}: {e}")
+                continue
             except Exception as e:
                 logger.error(e)
+                continue
 
             # Only if last rates exist, get diff
             if self.last_rates[idx]:
@@ -169,6 +175,7 @@ class Rates(commands.Cog):
 
                     self.stable_rates[idx] = current_rates
             else:
+                self.consecutive_count[idx] = 1
                 logger.info(f"No previous rates stored yet; skipping.")
 
             # Update last rates value for next iteration
