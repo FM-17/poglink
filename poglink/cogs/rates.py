@@ -4,6 +4,7 @@ import os
 import re
 import time
 from urllib.parse import urlparse
+import datetime;
 
 import aiohttp
 import discord
@@ -44,6 +45,7 @@ class Rates(commands.Cog):
         self.webpage_urls = client.config.rates_urls
         self.channel_id = client.config.rates_channel_id
         self.polling_delay = client.config.polling_delay
+        self.url_delay = 5
         self.allowed_roles = client.config.allowed_roles
         self.data_dir = os.path.expanduser(client.config.data_dir)
         self.output_paths = [
@@ -105,10 +107,14 @@ class Rates(commands.Cog):
             return
 
         server_name = server_meta.get("short_name")
+        
+        # generate dynamic timestamp (https://hammertime.djdavid98.art/)
+        ts = int(datetime.datetime.now().timestamp()//60 * 60)
+        ts_string = f"<t:{ts}:t>"
 
         embed = discord.Embed(
             description=description,
-            title=f"ARK's {server_name} server rates have just been updated!",
+            title=f"ARK's {server_name} server rates updated at {ts_string}",
             color=server_meta.get("color"),
         )
         embed.set_image(url=EMBED_IMAGE)
@@ -181,6 +187,8 @@ class Rates(commands.Cog):
 
             # Update last rates value for next iteration
             self.last_rates[idx] = current_rates
+            await asyncio.sleep(self.url_delay)
+
 
     # Events
     @commands.Cog.listener()
@@ -194,6 +202,7 @@ class Rates(commands.Cog):
                 rates = await self.get_current_rates(url)
                 rates_diff = rates.get_diff(blank_rates)
                 await self.send_embed(rates_diff.to_embed(), url)
+                await asyncio.sleep(self.url_delay)
 
         while True:
             await self.compare_and_notify_all()
