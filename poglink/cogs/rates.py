@@ -170,7 +170,7 @@ class Rates(commands.Cog):
                             await self.send_embed(embed_description, url)
                     else:
                         logger.info(
-                            "No previous stable rates recorded. Updating new stable value, but no updates to publish."
+                            f"No previous stable rates recorded at {url}. Updating new stable value, but no updates to publish."
                         )
 
                     self.stable_rates[idx] = current_rates
