@@ -1,6 +1,7 @@
 black==20.8b1
 build==0.7.0
 colorama==0.4.4
+dpytest==0.5.3
 isort==5.10.1
 pytest-asyncio==0.16.0
 pytest-httpserver==1.0.2

@@ -87,9 +87,15 @@ class BotConfig:
 
         return cls.from_dict(config_from_file)
 
+    def __repr__(self):
+        return f"BotConfig<rates_channel_id={self.rates_channel_id}, bans_channel_id={self.bans_channel_id}, polling_delay={self.polling_delay}>"
+
 
 class ConfigurableBot(commands.Bot):
     def __init__(self, command_prefix, config_dict, **kwargs):
         self.config = BotConfig.from_dict(config_dict)
 
         super().__init__(command_prefix, **kwargs)
+
+    def __repr__(self):
+        return f"ConfigurableBot<config={self.config}>"
