@@ -36,3 +36,4 @@ dist/
 /data/
 .python-version
 .eggs/
+.coverage
