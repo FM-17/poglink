@@ -3,7 +3,7 @@ import tempfile
 
 import pytest
 
-from poglink.utils import rotate_backups
+from poglink.utils import parse_bool, rotate_backups
 
 
 @pytest.fixture(scope="module")
@@ -45,3 +45,32 @@ def test_rotate_backup(tmpdir, main_filename):
     assert ["file.txt.2"] == os.listdir(tmpdir)
     with open(os.path.join(tmpdir, "file.txt.2")) as f:
         assert "3" == f.read()
+
+
+@pytest.mark.parametrize(
+    "test_input,expected",
+    [
+        ("1", True),
+        ("1", True),
+        (0, False),
+        (-1, False),
+        (2, False),
+        ("0", False),
+        ("true", True),
+        ("True", True),
+        ("TRUE", True),
+        ("y", True),
+        ("Y", True),
+        ("yes", True),
+        ("Yes", True),
+        ("YES", True),
+        ("f", False),
+        ("F", False),
+        ("false", False),
+        ("False", False),
+        ("FALSE", False),
+        ("apple", False),
+    ],
+)
+def test_parse_bool(test_input, expected):
+    assert parse_bool(test_input) == expected
