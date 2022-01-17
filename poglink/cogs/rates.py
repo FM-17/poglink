@@ -83,7 +83,7 @@ class Rates(commands.Cog):
             except Exception as e:
                 raise RatesFetchError(e) from e
 
-    async def send_embed(self, description, url):
+    async def send_embed(self, description, url, title=None):
         # generate embed
         logger.debug(f"Attempting to send embed. desc: {description}, url: {url}")
         try:
@@ -108,13 +108,15 @@ class Rates(commands.Cog):
 
         server_name = server_meta.get("short_name")
 
-        # generate dynamic timestamp (https://hammertime.djdavid98.art/)
-        ts = int(datetime.datetime.now().timestamp() // 60 * 60)
-        ts_string = f"<t:{ts}:t>"
+        if title is None:
+            # generate dynamic timestamp (https://hammertime.djdavid98.art/)
+            ts = int(datetime.datetime.now().timestamp() // 60 * 60)
+            ts_string = f"<t:{ts}:t>"
+            title = f"ARK's {server_name} server rates updated at {ts_string}"
 
         embed = discord.Embed(
             description=description,
-            title=f"ARK's {server_name} server rates updated at {ts_string}",
+            title=title,
             color=server_meta.get("color"),
         )
         embed.set_image(url=EMBED_IMAGE)
@@ -128,7 +130,7 @@ class Rates(commands.Cog):
             logger.info("Announcement channel detected: Publishing message")
             await message.publish()
 
-    async def compare_and_notify_all(self):
+    async def compare_and_notify_all(self, **kwargs):
         for idx in range(len(self.webpage_urls)):
             url = self.webpage_urls[idx]
 
@@ -174,7 +176,9 @@ class Rates(commands.Cog):
                                 f"Rates at {url} changed since last stable value - sending embed"
                             )
                             embed_description = stable_diff.to_embed()
-                            await self.send_embed(embed_description, url)
+                            await self.send_embed(
+                                embed_description, url, title=kwargs.get("embed_title")
+                            )
                     else:
                         logger.info(
                             f"No previous stable rates recorded at {url}. Updating new stable value, but no updates to publish."
