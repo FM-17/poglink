@@ -152,7 +152,7 @@ HexagonRewardMultiplier=1.5"""
 def test_rates_method_to_dict(sample_rates_dict, sample_rates_txt):
     rates = RatesStatus.from_raw(sample_rates_txt)
 
-    assert rates.to_dict() == {
+    assert rates.to_dict(include_extras=False) == {
         "TamingSpeedMultiplier": "3.0",
         "HarvestAmountMultiplier": "3.0",
         "XPMultiplier": "3.0",
@@ -162,6 +162,19 @@ def test_rates_method_to_dict(sample_rates_dict, sample_rates_txt):
         "BabyCuddleIntervalMultiplier": "0.6",
         "BabyImprintAmountMultiplier": "3.0",
         "HexagonRewardMultiplier": "1.5",
+    }
+
+    assert rates.to_dict(include_extras=True) == {
+        "TamingSpeedMultiplier": "3.0",
+        "HarvestAmountMultiplier": "3.0",
+        "XPMultiplier": "3.0",
+        "MatingIntervalMultiplier": "0.6",
+        "BabyMatureSpeedMultiplier": "3.0",
+        "EggHatchSpeedMultiplier": "3.0",
+        "BabyCuddleIntervalMultiplier": "0.6",
+        "BabyImprintAmountMultiplier": "3.0",
+        "HexagonRewardMultiplier": "1.5",
+        "MyMadeUpValue": "69420",
     }
 
 
