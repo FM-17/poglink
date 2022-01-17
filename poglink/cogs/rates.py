@@ -61,6 +61,7 @@ class Rates(commands.Cog):
         if not os.path.exists(self.data_dir):
             logger.info(f"Data directory doesn't exist yet; creating: {self.data_dir}")
             os.makedirs(self.data_dir)
+        self.publish_on_startup = client.config.publish_on_startup
 
     @staticmethod
     async def get_current_rates(url):
@@ -185,6 +186,14 @@ class Rates(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         logger.info("Cog Ready: Rates")
+
+        # publish initial rates for each url upon startup.
+        if self.publish_on_startup:
+            blank_rates = RatesStatus()
+            for url in self.webpage_urls:
+                rates = self.get_current_rates(url)
+                rates_diff = rates.get_diff(blank_rates)
+                self.send_embed(rates_diff.to_embed(), url)
 
         while True:
             await self.compare_and_notify_all()

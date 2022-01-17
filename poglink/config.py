@@ -4,7 +4,7 @@ import os
 import yaml
 
 from poglink.error import ConfigReadError
-from poglink.utils import parse_list
+from poglink.utils import parse_bool, parse_list
 
 logger = logging.getLogger(__name__)
 
@@ -19,6 +19,7 @@ DEFAULT_CONFIG = {
     # "bans_channel_id": None, # TODO: Reimplement when bans are enabled
     "token": None,
     "data_dir": "~/.poglink",
+    "publish_on_startup": False,
 }
 
 REQUIRED_VALUES = [
@@ -31,6 +32,8 @@ LIST_VALUES = [
     "allowed_roles",
     "rates_urls",
 ]
+
+BOOLEAN_VALUES = ["publish_on_startup"]
 
 
 def setup_config(args, default_config=DEFAULT_CONFIG):
@@ -63,6 +66,11 @@ def setup_config(args, default_config=DEFAULT_CONFIG):
             or os.getenv(f"BOT_{key.upper()}")
             or default_val
         )
+
+    # handle special cases for boolean values
+    for param in BOOLEAN_VALUES:
+        if not isinstance(config[param], bool):
+            config[param] = parse_bool(config[param])
 
     # handle special cases for list parsing
     for val in LIST_VALUES:
