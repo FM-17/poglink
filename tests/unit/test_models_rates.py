@@ -235,9 +235,10 @@ def test_rates_diff_to_embed(sample_rates_dict):
 """
     assert rates_diff.to_embed() == highlighted_embed
 
+
 def test_rates_status_to_embed(sample_rates_dict):
     rates_status = RatesStatus.from_dict(sample_rates_dict)
-    
+
     highlighted_embed = """\
 3 × Taming
 3 × Harvesting
