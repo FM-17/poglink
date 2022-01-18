@@ -1,4 +1,5 @@
 # Poglink
+[![codecov](https://codecov.io/gh/FM-17/poglink/branch/main/graph/badge.svg?token=Y84IU5NAH0)](https://codecov.io/gh/FM-17/poglink)
 
 Poglink is a locally-hosted bot that monitors the ARK Web API and posts any changes to Discord. It was initially developed for use in the official [ARK: Survival Evolved Discord server](https://discord.gg/playark), but is open for anyone to use. 
 
