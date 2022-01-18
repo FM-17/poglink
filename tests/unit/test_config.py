@@ -2,11 +2,13 @@ import argparse
 import logging
 import os
 import tempfile
+from tkinter.ttk import setup_master
 
 import pytest
 import yaml
 
 from poglink.config import DEFAULT_CONFIG, setup_config
+from poglink.error import ConfigReadError
 
 
 @pytest.fixture
@@ -42,6 +44,16 @@ def config_dir(file_config_vals):
         fullpath = os.path.join(dirname, "config.yaml")
         with open(fullpath, "w+") as f:
             yaml.safe_dump(file_config_vals, f)
+
+        yield dirname
+
+
+@pytest.fixture
+def bad_config_dir(file_config_vals):
+    with tempfile.TemporaryDirectory() as dirname:
+        fullpath = os.path.join(dirname, "config.yaml")
+        with open(fullpath, "w+") as f:
+            f.write("this\nis: a bad\t\n\t config file::::")
 
         yield dirname
 
@@ -89,3 +101,29 @@ def test_setup_config(args, env, caplog):
 
     # boolean values are interpreted from env var
     assert config.get("publish_on_startup") == True
+
+
+def test_setup_config_bad_config_file(args, caplog, bad_config_dir):
+
+    # Test bad config file
+    args.data_dir = bad_config_dir
+    with pytest.raises(ConfigReadError):
+        setup_config(args)
+    with caplog.at_level(logging.ERROR):
+        assert "Problem reading configuration file" in caplog.text
+
+    # Test nonexistent config file
+    args.data_dir = "/dir/that/does/not/exist"
+    setup_config(args)
+    with caplog.at_level(logging.WARNING):
+        assert "No configuration file found at" in caplog.text
+
+
+def test_setup_config_bad_list(env, args, caplog):
+
+    setup_config(args)
+
+    args.rates_urls = 1234
+    setup_config(args)
+    with caplog.at_level(logging.WARNING):
+        assert "Incorrect variable format" in caplog.text
