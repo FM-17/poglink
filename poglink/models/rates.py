@@ -7,8 +7,6 @@ logger = logging.getLogger(__name__)
 
 
 class RatesStatus:
-    # TODO: Make a to_embed() method similar to what's in RatesDiff but without bolding
-
     RATES_NAMES = {
         "TamingSpeedMultiplier": "Taming",
         "HarvestAmountMultiplier": "Harvesting",
