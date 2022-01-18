@@ -214,7 +214,7 @@ def test_rates_eq(sample_rates_dict, sample_rates_txt):
     assert rates_from_dict == rates_from_txt
 
 
-def test_rates_method_to_embed(sample_rates_dict):
+def test_rates_diff_to_embed(sample_rates_dict):
     old_rates = RatesStatus.from_dict(sample_rates_dict)
     sample_rates_dict["XPMultiplier"] = 1.0
     sample_rates_dict["MatingIntervalMultiplier"] = 1.0
@@ -234,3 +234,19 @@ def test_rates_method_to_embed(sample_rates_dict):
 1.5 × Hexagon Reward\
 """
     assert rates_diff.to_embed() == highlighted_embed
+
+def test_rates_status_to_embed(sample_rates_dict):
+    rates_status = RatesStatus.from_dict(sample_rates_dict)
+    
+    highlighted_embed = """\
+3 × Taming
+3 × Harvesting
+3 × XP
+0.6 × Mating Interval
+3 × Maturation
+3 × Hatching
+0.6 × Cuddle Interval
+3 × Imprinting
+1.5 × Hexagon Reward\
+"""
+    assert rates_status.to_embed() == highlighted_embed
