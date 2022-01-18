@@ -75,12 +75,13 @@ def setup_config(args, default_config=DEFAULT_CONFIG):
     # handle special cases for list parsing
     for val in LIST_VALUES:
         if isinstance(config[val], str):
-            try:
-                config[val] = parse_list(config[val])
-            except TypeError as e:
-                logger.warning(
-                    f"Incorrect variable format for {val}; should be comma separated list. Actual value: {config[val]}; {e}"
-                )
+            config[val] = parse_list(config[val])
+        elif isinstance(config[val], list):
+            pass
+        else:
+            logger.warning(
+                f"Incorrect variable format for {val}; should be comma separated list. Actual value: {config[val]}"
+            )
 
     # handle special case for polling delay
     if config["polling_delay"] < MIN_POLLING_DELAY:

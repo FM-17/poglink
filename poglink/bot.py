@@ -43,12 +43,13 @@ class BotConfig:
         # handle special cases for list parsing
         for param in LIST_VALUES:
             if isinstance(getattr(self, param), str):
-                try:
-                    setattr(self, param, parse_list(getattr(self, param)))
-                except TypeError as e:
-                    logger.warning(
-                        f"Incorrect variable format for {param}; should be comma separated list. Actual value: {getattr(self, param)}; {e}"
-                    )
+                setattr(self, param, parse_list(getattr(self, param)))
+            elif isinstance(getattr(self, param), list):
+                pass
+            else:
+                logger.warning(
+                    f"Incorrect variable format for {param}; should be comma separated list. Actual value: {getattr(self, param)}"
+                )
 
         for k, v in kwargs.items():
             setattr(self, k, v)
