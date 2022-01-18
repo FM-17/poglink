@@ -46,8 +46,8 @@ test:
 .PHONY: test-cov
 test-cov:
 	pytest --cov=poglink --cov-report=xml:coverage.xml
-	coverage report
-	coverage xml
+	@coverage report
+	@coverage html
 
 ## - clean
 ##	Clean all build directories.
