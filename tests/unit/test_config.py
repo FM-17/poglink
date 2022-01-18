@@ -2,7 +2,6 @@ import argparse
 import logging
 import os
 import tempfile
-from tkinter.ttk import setup_master
 
 import pytest
 import yaml
