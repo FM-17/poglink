@@ -111,7 +111,7 @@ class Rates(commands.Cog):
 
         if title is None:
             # generate dynamic timestamp (https://hammertime.djdavid98.art/)
-            ts = int(datetime.datetime.now().timestamp() // 60 * 60)
+            ts = int(time.time() // 60 * 60)
             ts_string = f"<t:{ts}:t>"
             title = f"ARK's {server_name} server rates updated at {ts_string}"
 
