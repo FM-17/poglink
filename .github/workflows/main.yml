@@ -17,7 +17,7 @@ jobs:
           cache-dependency-path: |
             setup.py
             requirements.dev.txt
-      - run: pip install -r requirements.dev.txt .
+      - run: pip install -r requirements.dev.txt -e . 
       - run: make test-cov
       - uses: codecov/codecov-action@v2 
 
