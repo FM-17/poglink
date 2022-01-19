@@ -3,6 +3,7 @@ import datetime
 import pytest
 
 from poglink.models import BansStatus
+from poglink.models.bans import BansPlatformPair, BansTimePeriodSummary
 
 
 @pytest.fixture()
@@ -115,3 +116,27 @@ def test_from_dict_to_dict(sample_bans_dict):
 
     # Check that the conversion works in reverse
     assert bans_status.to_dict() == sample_bans_dict
+
+
+def test_bans_platform_pair():
+    p = BansPlatformPair(platform="xbox", nbans=69)
+    assert p.to_dict() == {"xbox": 69}
+
+
+def test_bans_time_period_summary():
+    tps = BansTimePeriodSummary(
+        heading="test heading",
+        summary=[
+            BansPlatformPair(platform="xbox", nbans=69),
+            BansPlatformPair(platform="pc", nbans=420),
+        ],
+    )
+
+    assert tps.to_dict() == {
+        "test heading": [{"xbox": 69}, {"pc": 420}],
+    }
+
+
+def test_bans_status_underline():
+    assert BansStatus.underline(20) == "===================="
+    assert BansStatus.underline(5) == "====="

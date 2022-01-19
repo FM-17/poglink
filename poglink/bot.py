@@ -4,9 +4,9 @@ import os
 import yaml
 from discord.ext import commands
 
-from poglink.config import LIST_VALUES
+from poglink.config import BOOLEAN_VALUES, LIST_VALUES
 from poglink.error import ConfigReadError
-from poglink.utils import parse_list
+from poglink.utils import parse_bool, parse_list
 
 logger = logging.getLogger(__name__)
 
@@ -22,6 +22,7 @@ class BotConfig:
         rates_urls=None,
         # bans_url=None,
         data_dir=None,
+        publish_on_startup=None,
         **kwargs,
     ) -> None:
         self.token = token
@@ -32,16 +33,23 @@ class BotConfig:
         self.rates_urls = rates_urls
         # self.bans_url = bans_url
         self.data_dir = data_dir
+        self.publish_on_startup = publish_on_startup
+
+        # handle special cases for boolean values
+        for param in BOOLEAN_VALUES:
+            if not isinstance(getattr(self, param), bool):
+                setattr(self, param, parse_bool(getattr(self, param)))
 
         # handle special cases for list parsing
-        for val in LIST_VALUES:
-            if isinstance(getattr(self, val), str):
-                try:
-                    setattr(self, val, parse_list(getattr(self, val)))
-                except TypeError as e:
-                    logger.warning(
-                        f"Incorrect variable format for {val}; should be comma separated list. Actual value: {config[val]}; {e}"
-                    )
+        for param in LIST_VALUES:
+            if isinstance(getattr(self, param), str):
+                setattr(self, param, parse_list(getattr(self, param)))
+            elif isinstance(getattr(self, param), list):
+                pass
+            else:
+                logger.warning(
+                    f"Incorrect variable format for {param}; should be comma separated list. Actual value: {getattr(self, param)}"
+                )
 
         for k, v in kwargs.items():
             setattr(self, k, v)

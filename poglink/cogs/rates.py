@@ -1,4 +1,5 @@
 import asyncio
+import datetime
 import logging
 import os
 import re
@@ -16,6 +17,7 @@ from poglink.models import RatesStatus
 logger = logging.getLogger(__name__)
 
 EMBED_IMAGE = "https://i.stack.imgur.com/Fzh0w.png"
+RATE_LIMIT_DELAY = 1
 
 # create cog class
 class Rates(commands.Cog):
@@ -61,6 +63,8 @@ class Rates(commands.Cog):
         if not os.path.exists(self.data_dir):
             logger.info(f"Data directory doesn't exist yet; creating: {self.data_dir}")
             os.makedirs(self.data_dir)
+        self.publish_on_startup = client.config.publish_on_startup
+        self.rate_limit_delay = RATE_LIMIT_DELAY  # Can be overridden manually, but not part of the config when instantiated
 
     @staticmethod
     async def get_current_rates(url):
@@ -80,7 +84,7 @@ class Rates(commands.Cog):
             except Exception as e:
                 raise RatesFetchError(e) from e
 
-    async def send_embed(self, description, url):
+    async def send_embed(self, description, url, title=None):
         # generate embed
         logger.debug(f"Attempting to send embed. desc: {description}, url: {url}")
         try:
@@ -105,9 +109,15 @@ class Rates(commands.Cog):
 
         server_name = server_meta.get("short_name")
 
+        if title is None:
+            # generate dynamic timestamp (https://hammertime.djdavid98.art/)
+            ts = int(time.time() // 60 * 60)
+            ts_string = f"<t:{ts}:t>"
+            title = f"ARK's {server_name} server rates updated at {ts_string}"
+
         embed = discord.Embed(
             description=description,
-            title=f"ARK's {server_name} server rates have just been updated!",
+            title=title,
             color=server_meta.get("color"),
         )
         embed.set_image(url=EMBED_IMAGE)
@@ -121,7 +131,7 @@ class Rates(commands.Cog):
             logger.info("Announcement channel detected: Publishing message")
             await message.publish()
 
-    async def compare_and_notify_all(self):
+    async def compare_and_notify_all(self, **kwargs):
         for idx in range(len(self.webpage_urls)):
             url = self.webpage_urls[idx]
 
@@ -167,7 +177,9 @@ class Rates(commands.Cog):
                                 f"Rates at {url} changed since last stable value - sending embed"
                             )
                             embed_description = stable_diff.to_embed()
-                            await self.send_embed(embed_description, url)
+                            await self.send_embed(
+                                embed_description, url, title=kwargs.get("embed_title")
+                            )
                     else:
                         logger.info(
                             f"No previous stable rates recorded at {url}. Updating new stable value, but no updates to publish."
@@ -180,11 +192,20 @@ class Rates(commands.Cog):
 
             # Update last rates value for next iteration
             self.last_rates[idx] = current_rates
+            await asyncio.sleep(self.rate_limit_delay)
 
     # Events
     @commands.Cog.listener()
     async def on_ready(self):
         logger.info("Cog Ready: Rates")
+
+        # publish initial rates for each url upon startup.
+        # TODO: Add test for this
+        if self.publish_on_startup:
+            for url in self.webpage_urls:
+                rates = await self.get_current_rates(url)
+                await self.send_embed(rates.to_embed(), url)
+                await asyncio.sleep(self.rate_limit_delay)
 
         while True:
             await self.compare_and_notify_all()

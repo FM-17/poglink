@@ -21,6 +21,7 @@ with open(SAMPLE_DYNAMICCONFIG_PATH_2) as f:
 @pytest.fixture()
 def rates_cog(sample_bot):
     rates_cog = Rates(sample_bot)
+    rates_cog.rate_limit_delay = 0  # Override rate limit for testing. If we ever have tests fail due to this, we can adjust
     yield rates_cog
 
     # Clean up
@@ -43,7 +44,9 @@ async def test_send_embed(rates_cog):
 
     # Publish the embed using the Rates cog
     await rates_cog.send_embed(
-        description="test", url="www.mysite.com/dynamicconfig.ini"
+        description="test",
+        url="www.mysite.com/dynamicconfig.ini",
+        title="ARK's Official server rates have just been updated!",
     )
 
     # Ensure embed appears in the queue and nothing else.
@@ -66,31 +69,32 @@ async def test_send_embed(rates_cog):
 )
 @pytest.mark.asyncio
 async def test_compare_and_notify_all(rates_cog):
+    embed_title = "ARK's Official server rates have just been updated!"
     sample_embed = discord.Embed(
         description="3 × Taming\n**2** × Harvesting\n3 × XP\n**0.7** × Mating Interval\n3 × Maturation\n3 × Hatching\n0.6 × Cuddle Interval\n3 × Imprinting\n**2.5** × Hexagon Reward",
-        title="ARK's Official server rates have just been updated!",
+        title=embed_title,
         color=0x63BCC3,
     )
     sample_embed.set_image(url=EMBED_IMAGE)
 
     # First request; no diff. First time seeing rates
-    await rates_cog.compare_and_notify_all()
+    await rates_cog.compare_and_notify_all(embed_title=embed_title)
     assert dpytest.verify().message().nothing()
 
     # 2nd request; no diff. Rates are now stable since they've been observed 2 times in a row
-    await rates_cog.compare_and_notify_all()
+    await rates_cog.compare_and_notify_all(embed_title=embed_title)
     assert dpytest.verify().message().nothing()
 
     # 3rd request; still no diff. No change to stable rates
-    await rates_cog.compare_and_notify_all()
+    await rates_cog.compare_and_notify_all(embed_title=embed_title)
     assert dpytest.verify().message().nothing()
 
     # 4th request; new rates found, but not yet stable
-    await rates_cog.compare_and_notify_all()
+    await rates_cog.compare_and_notify_all(embed_title=embed_title)
     assert dpytest.verify().message().nothing()
 
     # 5th request; no diff from previous, which means new rates are stable. Different from previous stable rates, so embed is published
-    await rates_cog.compare_and_notify_all()
+    await rates_cog.compare_and_notify_all(embed_title=embed_title)
     assert dpytest.verify().message().embed(embed=sample_embed)
 
     # Only one embed was published; queue is empty after consuming message above
@@ -111,27 +115,28 @@ async def test_compare_and_notify_all(rates_cog):
 )
 @pytest.mark.asyncio
 async def test_compare_and_notify_all_reverse(rates_cog):
+    embed_title = "ARK's Official server rates have just been updated!"
     sample_embed = discord.Embed(
         description="3 × Taming\n**3** × Harvesting\n3 × XP\n**0.6** × Mating Interval\n3 × Maturation\n3 × Hatching\n0.6 × Cuddle Interval\n3 × Imprinting\n**1.5** × Hexagon Reward",
-        title="ARK's Official server rates have just been updated!",
+        title=embed_title,
         color=0x63BCC3,
     )
     sample_embed.set_image(url=EMBED_IMAGE)
 
     # First request; no diff. First time seeing rates
-    await rates_cog.compare_and_notify_all()
+    await rates_cog.compare_and_notify_all(embed_title=embed_title)
     assert dpytest.verify().message().nothing()
 
     # 2nd request; no diff. Rates are now stable since they've been observed 2 times in a row
-    await rates_cog.compare_and_notify_all()
+    await rates_cog.compare_and_notify_all(embed_title=embed_title)
     assert dpytest.verify().message().nothing()
 
     # 3rd request; still no diff. No change to stable rates
-    await rates_cog.compare_and_notify_all()
+    await rates_cog.compare_and_notify_all(embed_title=embed_title)
     assert dpytest.verify().message().nothing()
 
     # 4th request; no diff from previous, which means new rates are stable. Different from previous stable rates, so embed is published
-    await rates_cog.compare_and_notify_all()
+    await rates_cog.compare_and_notify_all(embed_title=embed_title)
     print(rates_cog.last_rates[0].to_dict())
     assert dpytest.verify().message().embed(embed=sample_embed)
 

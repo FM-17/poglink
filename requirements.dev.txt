@@ -4,6 +4,7 @@ colorama==0.4.4
 dpytest==0.5.3
 isort==5.10.1
 pytest-asyncio==0.16.0
+pytest-cov==3.0.0
 pytest-httpserver==1.0.2
 pytest==6.2.5
 setuptools-scm==6.3.2

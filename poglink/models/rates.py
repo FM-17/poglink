@@ -7,7 +7,6 @@ logger = logging.getLogger(__name__)
 
 
 class RatesStatus:
-
     RATES_NAMES = {
         "TamingSpeedMultiplier": "Taming",
         "HarvestAmountMultiplier": "Harvesting",
@@ -96,6 +95,19 @@ class RatesStatus:
 
     def get_diff(self, newrates: "RatesStatus"):
         return RatesDiff.from_statuses(self, newrates)
+
+    def to_embed(self):
+        rates_dict = self.to_dict(include_extras=False)
+
+        # format embed description
+        embed_description = "\n".join(
+            [
+                "{} × {}".format(re.sub(r"\.0", "", v), self.RATES_NAMES.get(k, k))
+                for k, v in rates_dict.items()
+            ]
+        )
+
+        return embed_description
 
 
 @dataclass

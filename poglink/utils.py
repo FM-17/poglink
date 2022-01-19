@@ -15,6 +15,26 @@ def parse_list(raw):
     return [word.strip() for word in raw.split(",")]
 
 
+def parse_bool(raw):
+    """Takes a string representation of a truthy string value and converts it to bool.
+
+    Valid boolean representations include:
+        - y/yes/Yes/YES
+        - true/True/TRUE
+        - 1
+
+    Args:
+        raw (str): Truthy value to convert.
+
+    Returns:
+        bool: Boolean representation of value.
+    """
+    if isinstance(raw, str):
+        raw = raw.lower()
+
+    return raw in ["y", "yes", "true", "1", 1]
+
+
 def setup_argparse():
     parser = argparse.ArgumentParser(
         description="""
@@ -71,6 +91,11 @@ def setup_argparse():
     #     help="Discord 'bans' channel ID. Also can be set via BOT_BANS_CHANNEL_ID environment variable.",
     # ) # TODO: Reimplement when bans are enabled
     parser.add_argument("--debug", action="store_true", help="Set log level to DEBUG.")
+    parser.add_argument(
+        "--publish-on-startup",
+        action="store_true",
+        help="Publish current rates found after starting the bot for the first time.",
+    )
 
     return parser
 

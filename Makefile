@@ -41,10 +41,19 @@ isort-check:
 test:
 	pytest
 
+## - test-cov
+##	Run pytest tests with coverage report.
+.PHONY: test-cov
+test-cov:
+	pytest --cov=poglink --cov-report=xml:coverage.xml
+	@coverage report
+	@coverage html
+
 ## - clean
 ##	Clean all build directories.
 .PHONY: clean
 clean: clean-python
+	rm -f coverage.xml .coverage
 
 ## - clean-python
 ##	Clean python build directory.
