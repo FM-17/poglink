@@ -87,25 +87,19 @@ class Rates(commands.Cog):
     async def send_embed(self, description, url, title=None):
         # generate embed
         logger.debug(f"Attempting to send embed. desc: {description}, url: {url}")
-        try:
-            match = re.match(
-                "(?P<host>.*\/)?(?:(?P<platform>.*)\_(?P<game_mode>.*)\_)?dynamicconfig\.ini",
-                os.path.basename(urlparse(url).path),
-            )
-            if match:
-                server_match_dict = match.groupdict()
-            else:
-                server_match_dict = {}
+        match = re.match(
+            r"(?P<host>.*\/)?(?:(?P<platform>.*)\_(?P<game_mode>.*)\_)?dynamicconfig\.ini",
+            os.path.basename(urlparse(url).path),
+        )
+        if match:
+            server_match_dict = match.groupdict()
+        else:
+            logger.warning(f"Rates url was not recognized as any known type: {url}")
+            server_match_dict = {}
 
-            server_meta = self.DEFAULT_SERVER_INFO.get(
-                server_match_dict.get("game_mode")
-            )
-            logger.debug(f"Server meta: {server_meta}")
-            # TODO: Add ability to accept custom rates URL
-
-        except Exception as e:
-            logger.error(f"Rates url could not be processed: {url} {e}")
-            return
+        server_meta = self.DEFAULT_SERVER_INFO.get(server_match_dict.get("game_mode"))
+        logger.debug(f"Server meta: {server_meta}")
+        # TODO: Add ability to accept custom rates URL
 
         server_name = server_meta.get("short_name")
 
@@ -144,7 +138,7 @@ class Rates(commands.Cog):
             except RatesProcessError as e:
                 logger.error(f"Could not process rates URL {url}: {e}")
                 continue
-            except Exception as e:
+            except Exception as e:  # pragma: no cover
                 logger.error(e)
                 continue
 
@@ -196,7 +190,7 @@ class Rates(commands.Cog):
 
     # Events
     @commands.Cog.listener()
-    async def on_ready(self):
+    async def on_ready(self):  # pragma: no cover
         logger.info("Cog Ready: Rates")
 
         # publish initial rates for each url upon startup.
@@ -213,5 +207,5 @@ class Rates(commands.Cog):
 
 
 # add cog to client
-def setup(client):
+def setup(client):  # pragma: no cover
     client.add_cog(Rates(client))
