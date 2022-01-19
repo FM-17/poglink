@@ -153,6 +153,7 @@ async def test_compare_and_notify_all_exceptions(rates_cog, caplog):
     with caplog.at_level(logging.ERROR):
         assert "Could not retrieve rates from ARK Web API at" in caplog.text
 
+
 @pytest.mark.parametrize(
     "sequential_handler",
     [

@@ -1,5 +1,5 @@
 import copy
-import os 
+import os
 
 import pytest
 
@@ -72,6 +72,7 @@ def test_botconfig_from_file(
     # Grabs file called config.yaml if provided path is a directory
     botconfig = BotConfig.from_file(os.path.dirname(config_yaml))
     assert botconfig == botconfig_yaml
+
 
 def test_configurable_bot(sample_config_dict):
     bot = ConfigurableBot(command_prefix=".test", config_dict=sample_config_dict)

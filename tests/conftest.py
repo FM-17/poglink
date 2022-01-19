@@ -49,6 +49,7 @@ def sample_dynamicconfig_2():
 def sample_application_config_yaml():
     return "tests/data/application-config-1.yaml"
 
+
 @pytest.fixture
 def config_yaml(sample_application_config_yaml):
     dest = os.path.join(os.path.dirname(sample_application_config_yaml), "config.yaml")
