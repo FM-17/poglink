@@ -1,4 +1,5 @@
 import copy
+import os 
 
 import pytest
 
@@ -47,7 +48,7 @@ def test_botconfig_singular_vals(sample_config_dict_singular):
 
 
 def test_botconfig_from_file(
-    sample_application_config_yaml, sample_application_config_json
+    sample_application_config_yaml, sample_application_config_json, config_yaml
 ):
     botconfig_yaml = BotConfig.from_file(sample_application_config_yaml)
     botconfig_json = BotConfig.from_file(sample_application_config_json)
@@ -64,6 +65,13 @@ def test_botconfig_from_file(
     assert botconfig_yaml.data_dir == None
     assert botconfig_yaml.publish_on_startup == True
 
+    # Raises error when file doesn't exist
+    with pytest.raises(FileNotFoundError):
+        BotConfig.from_file("/nonsense/path")
+
+    # Grabs file called config.yaml if provided path is a directory
+    botconfig = BotConfig.from_file(os.path.dirname(config_yaml))
+    assert botconfig == botconfig_yaml
 
 def test_configurable_bot(sample_config_dict):
     bot = ConfigurableBot(command_prefix=".test", config_dict=sample_config_dict)
