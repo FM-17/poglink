@@ -39,13 +39,13 @@ isort-check:
 ##	Run pytest tests.
 .PHONY: test 
 test:
-	pytest
+	python -m pytest
 
 ## - test-cov
 ##	Run pytest tests with coverage report.
 .PHONY: test-cov
 test-cov:
-	pytest --cov=poglink --cov-report=xml:coverage.xml
+	python -m pytest --cov=poglink --cov-report=xml:coverage.xml
 	@coverage report
 	@coverage html
 
