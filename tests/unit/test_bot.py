@@ -62,8 +62,8 @@ def test_botconfig_from_file(
     assert botconfig_yaml.polling_delay == 60
     assert botconfig_yaml.allowed_roles == ["admin", "regular_users"]
     assert botconfig_yaml.rates_urls == ["http://arkdedicated.com/dynamicconfig.ini"]
-    assert botconfig_yaml.data_dir == None
-    assert botconfig_yaml.publish_on_startup == True
+    assert botconfig_yaml.data_dir is None
+    assert botconfig_yaml.publish_on_startup is True
 
     # Raises error when file doesn't exist
     with pytest.raises(FileNotFoundError):
@@ -84,7 +84,7 @@ def test_configurable_bot(sample_config_dict):
     assert bot.config.allowed_roles == ["admin"]
     assert bot.config.rates_urls == ["www.arkrates.com"]
     assert bot.config.data_dir == "/my/fake/dir"
-    assert bot.config.publish_on_startup == True
+    assert bot.config.publish_on_startup is True
 
 
 def test_comma_separation(sample_application_config_comma_yaml):

@@ -39,7 +39,7 @@ def setup_argparse():
     parser = argparse.ArgumentParser(
         description="""
         Bot for sending messages to Discord whenever ARK Web API changes.
-        
+
         This bot requires some configuration parameters to be set. They can either
         be provided via a config file, CLI args, or environment variables. These
         values are set using the following order of priority:

@@ -112,6 +112,6 @@ class BansStatus:
 {% endfor %}
 
 {% endfor -%}items: List[RatesDiffItem] = field(default_factory=list)
-Last Updated: {{ banstatus.last_updated.strftime('%d %b %Y %H:%M:%S') }} ET 
+Last Updated: {{ banstatus.last_updated.strftime('%d %b %Y %H:%M:%S') }} ET
 """
     )

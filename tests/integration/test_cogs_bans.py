@@ -22,7 +22,7 @@ async def test_bans_webpage_changed(bans_cog, configured_httpserver, last_bans):
 
     changed_status = await bans_cog.webpage_changed(text)
     assert text == last_bans
-    assert changed_status == False
+    assert changed_status is False
 
     async with aiohttp.ClientSession() as session:
         async with session.get(
@@ -35,4 +35,4 @@ async def test_bans_webpage_changed(bans_cog, configured_httpserver, last_bans):
     assert "PC Bans: 42069" in text
 
     changed_status = await bans_cog.webpage_changed(text)
-    assert changed_status == True
+    assert changed_status is True

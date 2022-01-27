@@ -48,5 +48,5 @@ def test_parser():
     assert args.rates_channel_id == "1234"
     # assert args.bans_url == "www.bans.com" # TODO: Reimplement when bans are enabled
     # assert args.bans_channel_id == "4321" # TODO: Reimplement when bans are enabled
-    assert args.debug == True
-    assert args.publish_on_startup == True
+    assert args.debug is True
+    assert args.publish_on_startup is True

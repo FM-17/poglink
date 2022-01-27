@@ -1,5 +1,4 @@
 import asyncio
-import datetime
 import logging
 import os
 import re
@@ -10,7 +9,6 @@ import aiohttp
 import discord
 from discord.ext import commands
 
-from poglink.config import MIN_POLLING_DELAY
 from poglink.error import RatesFetchError, RatesProcessError
 from poglink.models import RatesStatus
 
@@ -68,7 +66,7 @@ class Rates(commands.Cog):
 
     @staticmethod
     async def get_current_rates(url):
-        logger.debug(f"Requesting current server rates")
+        logger.debug(f"Requesting current server rates from {url}")
         async with aiohttp.ClientSession() as session:
             try:
                 async with session.get(
@@ -161,7 +159,7 @@ class Rates(commands.Cog):
 
                 if self.consecutive_count[idx] == 2:
                     logger.info(
-                        f"New rates have become stable. Comparing against previous stable rates."
+                        "New rates have become stable. Comparing against previous stable rates."
                     )
                     if self.stable_rates[idx]:
                         stable_diff = self.stable_rates[idx].get_diff(current_rates)
@@ -182,7 +180,7 @@ class Rates(commands.Cog):
                     self.stable_rates[idx] = current_rates
             else:
                 self.consecutive_count[idx] = 1
-                logger.info(f"No previous rates stored yet; skipping.")
+                logger.info(f"No previous rates from {url} stored yet; skipping.")
 
             # Update last rates value for next iteration
             self.last_rates[idx] = current_rates

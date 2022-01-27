@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-from discord.message import MessageType
 
 ALLOWED_ROLES = ["Administrator", "Tech Administrator", "dot"]
 

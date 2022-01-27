@@ -86,7 +86,7 @@ class BotConfig:
                     config_from_file = yaml.safe_load(f)
             except Exception as e:
                 logger.error(
-                    f"Could not read config file at specified location: {config_path}"
+                    f"Could not read config file at specified location: {config_path}. {e}"
                 )
                 raise ConfigReadError(f"Could not read file at {fullpath}")
         else:
