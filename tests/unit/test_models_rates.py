@@ -2,7 +2,7 @@ import copy
 
 import pytest
 
-from poglink.models import RatesDiff, RatesDiffItem, RatesStatus, rates
+from poglink.models import RatesDiff, RatesDiffItem, RatesStatus
 
 
 @pytest.fixture()

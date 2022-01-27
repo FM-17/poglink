@@ -7,7 +7,6 @@ import pytest
 
 from poglink.cogs.rates import EMBED_IMAGE, Rates
 from poglink.error import RatesFetchError, RatesProcessError
-from poglink.models.rates import RatesDiffItem
 
 SAMPLE_DYNAMICCONFIG_PATH_1 = "tests/data/dynamicconfig-1.ini"
 SAMPLE_DYNAMICCONFIG_PATH_2 = "tests/data/dynamicconfig-2.ini"
@@ -29,7 +28,7 @@ def rates_cog(sample_bot):
     for f in rates_cog.output_paths:
         try:
             os.remove(f)
-        except:
+        except Exception:
             pass
 
 
@@ -199,20 +198,18 @@ async def test_compare_and_notify_all_reverse(rates_cog):
 
 @pytest.mark.asyncio
 async def test_rates_get_current_rates_bad_fetch(rates_cog):
-    output_path = rates_cog.output_paths[0]
+    rates_cog.output_paths[0]
 
     with pytest.raises(RatesFetchError):
-        rates_diff = await rates_cog.get_current_rates(
-            "http://localhost:5000/bogus-url.txt"
-        )
+        await rates_cog.get_current_rates("http://localhost:5000/bogus-url.txt")
 
 
 @pytest.mark.asyncio
 async def test_rates_get_current_rates_bad_parse(rates_cog):
-    output_path = rates_cog.output_paths[0]
+    rates_cog.output_paths[0]
 
     with pytest.raises(RatesProcessError):
-        rates_diff = await rates_cog.get_current_rates("https://www.google.com")
+        await rates_cog.get_current_rates("https://www.google.com")
 
 
 @pytest.mark.asyncio
@@ -223,7 +220,7 @@ async def test_cog_creates_missing_data_dir(tmpdir, sample_bot, caplog):
 
     # Now create cog and prove the missing data dir was created
     sample_bot.config.data_dir = non_existent_dir
-    cog = Rates(sample_bot)
+    Rates(sample_bot)
     with caplog.at_level(logging.INFO):
         "Data directory doesn't exist yet; creating" in caplog.text
 

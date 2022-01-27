@@ -86,7 +86,7 @@ def run(**kwargs):
     try:
         client.run(client.config.token)
     except discord.errors.LoginFailure as e:
-        logger.error("Problem with token.")
+        logger.error(f"Problem with token. {e}")
         exit(1)
 
 

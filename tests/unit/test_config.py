@@ -70,7 +70,7 @@ def test_setup_config(args, env, caplog):
 
     # Values are read from CLI
     assert (
-        config.get("bans_channel_id") == None
+        config.get("bans_channel_id") is None
     )  # "54321", # TODO: Reimplement when bans are enabled
 
     # Values are read from environment vars
@@ -84,7 +84,7 @@ def test_setup_config(args, env, caplog):
 
     # Default value is populated
     assert (
-        config.get("bans_url") == None
+        config.get("bans_url") is None
     )  # "http://arkdedicated.com/bansummary.txt", # TODO: Reimplement when bans are enabled
 
     # File takes precedence over env
@@ -99,7 +99,7 @@ def test_setup_config(args, env, caplog):
         assert "below minimum value" in caplog.text
 
     # boolean values are interpreted from env var
-    assert config.get("publish_on_startup") == True
+    assert config.get("publish_on_startup") is True
 
 
 def test_setup_config_bad_config_file(args, caplog, bad_config_dir):
