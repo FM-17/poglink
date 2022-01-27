@@ -3,7 +3,6 @@ on: workflow_dispatch
 jobs:
   publish-non-release-python:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
     outputs:
         package_version: ${{ steps.set-output-step.outputs.package_version }}
     steps:
@@ -33,7 +32,6 @@ jobs:
           
   publish-non-release-docker:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
     needs: publish-non-release-python
     steps:
       - uses: actions/checkout@v2.4.0
