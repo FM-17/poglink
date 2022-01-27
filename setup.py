@@ -1,6 +1,7 @@
 # TODO: Transition to setup.cfg https://setuptools.pypa.io/en/latest/userguide/quickstart.html#transitioning-from-setup-py-to-setup-cfg
-from setuptools import setup
 import os
+
+from setuptools import setup
 
 # If PYTHON_PACKAGE_VERSION variable is provided, use this instead of automatically grabbing from SCM.
 version = os.getenv("PYTHON_PACKAGE_VERSION")
