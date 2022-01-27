@@ -1,43 +1,43 @@
-.PHONY: all 
+.PHONY: all
 all: help
 
 ## - format
 ##	Automatically run black linting and isort sorting.
-.PHONY: format 
+.PHONY: format
 format: isort lint
 
 ## - format-check
 ##	Check (but don't apply) black linting and isort sorting.
-.PHONY: format-check 
+.PHONY: format-check
 format-check: lint-check isort-check
 
 ## - lint
 ##	Automatically format project code with black.
-.PHONY: lint 
+.PHONY: lint
 lint:
-	black poglink tests
+	black .
 
 ## - lint-check
 ##	Check linting of code with black.
-.PHONY: lint-check 
+.PHONY: lint-check
 lint-check:
-	black poglink tests --diff --color --check
+	black . --diff --color --check
 
 ## - isort
 ##	Automatically sort imports in project code using isort.
-.PHONY: isort 
+.PHONY: isort
 isort:
-	isort poglink tests
+	isort .
 
 ## - isort-check
 ##	Check sorting of imports in project code using isort.
-.PHONY: isort-check 
+.PHONY: isort-check
 isort-check:
-	isort poglink tests --diff --color --check
+	isort . --diff --color --check
 
 ## - test
 ##	Run pytest tests.
-.PHONY: test 
+.PHONY: test
 test:
 	python -m pytest
 
@@ -57,7 +57,7 @@ clean: clean-python
 
 ## - clean-python
 ##	Clean python build directory.
-.PHONY: clean-python 
+.PHONY: clean-python
 clean-python:
 	rm -rfv dist/*
 
@@ -88,5 +88,5 @@ docker-build:
 ## - help:
 ##	Show this help text.
 .PHONY: help
-help: 
+help:
 	@sed -n 's/^##//p' $(MAKEFILE_LIST)
