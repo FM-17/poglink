@@ -36,7 +36,7 @@ def test_parser():
             # "--bans-channel-id", # TODO: Reimplement when bans are enabled
             # "4321", # TODO: Reimplement when bans are enabled
             "--debug",
-            "--publish-on-startup",
+            "--send-embed-on-startup",
         ]
     )
 
@@ -49,4 +49,4 @@ def test_parser():
     # assert args.bans_url == "www.bans.com" # TODO: Reimplement when bans are enabled
     # assert args.bans_channel_id == "4321" # TODO: Reimplement when bans are enabled
     assert args.debug is True
-    assert args.publish_on_startup is True
+    assert args.send_embed_on_startup is True

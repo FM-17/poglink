@@ -62,7 +62,7 @@ def env(config_dir):
     os.environ["BOT_DATA_DIR"] = config_dir
     os.environ["BOT_RATES_URLS"] = "https://www.google.com,https://www.bing.com"
     os.environ["BOT_TOKEN"] = "fedcba"
-    os.environ["BOT_PUBLISH_ON_STARTUP"] = "1"
+    os.environ["BOT_SEND_EMBED_ON_STARTUP"] = "1"
 
 
 def test_setup_config(args, env, caplog):
@@ -99,7 +99,7 @@ def test_setup_config(args, env, caplog):
         assert "below minimum value" in caplog.text
 
     # boolean values are interpreted from env var
-    assert config.get("publish_on_startup") is True
+    assert config.get("send_embed_on_startup") is True
 
 
 def test_setup_config_bad_config_file(args, caplog, bad_config_dir):

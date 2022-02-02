@@ -22,7 +22,7 @@ class BotConfig:
         rates_urls=None,
         # bans_url=None,
         data_dir=None,
-        publish_on_startup=None,
+        send_embed_on_startup=None,
         **kwargs,
     ) -> None:
         self.token = token
@@ -33,7 +33,7 @@ class BotConfig:
         self.rates_urls = rates_urls
         # self.bans_url = bans_url
         self.data_dir = data_dir
-        self.publish_on_startup = publish_on_startup
+        self.send_embed_on_startup = send_embed_on_startup
 
         # handle special cases for boolean values
         for param in BOOLEAN_VALUES:

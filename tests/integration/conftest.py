@@ -6,7 +6,7 @@ from poglink.bot import ConfigurableBot
 
 @pytest.fixture()
 def sample_bot(bans_url_1, dynamic_rates_url, event_loop):
-    # Define intents required to publish embeds
+    # Define intents required to send embeds
     intents = discord.Intents.default()
     intents.members = True
 

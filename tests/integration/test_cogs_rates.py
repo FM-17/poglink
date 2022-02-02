@@ -24,17 +24,10 @@ def rates_cog(sample_bot):
     rates_cog.rate_limit_delay = 0  # Override rate limit for testing. If we ever have tests fail due to this, we can adjust
     yield rates_cog
 
-    # Clean up
-    for f in rates_cog.output_paths:
-        try:
-            os.remove(f)
-        except Exception:
-            pass
-
 
 @pytest.mark.asyncio
 async def test_send_embed(rates_cog, caplog):
-    # Define an embed that matches what should be published by the cog
+    # Define an embed that matches what should be sent by the cog
     sample_embed = discord.Embed(
         description="test",
         title="ARK's Official server rates have just been updated!",
@@ -70,7 +63,7 @@ async def test_send_embed(rates_cog, caplog):
 
 @pytest.mark.asyncio
 async def test_send_embed_no_title(rates_cog, caplog):
-    # Define an embed that matches what should be published by the cog
+    # Define an embed that matches what should be sent by the cog
     sample_embed = discord.Embed(
         description="test",
         title="ARK's Official server rates have just been updated!",
@@ -130,11 +123,11 @@ async def test_compare_and_notify_all(rates_cog, caplog):
     await rates_cog.compare_and_notify_all(embed_title=embed_title)
     assert dpytest.verify().message().nothing()
 
-    # 5th request; no diff from previous, which means new rates are stable. Different from previous stable rates, so embed is published
+    # 5th request; no diff from previous, which means new rates are stable. Different from previous stable rates, so embed is sent
     await rates_cog.compare_and_notify_all(embed_title=embed_title)
     assert dpytest.verify().message().embed(embed=sample_embed)
 
-    # Only one embed was published; queue is empty after consuming message above
+    # Only one embed was sent; queue is empty after consuming message above
     assert dpytest.verify().message().nothing()
 
 
@@ -187,18 +180,17 @@ async def test_compare_and_notify_all_reverse(rates_cog):
     await rates_cog.compare_and_notify_all(embed_title=embed_title)
     assert dpytest.verify().message().nothing()
 
-    # 4th request; no diff from previous, which means new rates are stable. Different from previous stable rates, so embed is published
+    # 4th request; no diff from previous, which means new rates are stable. Different from previous stable rates, so embed is sent
     await rates_cog.compare_and_notify_all(embed_title=embed_title)
     print(rates_cog.last_rates[0].to_dict())
     assert dpytest.verify().message().embed(embed=sample_embed)
 
-    # Only one embed was published; queue is empty after consuming message above
+    # Only one embed was sent; queue is empty after consuming message above
     assert dpytest.verify().message().nothing()
 
 
 @pytest.mark.asyncio
 async def test_rates_get_current_rates_bad_fetch(rates_cog):
-    rates_cog.output_paths[0]
 
     with pytest.raises(RatesFetchError):
         await rates_cog.get_current_rates("http://localhost:5000/bogus-url.txt")
@@ -206,7 +198,6 @@ async def test_rates_get_current_rates_bad_fetch(rates_cog):
 
 @pytest.mark.asyncio
 async def test_rates_get_current_rates_bad_parse(rates_cog):
-    rates_cog.output_paths[0]
 
     with pytest.raises(RatesProcessError):
         await rates_cog.get_current_rates("https://www.google.com")
