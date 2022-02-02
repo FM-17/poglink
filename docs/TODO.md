@@ -17,7 +17,7 @@
 - [x] Auto-publishing in announcement channels
 - [x] Rework `rates.py` to make use of RatesStatus and RatesDiff
 server
-- [ ] Add delay between change detection and sending embed, where another check is performed after delay
+- [x] Add delay between change detection and sending embed, where another check is performed after delay
 
 #### Low Priority / Next Release
 - [x] Add ability to post other server rates. Rather than just using the `dynamicconfig.ini` endpoint, perhaps add a parameter that takes in a list of endpoints, ex. `["pc_smalltribes_dynamicconfig.ini", "xbox_smalltribes_dynamiconfig.ini"]`. Alternatively, combine all rates into a table that gets added to the embed.
