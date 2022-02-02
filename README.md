@@ -27,7 +27,7 @@ Recently updated rates will be shown in **bold**, and the embed title will be au
 - [Configuration](https://github.com/FM-17/poglink/blob/main/docs/configuration.md)
 
 ## Future updates
-- Configurable delay between change detection and posting to discord
+- ~~Delay between change detection and posting to discord~~ ✅
 - Option to disable auto-publishing in announcement channels
 - Optional in-game server notification integration
 - Custom API endpoint selection for rates

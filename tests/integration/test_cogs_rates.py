@@ -24,13 +24,6 @@ def rates_cog(sample_bot):
     rates_cog.rate_limit_delay = 0  # Override rate limit for testing. If we ever have tests fail due to this, we can adjust
     yield rates_cog
 
-    # Clean up
-    for f in rates_cog.output_paths:
-        try:
-            os.remove(f)
-        except Exception:
-            pass
-
 
 @pytest.mark.asyncio
 async def test_send_embed(rates_cog, caplog):
@@ -198,7 +191,6 @@ async def test_compare_and_notify_all_reverse(rates_cog):
 
 @pytest.mark.asyncio
 async def test_rates_get_current_rates_bad_fetch(rates_cog):
-    rates_cog.output_paths[0]
 
     with pytest.raises(RatesFetchError):
         await rates_cog.get_current_rates("http://localhost:5000/bogus-url.txt")
@@ -206,7 +198,6 @@ async def test_rates_get_current_rates_bad_fetch(rates_cog):
 
 @pytest.mark.asyncio
 async def test_rates_get_current_rates_bad_parse(rates_cog):
-    rates_cog.output_paths[0]
 
     with pytest.raises(RatesProcessError):
         await rates_cog.get_current_rates("https://www.google.com")

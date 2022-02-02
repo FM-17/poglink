@@ -46,17 +46,9 @@ class Rates(commands.Cog):
         self.polling_delay = client.config.polling_delay
         self.allowed_roles = client.config.allowed_roles
         self.data_dir = os.path.expanduser(client.config.data_dir)
-        self.output_paths = [
-            os.path.join(
-                self.data_dir,
-                f"last_{os.path.splitext(os.path.basename(urlparse(url).path))[0]}.json",
-            )
-            for url in client.config.rates_urls
-        ]
         self.last_rates = [None for _ in self.webpage_urls]
         self.stable_rates = [None for _ in self.webpage_urls]
         self.consecutive_count = [0 for _ in self.webpage_urls]
-        logger.debug(f"URLs: {self.webpage_urls}, Output paths: {self.output_paths}")
         # Create parent directory for persistent data if it doesn't exist yet
         if not os.path.exists(self.data_dir):
             logger.info(f"Data directory doesn't exist yet; creating: {self.data_dir}")
