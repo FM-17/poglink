@@ -62,7 +62,7 @@ def env(config_dir):
     os.environ["BOT_DATA_DIR"] = config_dir
     os.environ["BOT_RATES_URLS"] = "https://www.google.com,https://www.bing.com"
     os.environ["BOT_TOKEN"] = "fedcba"
-    os.environ["BOT_send_embed_on_startup"] = "1"
+    os.environ["BOT_SEND_EMBED_ON_STARTUP"] = "1"
 
 
 def test_setup_config(args, env, caplog):
