@@ -92,9 +92,9 @@ def setup_argparse():
     # ) # TODO: Reimplement when bans are enabled
     parser.add_argument("--debug", action="store_true", help="Set log level to DEBUG.")
     parser.add_argument(
-        "--publish-on-startup",
+        "--send-embed-on-startup",
         action="store_true",
-        help="Publish current rates found after starting the bot for the first time.",
+        help="Send embed containing current rates found after starting the bot for the first time.",
     )
 
     return parser

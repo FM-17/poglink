@@ -9,5 +9,5 @@
   "rates_urls": [
     "http://arkdedicated.com/dynamicconfig.ini"
   ],
-  "publish_on_startup": true
+  "send_embed_on_startup": true
 }

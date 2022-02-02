@@ -61,7 +61,7 @@ class Rates(commands.Cog):
         if not os.path.exists(self.data_dir):
             logger.info(f"Data directory doesn't exist yet; creating: {self.data_dir}")
             os.makedirs(self.data_dir)
-        self.publish_on_startup = client.config.publish_on_startup
+        self.send_embed_on_startup = client.config.send_embed_on_startup
         self.rate_limit_delay = RATE_LIMIT_DELAY  # Can be overridden manually, but not part of the config when instantiated
 
     @staticmethod
@@ -174,7 +174,7 @@ class Rates(commands.Cog):
                             )
                     else:
                         logger.info(
-                            f"No previous stable rates recorded at {url}. Updating new stable value, but no updates to publish."
+                            f"No previous stable rates recorded at {url}. Updating new stable value, but no updates to send."
                         )
 
                     self.stable_rates[idx] = current_rates
@@ -191,9 +191,9 @@ class Rates(commands.Cog):
     async def on_ready(self):  # pragma: no cover
         logger.info("Cog Ready: Rates")
 
-        # publish initial rates for each url upon startup.
+        # send embed with initial rates for each url upon startup.
         # TODO: Add test for this
-        if self.publish_on_startup:
+        if self.send_embed_on_startup:
             for url in self.webpage_urls:
                 rates = await self.get_current_rates(url)
                 await self.send_embed(rates.to_embed(), url)

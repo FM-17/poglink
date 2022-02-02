@@ -19,7 +19,7 @@ DEFAULT_CONFIG = {
     # "bans_channel_id": None, # TODO: Reimplement when bans are enabled
     "token": None,
     "data_dir": "~/.poglink",
-    "publish_on_startup": False,
+    "send_embed_on_startup": False,
 }
 
 REQUIRED_VALUES = [
@@ -33,7 +33,7 @@ LIST_VALUES = [
     "rates_urls",
 ]
 
-BOOLEAN_VALUES = ["publish_on_startup"]
+BOOLEAN_VALUES = ["send_embed_on_startup"]
 
 
 def setup_config(args, default_config=DEFAULT_CONFIG):
