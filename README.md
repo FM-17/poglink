@@ -24,6 +24,7 @@ Recently updated rates will be shown in **bold**, and the embed title will be au
 - [Prerequisites](https://github.com/FM-17/poglink/blob/main/docs/prerequisites.md)
 - [Running natively in Python](https://github.com/FM-17/poglink/blob/main/docs/native-installation.md)
 - [Running within Docker container](https://github.com/FM-17/poglink/blob/main/docs/docker-installation.md)
+- [Installing as a `systemd` Service](https://github.com/FM-17/poglink/blob/main/docs/systemd-installation.md)
 - [Configuration](https://github.com/FM-17/poglink/blob/main/docs/configuration.md)
 
 ## Future updates

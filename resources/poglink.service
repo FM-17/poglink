@@ -1,0 +1,15 @@
+[Unit]
+Description=Runs Poglink bot as a system service.
+StartLimitIntervalSec=30
+StartLimitBurst=4
+
+[Service]
+Type=simple
+Environment=BOT_DATA_DIR=##DATA_DIR##
+ExecStart=##PYTHON## -m poglink.main
+Restart=on-failure
+RestartSec=5
+User=##USER##
+
+[Install]
+WantedBy=multi-user.target
