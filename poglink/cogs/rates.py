@@ -97,7 +97,7 @@ class Rates(commands.Cog):
             # generate dynamic timestamp (https://hammertime.djdavid98.art/)
             ts = int(time.time() // 60 * 60)
             ts_string = f"<t:{ts}:t>"
-            title = f"ARK's {server_name} server rates updated at {ts_string}"
+            title = f"{server_name} server rates updated at {ts_string}"
 
         embed = discord.Embed(
             description=description,

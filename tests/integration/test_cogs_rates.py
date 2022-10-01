@@ -30,7 +30,7 @@ async def test_send_embed(rates_cog, caplog):
     # Define an embed that matches what should be sent by the cog
     sample_embed = discord.Embed(
         description="test",
-        title="ARK's Official server rates have just been updated!",
+        title="Official server rates have just been updated!",
         color=0x63BCC3,
     )
     sample_embed.set_image(url=EMBED_IMAGE)
@@ -39,7 +39,7 @@ async def test_send_embed(rates_cog, caplog):
     await rates_cog.send_embed(
         description="test",
         url="www.mysite.com/dynamicconfig.ini",
-        title="ARK's Official server rates have just been updated!",
+        title="Official server rates have just been updated!",
     )
     with caplog.at_level(logging.WARNING):
         assert "Rates url was not recognized as any known type" not in caplog.text
@@ -52,7 +52,7 @@ async def test_send_embed(rates_cog, caplog):
     await rates_cog.send_embed(
         description="test",
         url="www.mysite.com/dddddynacimconfig.ini",
-        title="ARK's Official server rates have just been updated!",
+        title="Official server rates have just been updated!",
     )
     with caplog.at_level(logging.WARNING):
         assert "Rates url was not recognized as any known type" in caplog.text
@@ -66,7 +66,7 @@ async def test_send_embed_no_title(rates_cog, caplog):
     # Define an embed that matches what should be sent by the cog
     sample_embed = discord.Embed(
         description="test",
-        title="ARK's Official server rates have just been updated!",
+        title="Official server rates have just been updated!",
         color=0x63BCC3,
     )
     sample_embed.set_image(url=EMBED_IMAGE)
@@ -99,7 +99,7 @@ async def test_send_embed_no_title(rates_cog, caplog):
 )
 @pytest.mark.asyncio
 async def test_compare_and_notify_all(rates_cog, caplog):
-    embed_title = "ARK's Official server rates have just been updated!"
+    embed_title = "Official server rates have just been updated!"
     sample_embed = discord.Embed(
         description="3 × Taming\n**2** × Harvesting\n3 × XP\n**0.7** × Mating Interval\n3 × Maturation\n3 × Hatching\n0.6 × Cuddle Interval\n3 × Imprinting\n**2.5** × Hexagon Reward",
         title=embed_title,
@@ -160,7 +160,7 @@ async def test_compare_and_notify_all_exceptions(rates_cog, caplog):
 )
 @pytest.mark.asyncio
 async def test_compare_and_notify_all_reverse(rates_cog):
-    embed_title = "ARK's Official server rates have just been updated!"
+    embed_title = "Official server rates have just been updated!"
     sample_embed = discord.Embed(
         description="3 × Taming\n**3** × Harvesting\n3 × XP\n**0.6** × Mating Interval\n3 × Maturation\n3 × Hatching\n0.6 × Cuddle Interval\n3 × Imprinting\n**1.5** × Hexagon Reward",
         title=embed_title,
