@@ -27,7 +27,8 @@ The following configuration parameters are available to be set in any of the abo
 | `--bans-channel-id`    | `BOT_BANS_CHANNEL_ID`    | None                                      | Yes      | 🚧 [WIP] Channel ID to post ban summary in  WIP                                   |
 | `--token `             | `BOT_TOKEN`              | None                                      | Yes      | Bot token (from Discord Developer Portal)                            |
 | `--data-dir`           | `BOT_DATA_DIR`           | ~/.poglink                        | No       | Directory that will contain bot data, such as the `config.yaml` file |
-| `--debug`              | `BOT_DEBUG`              | False                                     | No       | Enables debug logging                                                |
+| `--debug`              | `BOT_DEBUG`              | False                                     | No       | Enables debug logging |
+| `--send-embed-on-startup` | `BOT_SEND_EMBED_ON_STARTUP`| False                                | No       | Send embed containing current rates found after starting the bot for the first time. | 
 
 ## Configuration Examples
 - - - 
