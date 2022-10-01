@@ -17,8 +17,8 @@ class RatesStatus:
         "BabyCuddleIntervalMultiplier": "Cuddle Interval",
         "BabyImprintAmountMultiplier": "Imprinting",
         "HexagonRewardMultiplier": "Hexagon Reward",
-        "TreasureGoldMultiplier" : "Treasure Gold",
-        "CropGrowthSpeedMultiplier" : "Crop Growth"
+        "TreasureGoldMultiplier": "Treasure Gold",
+        "CropGrowthSpeedMultiplier": "Crop Growth",
     }
 
     def __init__(
