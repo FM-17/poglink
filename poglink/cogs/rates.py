@@ -77,21 +77,34 @@ class Rates(commands.Cog):
     async def send_embed(self, description, url, title=None):
         # generate embed
         logger.debug(f"Attempting to send embed. desc: {description}, url: {url}")
-        match = re.match(
-            r"(?P<host>.*\/)?(?:(?P<platform>.*)\_(?P<game_mode>.*)\_)?dynamicconfig\.ini",
-            os.path.basename(urlparse(url).path),
-        )
-        if match:
-            server_match_dict = match.groupdict()
+
+        # TODO: Add ability to accept custom URL/Title pairs, rather than parsing the DEFAULT_SERVER_INFO list for hardcoded options, then remove this if statement
+        if "atlas" in url:
+            if "pve" in url:
+                server_name = "PVE"
+                server_color = 0x63BCC3
+            else:
+                server_name = "PVP"
+                server_color = 0xA34C44
         else:
-            logger.warning(f"Rates url was not recognized as any known type: {url}")
-            server_match_dict = {}
+            match = re.match(
+                r"(?P<host>.*\/)?(?:(?P<platform>.*)\_(?P<game_mode>.*)\_)?dynamicconfig\.ini",
+                os.path.basename(urlparse(url).path),
+            )
+            if match:
+                server_match_dict = match.groupdict()
 
-        server_meta = self.DEFAULT_SERVER_INFO.get(server_match_dict.get("game_mode"))
-        logger.debug(f"Server meta: {server_meta}")
-        # TODO: Add ability to accept custom rates URL
+            else:
+                logger.warning(f"Rates url was not recognized as any known type: {url}")
+                server_match_dict = {}
 
-        server_name = server_meta.get("short_name")
+            server_meta = self.DEFAULT_SERVER_INFO.get(
+                server_match_dict.get("game_mode")
+            )
+            logger.debug(f"Server meta: {server_meta}")
+
+            server_name = server_meta.get("short_name")
+            server_color = server_meta.get("color")
 
         if title is None:
             # generate dynamic timestamp (https://hammertime.djdavid98.art/)
@@ -102,7 +115,7 @@ class Rates(commands.Cog):
         embed = discord.Embed(
             description=description,
             title=title,
-            color=server_meta.get("color"),
+            color=server_color,
         )
         embed.set_image(url=EMBED_IMAGE)
 
