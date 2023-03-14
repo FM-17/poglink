@@ -80,10 +80,10 @@ class Rates(commands.Cog):
 
         # TODO: Add ability to accept custom URL/Title pairs, rather than parsing the DEFAULT_SERVER_INFO list for hardcoded options, then remove this if statement
         if "atlas" in url:
-            if "pve" in url: 
+            if "pve" in url:
                 server_name = "PVE"
-                server_color = 0x63BCC3               
-            else: 
+                server_color = 0x63BCC3
+            else:
                 server_name = "PVP"
                 server_color = 0xA34C44
         else:
@@ -93,12 +93,14 @@ class Rates(commands.Cog):
             )
             if match:
                 server_match_dict = match.groupdict()
-                
+
             else:
                 logger.warning(f"Rates url was not recognized as any known type: {url}")
                 server_match_dict = {}
 
-            server_meta = self.DEFAULT_SERVER_INFO.get(server_match_dict.get("game_mode"))
+            server_meta = self.DEFAULT_SERVER_INFO.get(
+                server_match_dict.get("game_mode")
+            )
             logger.debug(f"Server meta: {server_meta}")
 
             server_name = server_meta.get("short_name")
