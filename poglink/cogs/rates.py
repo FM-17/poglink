@@ -19,7 +19,6 @@ RATE_LIMIT_DELAY = 1
 
 # create cog class
 class Rates(commands.Cog):
-
     def __init__(self, client):
         self.client = client
 
@@ -37,7 +36,6 @@ class Rates(commands.Cog):
             os.makedirs(self.data_dir)
         self.send_embed_on_startup = client.config.send_embed_on_startup
         self.rate_limit_delay = RATE_LIMIT_DELAY  # Can be overridden manually, but not part of the config when instantiated
-
 
     @staticmethod
     async def get_current_rates(url):
@@ -58,15 +56,14 @@ class Rates(commands.Cog):
                 raise RatesFetchError(e) from e
 
     async def send_embed(self, description, rates_dict):
-        url = rates_dict.get('url')
-        server_name = rates_dict.get('server_name')
-        server_color = rates_dict.get('color')
-        
+        url = rates_dict.get("url")
+        server_name = rates_dict.get("server_name")
+        server_color = rates_dict.get("color")
+
         # generate embed
         logger.debug(f"Attempting to send embed. desc: {description}, url: {url}")
 
         # TODO: Add ability to accept custom URL/Title pairs, rather than parsing the DEFAULT_SERVER_INFO list for hardcoded options, then remove this if statement
-
 
         # generate dynamic timestamp (https://hammertime.djdavid98.art/)
         ts = int(time.time() // 60 * 60)
@@ -92,8 +89,8 @@ class Rates(commands.Cog):
     async def compare_and_notify_all(self, **kwargs):
 
         for idx in range(len(self.rates_dicts)):
-            url = self.rates_dicts[idx].get('url')
-            
+            url = self.rates_dicts[idx].get("url")
+
             # Fetch current rates from online
             try:
                 current_rates = await self.get_current_rates(url)
