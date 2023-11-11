@@ -19,42 +19,25 @@ RATE_LIMIT_DELAY = 1
 
 # create cog class
 class Rates(commands.Cog):
-    DEFAULT_SERVER_INFO = {
-        "smalltribes": {
-            "short_name": "Smalltribes",
-            "color": 0xA34C44,
-        },
-        "arkpocalypse": {
-            "short_name": "Arkpocalypse",
-            "color": 0xF8DE74,
-        },
-        "conquest": {
-            "short_name": "Conquest/Classic",
-            "color": 0x6DFF90,
-        },
-        None: {
-            "short_name": "Official",
-            "color": 0x63BCC3,
-        },
-    }
 
     def __init__(self, client):
         self.client = client
 
-        self.webpage_urls = client.config.rates_urls
+        self.rates_dicts = client.config.rates_urls
         self.channel_id = client.config.rates_channel_id
         self.polling_delay = client.config.polling_delay
         self.allowed_roles = client.config.allowed_roles
         self.data_dir = os.path.expanduser(client.config.data_dir)
-        self.last_rates = [None for _ in self.webpage_urls]
-        self.stable_rates = [None for _ in self.webpage_urls]
-        self.consecutive_count = [0 for _ in self.webpage_urls]
+        self.last_rates = [None for _ in self.rates_dicts]
+        self.stable_rates = [None for _ in self.rates_dicts]
+        self.consecutive_count = [0 for _ in self.rates_dicts]
         # Create parent directory for persistent data if it doesn't exist yet
         if not os.path.exists(self.data_dir):
             logger.info(f"Data directory doesn't exist yet; creating: {self.data_dir}")
             os.makedirs(self.data_dir)
         self.send_embed_on_startup = client.config.send_embed_on_startup
         self.rate_limit_delay = RATE_LIMIT_DELAY  # Can be overridden manually, but not part of the config when instantiated
+
 
     @staticmethod
     async def get_current_rates(url):
@@ -74,43 +57,21 @@ class Rates(commands.Cog):
             except Exception as e:
                 raise RatesFetchError(e) from e
 
-    async def send_embed(self, description, url, title=None):
+    async def send_embed(self, description, rates_dict):
+        url = rates_dict.get('url')
+        server_name = rates_dict.get('server_name')
+        server_color = rates_dict.get('color')
+        
         # generate embed
         logger.debug(f"Attempting to send embed. desc: {description}, url: {url}")
 
         # TODO: Add ability to accept custom URL/Title pairs, rather than parsing the DEFAULT_SERVER_INFO list for hardcoded options, then remove this if statement
-        if "atlas" in url:
-            if "pve" in url:
-                server_name = "PVE"
-                server_color = 0x63BCC3
-            else:
-                server_name = "PVP"
-                server_color = 0xA34C44
-        else:
-            match = re.match(
-                r"(?P<host>.*\/)?(?:(?P<platform>.*)\_(?P<game_mode>.*)\_)?dynamicconfig\.ini",
-                os.path.basename(urlparse(url).path),
-            )
-            if match:
-                server_match_dict = match.groupdict()
 
-            else:
-                logger.warning(f"Rates url was not recognized as any known type: {url}")
-                server_match_dict = {}
 
-            server_meta = self.DEFAULT_SERVER_INFO.get(
-                server_match_dict.get("game_mode")
-            )
-            logger.debug(f"Server meta: {server_meta}")
-
-            server_name = server_meta.get("short_name")
-            server_color = server_meta.get("color")
-
-        if title is None:
-            # generate dynamic timestamp (https://hammertime.djdavid98.art/)
-            ts = int(time.time() // 60 * 60)
-            ts_string = f"<t:{ts}:t>"
-            title = f"{server_name} server rates updated at {ts_string}"
+        # generate dynamic timestamp (https://hammertime.djdavid98.art/)
+        ts = int(time.time() // 60 * 60)
+        ts_string = f"<t:{ts}:t>"
+        title = f"{server_name} server rates updated at {ts_string}"
 
         embed = discord.Embed(
             description=description,
@@ -129,9 +90,10 @@ class Rates(commands.Cog):
             await message.publish()
 
     async def compare_and_notify_all(self, **kwargs):
-        for idx in range(len(self.webpage_urls)):
-            url = self.webpage_urls[idx]
 
+        for idx in range(len(self.rates_dicts)):
+            url = self.rates_dicts[idx].get('url')
+            
             # Fetch current rates from online
             try:
                 current_rates = await self.get_current_rates(url)
@@ -199,9 +161,9 @@ class Rates(commands.Cog):
         # send embed with initial rates for each url upon startup.
         # TODO: Add test for this
         if self.send_embed_on_startup:
-            for url in self.webpage_urls:
-                rates = await self.get_current_rates(url)
-                await self.send_embed(rates.to_embed(), url)
+            for rates_dict in self.rates_dicts:
+                rates = await self.get_current_rates(rates_dict.get("url"))
+                await self.send_embed(rates.to_embed(), rates_dict)
                 await asyncio.sleep(self.rate_limit_delay)
 
         while True:
