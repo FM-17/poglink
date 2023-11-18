@@ -135,7 +135,7 @@ class Rates(commands.Cog):
                             )
                             embed_description = stable_diff.to_embed()
                             await self.send_embed(
-                                embed_description, rates_dict=self.stable_rates[idx]
+                                embed_description, rates_dict={"url": url}
                             )
                     else:
                         logger.info(
