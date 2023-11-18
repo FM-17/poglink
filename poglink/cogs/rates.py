@@ -1,9 +1,7 @@
 import asyncio
 import logging
 import os
-import re
 import time
-from urllib.parse import urlparse
 
 import aiohttp
 import discord
@@ -16,6 +14,9 @@ logger = logging.getLogger(__name__)
 
 EMBED_IMAGE = "https://i.stack.imgur.com/Fzh0w.png"
 RATE_LIMIT_DELAY = 1
+DEFAULT_COLOR = "0xF8DE74"
+DEFAULT_SERVER_NAME = "Unknown Server Name"
+DEFAULT_URL = "Unknown URL"
 
 # create cog class
 class Rates(commands.Cog):
@@ -55,10 +56,10 @@ class Rates(commands.Cog):
             except Exception as e:
                 raise RatesFetchError(e) from e
 
-    async def send_embed(self, description, rates_dict):
-        url = rates_dict.get("url")
-        server_name = rates_dict.get("server_name")
-        server_color = rates_dict.get("color")
+    async def send_embed(self, description, rates_dict, **kwargs):
+        url = rates_dict.get("url", DEFAULT_URL)
+        server_name = rates_dict.get("server_name", DEFAULT_SERVER_NAME)
+        server_color = rates_dict.get("color", DEFAULT_COLOR)
 
         # generate embed
         logger.debug(f"Attempting to send embed. desc: {description}, url: {url}")
@@ -134,7 +135,7 @@ class Rates(commands.Cog):
                             )
                             embed_description = stable_diff.to_embed()
                             await self.send_embed(
-                                embed_description, url, title=kwargs.get("embed_title")
+                                embed_description, rates_dict=self.stable_rates[idx]
                             )
                     else:
                         logger.info(
