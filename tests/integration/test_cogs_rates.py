@@ -138,13 +138,13 @@ async def test_compare_and_notify_all(rates_cog, caplog):
 @pytest.mark.asyncio
 async def test_compare_and_notify_all_exceptions(rates_cog, caplog):
     # bad url, can't fetch
-    rates_cog.webpage_urls = ["http://localhost:5000/bogus-url.txt"]
+    rates_cog.rates_dicts = [{"urls": "http://localhost:5000/bogus-url.txt"}]
     await rates_cog.compare_and_notify_all()
     with caplog.at_level(logging.ERROR):
         assert "Could not retrieve rates from ARK Web API at" in caplog.text
 
     # other issue, can't process
-    rates_cog.webpage_urls = ["asdfasdfasdfasdfasdf"]
+    rates_cog.rates_dicts = [{"urls": "asdfasdfasdfasdfasdf"}]
     await rates_cog.compare_and_notify_all()
     with caplog.at_level(logging.ERROR):
         assert "Could not retrieve rates from ARK Web API at" in caplog.text
