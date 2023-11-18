@@ -38,8 +38,10 @@ async def test_send_embed(rates_cog, caplog):
     # Send the embed using the Rates cog (no warning message logged)
     await rates_cog.send_embed(
         description="test",
-        url="www.mysite.com/dynamicconfig.ini",
-        title="Official server rates have just been updated!",
+        rates_dict={
+            "url": "www.mysite.com/dynamicconfig.ini",
+            "title": "Official server rates have just been updated!",
+        },
     )
     with caplog.at_level(logging.WARNING):
         assert "Rates url was not recognized as any known type" not in caplog.text
@@ -74,7 +76,9 @@ async def test_send_embed_no_title(rates_cog, caplog):
     # Send the embed using the Rates cog (no warning message logged)
     await rates_cog.send_embed(
         description="test",
-        url="www.mysite.com/dynamicconfig.ini",
+        rates_dict={
+            "url": "www.mysite.com/dynamicconfig.ini",
+        },
     )
     with caplog.at_level(logging.WARNING):
         assert "Rates url was not recognized as any known type" not in caplog.text
@@ -182,7 +186,6 @@ async def test_compare_and_notify_all_reverse(rates_cog):
 
     # 4th request; no diff from previous, which means new rates are stable. Different from previous stable rates, so embed is sent
     await rates_cog.compare_and_notify_all(embed_title=embed_title)
-    print(rates_cog.last_rates[0].to_dict())
     assert dpytest.verify().message().embed(embed=sample_embed)
 
     # Only one embed was sent; queue is empty after consuming message above

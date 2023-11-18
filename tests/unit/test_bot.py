@@ -24,7 +24,9 @@ def sample_config_dict():
 @pytest.fixture
 def sample_config_dict_singular(sample_config_dict):
     config = copy.deepcopy(sample_config_dict)
-    config.update({"allowed_roles": "regular_user", "rates_urls": "www.google.com"})
+    config.update(
+        {"allowed_roles": "regular_user", "rates_urls": {"url": "www.google.com"}}
+    )
     return config
 
 
@@ -44,7 +46,7 @@ def test_botconfig_singular_vals(sample_config_dict_singular):
     botconfig = BotConfig.from_dict(sample_config_dict_singular)
 
     assert botconfig.allowed_roles == ["regular_user"]
-    assert botconfig.rates_urls == ["www.google.com"]
+    assert botconfig.rates_urls == {"url": "www.google.com"}
 
 
 def test_botconfig_from_file(
@@ -61,7 +63,9 @@ def test_botconfig_from_file(
     assert botconfig_yaml.rates_channel_id == "1234"
     assert botconfig_yaml.polling_delay == 60
     assert botconfig_yaml.allowed_roles == ["admin", "regular_users"]
-    assert botconfig_yaml.rates_urls == ["http://arkdedicated.com/dynamicconfig.ini"]
+    assert botconfig_yaml.rates_urls == [
+        {"url": "http://arkdedicated.com/dynamicconfig.ini"}
+    ]
     assert botconfig_yaml.data_dir is None
     assert botconfig_yaml.send_embed_on_startup is True
 
@@ -92,8 +96,8 @@ def test_comma_separation(sample_application_config_comma_yaml):
 
     assert botconfig.allowed_roles == ["admin", "regular_users"]
     assert botconfig.rates_urls == [
-        "http://arkdedicated.com/dynamicconfig.ini",
-        "http://www.google.com",
+        {"url": "http://arkdedicated.com/dynamicconfig.ini"},
+        {"url": "http://www.google.com"},
     ]
 
 

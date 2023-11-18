@@ -60,7 +60,6 @@ def bad_config_dir(file_config_vals):
 @pytest.fixture
 def env(config_dir):
     os.environ["BOT_DATA_DIR"] = config_dir
-    os.environ["BOT_RATES_URLS"] = "https://www.google.com,https://www.bing.com"
     os.environ["BOT_TOKEN"] = "fedcba"
     os.environ["BOT_SEND_EMBED_ON_STARTUP"] = "1"
 
@@ -72,12 +71,6 @@ def test_setup_config(args, env, caplog):
     assert (
         config.get("bans_channel_id") is None
     )  # "54321", # TODO: Reimplement when bans are enabled
-
-    # Values are read from environment vars
-    assert config.get("rates_urls") == [
-        "https://www.google.com",
-        "https://www.bing.com",
-    ]
 
     # Values are read from File
     assert config.get("allowed_roles") == ["test", "admin"]
@@ -122,7 +115,7 @@ def test_setup_config_bad_list(env, args, caplog):
 
     setup_config(args)
 
-    args.rates_urls = 1234
+    args.allowed_roles = 1234
     setup_config(args)
     with caplog.at_level(logging.WARNING):
         assert "Incorrect variable format" in caplog.text

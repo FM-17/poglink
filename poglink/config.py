@@ -36,7 +36,6 @@ REQUIRED_VALUES = [
 
 LIST_VALUES = [
     "allowed_roles",
-    "rates_urls",
 ]
 
 BOOLEAN_VALUES = ["send_embed_on_startup"]

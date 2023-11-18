@@ -5,5 +5,5 @@ allowed_roles:
   - admin
   - regular_users
 rates_urls: 
-  - "http://arkdedicated.com/dynamicconfig.ini"
+  - url: "http://arkdedicated.com/dynamicconfig.ini"
 send_embed_on_startup: true
