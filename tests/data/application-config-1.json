@@ -8,7 +8,7 @@
   ],
   "rates_urls": [
     {
-      "url": "https://cdn2.arkdedicated.com/asa/dynamicconfig.ini"
+      "url": "http://arkdedicated.com/dynamicconfig.ini"
     }
   ],
   "send_embed_on_startup": true
