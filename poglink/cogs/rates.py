@@ -64,8 +64,6 @@ class Rates(commands.Cog):
         # generate embed
         logger.debug(f"Attempting to send embed. desc: {description}, url: {url}")
 
-        # TODO: Add ability to accept custom URL/Title pairs, rather than parsing the DEFAULT_SERVER_INFO list for hardcoded options, then remove this if statement
-
         # generate dynamic timestamp (https://hammertime.djdavid98.art/)
         ts = int(time.time() // 60 * 60)
         ts_string = f"<t:{ts}:t>"
