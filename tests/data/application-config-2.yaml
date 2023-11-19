@@ -3,5 +3,5 @@ rates_channel_id: "1234"
 polling_delay: 60
 allowed_roles: admin,regular_users
 rates_urls: 
-  - url: "http://arkdedicated.com/dynamicconfig.ini"
+  - url: "https://cdn2.arkdedicated.com/asa/dynamicconfig.ini"
   - url: "http://www.google.com"
