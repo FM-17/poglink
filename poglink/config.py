@@ -13,7 +13,13 @@ MIN_POLLING_DELAY = 5
 DEFAULT_CONFIG = {
     "allowed_roles": [],
     "polling_delay": 60,
-    "rates_urls": ["http://arkdedicated.com/dynamicconfig.ini"],
+    "rates_urls": [
+        {
+            "server_name": "Official",
+            "url": "https://cdn2.arkdedicated.com/asa/dynamicconfig.ini",
+            "color": "0x63BCC3",
+        }
+    ],
     # "bans_url": "http://arkdedicated.com/bansummary.txt",
     "rates_channel_id": None,
     # "bans_channel_id": None, # TODO: Reimplement when bans are enabled
@@ -30,7 +36,6 @@ REQUIRED_VALUES = [
 
 LIST_VALUES = [
     "allowed_roles",
-    "rates_urls",
 ]
 
 BOOLEAN_VALUES = ["send_embed_on_startup"]

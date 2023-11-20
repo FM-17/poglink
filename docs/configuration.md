@@ -21,7 +21,7 @@ The following configuration parameters are available to be set in any of the abo
 | ---------------------- | ------------------------ | ----------------------------------------- | -------- | -------------------------------------------------------------------- |
 | `--allowed-roles`      | `BOT_ALLOWED_ROLES`      | None                                      | No       | Roles permitted to use bot commands (comma-separated list)           |
 | `--polling-delay`      | `BOT_POLLING_DELAY`      | 60                                        | No       | Delay between each API check                                         |
-| `--rates-urls`         | `BOT_RATES_URLS`         | http://arkdedicated.com/dynamicconfig.ini | No       | API URL to check for server rates (comma-separated list)        |
+| `--rates-urls`         | `BOT_RATES_URLS`         | [{"server_name": "Official","url": "https://cdn2.arkdedicated.com/asa/dynamicconfig.ini","color": "0x63BCC3",}] | Yes       | API URL to check for server rates (dict containing server title, url, and embed color)        |
 | `--bans-url`           | `BOT_BANS_URL`           | http://arkdedicated.com/bansummary.txt    | No       | 🚧 [WIP] API URL to check for a ban summary                              |
 | `--rates-channel-id`   | `BOT_RATES_CHANNEL_ID`   | None                                      | Yes      | Channel ID to post rates in                                          |
 | `--bans-channel-id`    | `BOT_BANS_CHANNEL_ID`    | None                                      | Yes      | 🚧 [WIP] Channel ID to post ban summary in  WIP                                   |
@@ -40,19 +40,15 @@ The following configuration parameters are available to be set in any of the abo
 token: JIMyUDY3Lah3SDd5JAM3Xds1.UH15df.lgOyDi5al5D_7d21gDDkAdHdlT3 # fake token
 rates_channel_id: 733415533152301503 
 
-# OPTIONAL
-rates_urls: http://arkdedicated.com/dynamicconfig.ini,http://arkdedicated.com/pc_smalltribes_dynamicconfig.ini
+rates_urls: 
+- server_name: Official
+  url:  https://cdn2.arkdedicated.com/asa/dynamicconfig.ini
+  color: 0x63BCC3
+- server_name: Smalltribes
+  url: https://cdn2.arkdedicated.com/asa/smalltribes_dynamicconfig.ini
+  color: 0xF8DE74
 ```
 
-### Using the CLI
-```bash
-poglink --rates-urls http://arkdedicated.com/dynamicconfig.ini,http://arkdedicated.com/pc_smalltribes_dynamicconfig.ini
-```
-### Using environment variables
-Export to current shell
-```bash
-export BOT_RATES_URLS=http://arkdedicated.com/dynamicconfig.ini,http://arkdedicated.com/pc_smalltribes_dynamicconfig.ini
-```
 - - - 
 **Example 2:** Running Poglink from a custom data directory
 
@@ -64,9 +60,3 @@ export BOT_RATES_URLS=http://arkdedicated.com/dynamicconfig.ini,http://arkdedica
 ```bash
 poglink --data-dir=~/custom_data_dir
 ```
-
-### Using environment variables
-```bash
-export BOT_DATA_DIR=~/custom_data_dir
-```
-- - -

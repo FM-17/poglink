@@ -14,7 +14,7 @@ def sample_bot(bans_url_1, dynamic_rates_url, event_loop):
         ".",
         {
             "bans_url": bans_url_1,
-            "rates_urls": [dynamic_rates_url],
+            "rates_urls": [{"url": dynamic_rates_url}],
             "data_dir": "tests/data",
         },
         loop=event_loop,  # Ensure pytest uses same event loop for async functions as bot
