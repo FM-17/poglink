@@ -61,7 +61,7 @@ class Rates(commands.Cog):
         server_name = rates_dict.get("server_name", DEFAULT_SERVER_NAME)
         color = rates_dict.get("color", DEFAULT_COLOR)
         if isinstance(color, str):
-            server_color = int(color, 16)  
+            server_color = int(color, 16)
         else:
             server_color = int(color)
 
