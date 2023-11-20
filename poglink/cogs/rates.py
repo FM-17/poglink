@@ -59,7 +59,11 @@ class Rates(commands.Cog):
     async def send_embed(self, description, rates_dict, **kwargs):
         url = rates_dict.get("url", DEFAULT_URL)
         server_name = rates_dict.get("server_name", DEFAULT_SERVER_NAME)
-        server_color = int(rates_dict.get("color", str(DEFAULT_COLOR)), base=16)
+        color = rates_dict.get("color", DEFAULT_COLOR)
+        if isinstance(color, str):
+            server_color = int(color, 16)  
+        else:
+            server_color = int(color)
 
         # generate embed
         logger.debug(f"Attempting to send embed. desc: {description}, url: {url}")
@@ -133,7 +137,7 @@ class Rates(commands.Cog):
                             )
                             embed_description = stable_diff.to_embed()
                             await self.send_embed(
-                                embed_description, rates_dict={"url": url}
+                                embed_description, rates_dict=self.rates_dicts[idx]
                             )
                     else:
                         logger.info(
