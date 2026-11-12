@@ -7,6 +7,8 @@ import discord
 from discord.ext import commands
 
 logger = logging.getLogger(__name__)
+
+
 # create cog class
 class Bans(commands.Cog):
     def __init__(self, client):
@@ -82,5 +84,5 @@ class Bans(commands.Cog):
 
 
 # add cog to client
-def setup(client):
-    client.add_cog(Bans(client))
+async def setup(client):  # pragma: no cover
+    await client.add_cog(Bans(client))

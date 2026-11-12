@@ -103,8 +103,7 @@ class BansStatus:
     def underline(length):
         return "=" * length
 
-    ban_summary_template = Template(
-        """{%- for ban_timeperiod in banstatus.bans %}
+    ban_summary_template = Template("""{%- for ban_timeperiod in banstatus.bans %}
 {{- ban_timeperiod.heading }}
 {% for _ in range(ban_timeperiod.heading | length) %}={% endfor %}
 {% for ban_summary in ban_timeperiod.summary %}
@@ -113,5 +112,4 @@ class BansStatus:
 
 {% endfor -%}items: List[RatesDiffItem] = field(default_factory=list)
 Last Updated: {{ banstatus.last_updated.strftime('%d %b %Y %H:%M:%S') }} ET
-"""
-    )
+""")

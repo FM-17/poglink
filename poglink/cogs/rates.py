@@ -18,6 +18,7 @@ DEFAULT_COLOR = "0xF8DE74"
 DEFAULT_SERVER_NAME = "Unknown Server Name"
 DEFAULT_URL = "Unknown URL"
 
+
 # create cog class
 class Rates(commands.Cog):
     def __init__(self, client):
@@ -172,5 +173,5 @@ class Rates(commands.Cog):
 
 
 # add cog to client
-def setup(client):  # pragma: no cover
-    client.add_cog(Rates(client))
+async def setup(client):  # pragma: no cover
+    await client.add_cog(Rates(client))

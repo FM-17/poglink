@@ -2,9 +2,8 @@ import logging
 import os
 
 import discord
-from discord.ext import commands
+from discord import app_commands
 
-import poglink
 from poglink.bot import ConfigurableBot
 from poglink.config import REQUIRED_VALUES, setup_config
 from poglink.utils import setup_argparse
@@ -54,33 +53,28 @@ def run(**kwargs):
     client = ConfigurableBot(".", kwargs)  # passing as dict, not unpacked kwargs
 
     # load a cog
-    @client.command()
-    @commands.has_any_role(*client.config.allowed_roles)
-    async def load(ctx, extension):
+    @client.tree.command()
+    @app_commands.checks.has_any_role(*client.config.allowed_roles)
+    async def load(interaction: discord.Interaction, extension: str):
         logger.debug(f"Loading extension: {extension}")
-        client.load_extension(f"poglink.cogs.{extension}")
+        await client.load_extension(f"poglink.cogs.{extension}")
+        await interaction.response.send_message(f"Extension '{extension}' loaded.")
 
     # unload a cogcd
-    @client.command()
-    @commands.has_any_role(*client.config.allowed_roles)
-    async def unload(ctx, extension):
+    @client.tree.command()
+    @app_commands.checks.has_any_role(*client.config.allowed_roles)
+    async def unload(interaction: discord.Interaction, extension: str):
         logger.debug(f"Unloading extension: {extension}")
-        client.unload_extension(f"poglink.cogs.{extension}")
+        await client.unload_extension(f"poglink.cogs.{extension}")
+        await interaction.response.send_message(f"Extension '{extension}' unloaded.")
 
     # reload a cog
-    @client.command()
-    @commands.has_any_role(*client.config.allowed_roles)
-    async def reload(ctx, extension):
+    @client.tree.command()
+    @app_commands.checks.has_any_role(*client.config.allowed_roles)
+    async def reload(interaction: discord.Interaction, extension: str):
         logger.debug(f"Reloading extension: {extension}")
-        client.unload_extension(f"poglink.cogs.{extension}")
-        client.load_extension(f"poglink.cogs.{extension}")
-        await ctx.send(f"Extension '{extension}' reloaded.")
-
-    # load all cogs on boot
-    for ext in poglink.cogs.__all__:
-        logger.debug(f"Loading extension: {ext}")
-        if ext != "bans":  # TODO: Reimplement when bans are enabled
-            client.load_extension(f"poglink.cogs.{ext}")
+        await client.reload_extension(f"poglink.cogs.{extension}")
+        await interaction.response.send_message(f"Extension '{extension}' reloaded.")
 
     # run the bot
     try:
