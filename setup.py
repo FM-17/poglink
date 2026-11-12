@@ -6,16 +6,13 @@ from setuptools import setup
 # If PYTHON_PACKAGE_VERSION variable is provided, use this instead of automatically grabbing from SCM.
 version = os.getenv("PYTHON_PACKAGE_VERSION")
 
-# the local scheme is overridden because pypi doesn't support commit hashes in version numbers
+kwargs = {"setup_requires": ["setuptools_scm"]}
 if version:
-    use_scm_version = False
+    kwargs["version"] = version
 elif os.getenv("CI") == "true":
-    use_scm_version = {"local_scheme": "no-local-version"}
+    # the local scheme is overridden because pypi doesn't support commit hashes in version numbers
+    kwargs["use_scm_version"] = {"local_scheme": "no-local-version"}
 else:
-    use_scm_version = True
+    kwargs["use_scm_version"] = True
 
-setup(
-    version=version,
-    use_scm_version=use_scm_version,
-    setup_requires=["setuptools_scm"],
-)
+setup(**kwargs)
