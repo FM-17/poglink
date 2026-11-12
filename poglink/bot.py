@@ -1,9 +1,11 @@
 import logging
 import os
 
+import discord
 import yaml
 from discord.ext import commands
 
+import poglink
 from poglink.config import BOOLEAN_VALUES, LIST_VALUES
 from poglink.error import ConfigReadError
 from poglink.utils import parse_bool, parse_list
@@ -103,7 +105,17 @@ class ConfigurableBot(commands.Bot):
     def __init__(self, command_prefix, config_dict, **kwargs):
         self.config = BotConfig.from_dict(config_dict)
 
+        kwargs.setdefault("intents", discord.Intents.default())
         super().__init__(command_prefix, **kwargs)
+
+    async def setup_hook(self):
+        # load all cogs on boot
+        for ext in poglink.cogs.__all__:
+            if ext != "bans":  # TODO: Reimplement when bans are enabled
+                logger.debug(f"Loading extension: {ext}")
+                await self.load_extension(f"poglink.cogs.{ext}")
+
+        await self.tree.sync()
 
     def __repr__(self):
         return f"ConfigurableBot<config={self.config}>"

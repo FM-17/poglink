@@ -82,5 +82,5 @@ class Bans(commands.Cog):
 
 
 # add cog to client
-def setup(client):
-    client.add_cog(Bans(client))
+async def setup(client):
+    await client.add_cog(Bans(client))

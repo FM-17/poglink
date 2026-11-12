@@ -172,5 +172,5 @@ class Rates(commands.Cog):
 
 
 # add cog to client
-def setup(client):  # pragma: no cover
-    client.add_cog(Rates(client))
+async def setup(client):  # pragma: no cover
+    await client.add_cog(Rates(client))
