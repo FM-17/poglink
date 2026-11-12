@@ -1,3 +1,5 @@
+import asyncio
+
 import discord.ext.test
 import pytest
 
@@ -5,7 +7,7 @@ from poglink.bot import ConfigurableBot
 
 
 @pytest.fixture()
-def sample_bot(bans_url_1, dynamic_rates_url, event_loop):
+async def sample_bot(bans_url_1, dynamic_rates_url):
     # Define intents required to send embeds
     intents = discord.Intents.default()
     intents.members = True
@@ -17,12 +19,12 @@ def sample_bot(bans_url_1, dynamic_rates_url, event_loop):
             "rates_urls": [{"url": dynamic_rates_url}],
             "data_dir": "tests/data",
         },
-        loop=event_loop,  # Ensure pytest uses same event loop for async functions as bot
         intents=intents,
     )
 
     # Configure bot for testing
     discord.ext.test.configure(bot)
+    bot.loop = asyncio.get_running_loop()
 
     # Override rates channel id with test channel id
     bot.config.rates_channel_id = bot.guilds[0].text_channels[0].id
