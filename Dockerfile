@@ -1,4 +1,4 @@
-FROM python:3.7-alpine as build
+FROM python:3.12-alpine as build
 
 # Build requirements
 COPY requirements.txt .
@@ -17,7 +17,7 @@ COPY README.md .
 ARG PYTHON_PACKAGE_VERSION=0.0.1
 RUN pip wheel --wheel-dir /tmp/wheels .
 
-FROM python:3.7-alpine
+FROM python:3.12-alpine
 
 WORKDIR /app
 
