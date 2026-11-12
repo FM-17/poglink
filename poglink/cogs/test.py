@@ -4,6 +4,7 @@ from discord.ext import commands
 
 ALLOWED_ROLES = ["Administrator", "Tech Administrator", "dot"]
 
+
 # create cog class
 class Test(commands.Cog):
     def __init__(self, client):

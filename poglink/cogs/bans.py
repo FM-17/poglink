@@ -7,6 +7,8 @@ import discord
 from discord.ext import commands
 
 logger = logging.getLogger(__name__)
+
+
 # create cog class
 class Bans(commands.Cog):
     def __init__(self, client):

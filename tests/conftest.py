@@ -11,6 +11,7 @@ SAMPLE_DYNAMICCONFIG_PATH_1 = "tests/data/dynamicconfig-1.ini"
 SAMPLE_DYNAMICCONFIG_PATH_2 = "tests/data/dynamicconfig-2.ini"
 LAST_DYNAMICCONFIG_PATH = "tests/data/last_rates.txt"
 
+
 # bans
 @pytest.fixture
 def sample_bansummary_1():

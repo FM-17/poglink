@@ -18,6 +18,7 @@ DEFAULT_COLOR = "0xF8DE74"
 DEFAULT_SERVER_NAME = "Unknown Server Name"
 DEFAULT_URL = "Unknown URL"
 
+
 # create cog class
 class Rates(commands.Cog):
     def __init__(self, client):
