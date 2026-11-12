@@ -108,7 +108,7 @@ class ConfigurableBot(commands.Bot):
         kwargs.setdefault("intents", discord.Intents.default())
         super().__init__(command_prefix, **kwargs)
 
-    async def setup_hook(self):
+    async def setup_hook(self):  # pragma: no cover
         # load all cogs on boot
         for ext in poglink.cogs.__all__:
             if ext != "bans":  # TODO: Reimplement when bans are enabled

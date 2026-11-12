@@ -84,5 +84,5 @@ class Bans(commands.Cog):
 
 
 # add cog to client
-async def setup(client):
+async def setup(client):  # pragma: no cover
     await client.add_cog(Bans(client))
